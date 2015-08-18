@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] r71 - plugin-demo
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r71%20-%20plugin-demo&In-Reply-To=%3CBAY114-F23A3CDEE66F8AD3753B2F4A7C50%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000039.html">
+   <LINK REL="Next"  HREF="000041.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] r71 - plugin-demo</H1>
+    <B>henry badinter</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r71%20-%20plugin-demo&In-Reply-To=%3CBAY114-F23A3CDEE66F8AD3753B2F4A7C50%40phx.gbl%3E"
+       TITLE="[Devqt-devel] r71 - plugin-demo">fullmetalcoder at hotmail.fr
+       </A><BR>
+    <I>Wed Apr 19 13:23:44 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000039.html">[Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help
+</A></li>
+        <LI>Next message: <A HREF="000041.html">[Devqt-devel] r72 - in tools/qmdilib: demos/mdi-tab src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+Looks like my own base is much better :
+
+plugin are loaded at run time, code is not a mess, very clear relationships 
+and dual-link to core dll.
+I'll give you a beta ASAP and maybe some diagrams but what I have right now 
+is a screeshot. It's not very impressive but demonstrates the way I modified 
+qmdilib and that plugins are well implemented. Build-in GUI only provides a 
+main window with a central widget (DevMDI) and a few menus (Files, View, and 
+Help); dock widgets are added by the perspective interface via it's wrapper 
+(DevPerspective) and additioannal menus and toolbars are managed by qmdilib 
+(DevGUI is the host, DevMDI and DevPerspective are servers, MDI-widgets 
+(only editors ATM but plugins can do much more), and possibly dock widgets' 
+children, are clients). The screenshot show the progress of the default 
+plugin rather than the core dll itself but IMO it's quite an achievement...
+
+BTW I redesigned client deletion in qmdilib to get something easier, I 
+removed qmdiTabWidget (as you can see DevMDI combine QWorkspace and QTabBar, 
+which is much better) and added a new baser class for plugin located widgets 
+:<i> qmdiWidget inherits from QWidget and qmdiClient, bonus : it does mdi 
+</I>cleanup on its own. What the point ? Giving plugins the possibility to offer 
+designer widget, UML editor and so on...
+
+TODO :
+
+1) finish plugin-wrapper implementation to allow community to develop 
+complete plugins
+2) adapt editor for use with plugins
+3) start real developpment of default plugin
+BTW default plugin is named &quot;defaut&quot; because default is a C++ keyword and 
+compiler didn't produced a working plugin
+
+&gt;<i>added a pre release of the plugin demo.
+</I>&gt;<i>
+</I>&gt;<i>This demo shows how to code a plugin system. Each plugin is self
+</I>&gt;<i>contained and does not have to know anything about the main window, or
+</I>&gt;<i>the system used for the mdi. All the comunication is done via qmdiServer
+</I>&gt;<i>and qmdiHost.
+</I>&gt;<i>
+</I>&gt;<i>The application has also a configuration dialog, which will be (not
+</I>&gt;<i>implemented yet) with all the plugins from which you can enable/disable
+</I>&gt;<i>the available plugins (unless always enabled is on). The configuration
+</I>&gt;<i>dialog will also contain several pages for each plugin, if that plugin
+</I>&gt;<i>contains a configuration widget (not implemented yet). Each wdget will
+</I>&gt;<i>also have a configuration item prepared from which it will load/save
+</I>&gt;<i>it's
+</I>&gt;<i>state it on load/unload (not implemented yet).
+</I>&gt;<i>
+</I>&gt;<i>the demo currently abuses the code from the mdi-tab demo: it contains 2
+</I>&gt;<i>plugins : for file editing and for help. The plugins display the same
+</I>&gt;<i>widgets at the tab demo. The functionality of this application is not as
+</I>&gt;<i>good as the original demo, but it's on the way.
+</I>&gt;<i>
+</I>&gt;<i>todo:
+</I>&gt;<i>  1) Plugins are hard coded/linked into the application. Need to find a
+</I>&gt;<i>     way to make the plugins loadable at run time. This means that you
+</I>&gt;<i>     can theoratically edit the plugins from the main application and
+</I>&gt;<i>     while it's working just unload/load the plugins to get newer
+</I>&gt;<i>     versions.
+</I>&gt;<i>  2) Need to add new functionalities to mdi-clients: &quot;can you close
+</I>&gt;<i>     yourself?&quot; This will be used for providing a way to query the user
+</I>&gt;<i>     if he wants to save his work before closing the mdi-client.
+</I>&gt;<i>  3) QSA. Programmers should have the ability to write plugins in JS/QSA
+</I>&gt;<i>     scripts.
+</I>&gt;<i>  4) What if the plugins need plugins? for example, used defined plugins
+</I>&gt;<i>     for the editor.
+</I>&gt;<i>  5) Interaction between plugins: how can the help plugin extend the
+</I>&gt;<i>     editor plugin?
+</I>&gt;<i>  6) Dependencies between plugins: a project plugin will need the editor
+</I>&gt;<i>     plugin to be loaded.
+</I>&gt;<i>  7) Clean up the code. It's a mess.
+</I>&gt;<i>  8) Documentation.
+</I>&gt;<i>
+</I>
+_________________________________________________________________
+Retrouvez tout en un clin d'oeil avec la barre d'outil MSN Search ! 
+<A HREF="http://desktop.msn.fr/">http://desktop.msn.fr/</A>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: screen.png
+Type: image/x-png
+Size: 17052 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/devqt-devel/attachments/20060419/4675015e/attachment.bin">https://lists.berlios.de/pipermail/devqt-devel/attachments/20060419/4675015e/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000039.html">[Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help
+</A></li>
+	<LI>Next message: <A HREF="000041.html">[Devqt-devel] r72 - in tools/qmdilib: demos/mdi-tab src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] RE : new beta ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20RE%20%3A%20new%20beta%20%3F&In-Reply-To=%3CBAY114-F39F8AA6D30CC54A9D48B0BA7BE0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000046.html">
+   <LINK REL="Next"  HREF="000048.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] RE : new beta ?</H1>
+    <B>henry badinter</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20RE%20%3A%20new%20beta%20%3F&In-Reply-To=%3CBAY114-F39F8AA6D30CC54A9D48B0BA7BE0%40phx.gbl%3E"
+       TITLE="[Devqt-devel] RE : new beta ?">fullmetalcoder at hotmail.fr
+       </A><BR>
+    <I>Mon Apr 24 21:42:04 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000046.html">[Devqt-devel] RE : new beta ?
+</A></li>
+        <LI>Next message: <A HREF="000048.html">[Devqt-devel] r73 - in tools/qmdilib: demos/mdi-tab src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>&quot;the code standars are unstable and sometimes not human-readable 
+</I>&gt;<i>(especially for connect() stuff)...&quot;
+</I>&gt;<i>
+</I>&gt;<i>Can you comment about that? What part did you find that was the weakest on 
+</I>&gt;<i>my code?
+</I>&gt;<i>
+</I>
+If you don't mind I'll not do it right now, I'm rather busy ATM...
+
+&gt;<i>I noticed your point about widgets on toolbars, and I will address it soon.
+</I>&gt;<i>
+</I>No need! I did it today!!! I went back to your version, thought a bit and 
+solved the two most important problems : widgets (hopefully you used a QList 
+of QObject* so it wasn't that hard) and flicker (just use a boolean to store 
+modification state thus avoid to clear and unmodified toolbars. Bonus : 
+toolbars still keep their locations between GUI updates. Bonus hint : to use 
+toolbar breaks just call :
+
+//toolbars stuff
+
+updateGUI(this);
+addToolBarBreak();
+
+//other toolbars stuff
+
+Within the mainwindow it achieve it though the code isn't the nicest ever...
+
+&gt;&gt;<i>
+</I>&gt;&gt;<i>Quite frankly I didn't understood why you started creating a lib (that is 
+</I>&gt;&gt;<i>not really a lib BTW) as a tool for DevQt and stated that is wasn't part 
+</I>&gt;&gt;<i>of the project. I see the risk of fork but due to my poor internet 
+</I>&gt;&gt;<i>connection and lack of time and also because I was only working on a beta, 
+</I>&gt;&gt;<i>I didn't bothered you with my modifications.
+</I>&gt;<i>And by this you are violating the license of the LGPL:
+</I>
+My understanding was that any Qt4-based piece of code written with the open 
+source edition had to be licensed under GPL, other licensing requiring a 
+commercial version of Qt4... What's wrong ?
+
+&gt;<i>
+</I>&gt;<i>2.a) The modified work must itself be a software library.
+</I>&gt;<i>Feel free to &quot;violate&quot; this. I don't mind, and and give permission to 
+</I>&gt;<i>everyone to link this so called library statically to every project you 
+</I>&gt;<i>want (as long as you have a valid Qt license for you needs of course).
+</I>
+Nice to you.
+
+&gt;<i>
+</I>&gt;<i>2.b) You must cause the files modified to carry prominent notices stating 
+</I>&gt;<i>that you changed the files and the date of any change.
+</I>&gt;<i>This one bothers me. If I want to improve my software, I need your help. 
+</I>&gt;<i>You are just not helping me to make a better software.
+</I>&gt;<i>
+</I>
+Lack of time once again... I corrected that already. The next update of the 
+beta (coming within 2 weeks because I'm gonna be on holidays, far away from 
+my PC, for 5 days) will respect that clause.
+
+&gt;<i>*5.* A program that contains no derivative of any portion of the Library, 
+</I>&gt;<i>but is designed to work with the Library by being compiled or linked with 
+</I>&gt;<i>it, is called a &quot;work that uses the Library&quot;. Such a work, in isolation, is 
+</I>&gt;<i>not a derivative work of the Library, and therefore falls outside the scope 
+</I>&gt;<i>of this License.
+</I>&gt;<i>Just to make this clear if you do not modify mt library at all, and just 
+</I>&gt;<i>link to it (dynamically as I think LGPL states, or statically as I pointed 
+</I>&gt;<i>already), you have basically no restrictions. IANAL, but I think I got this 
+</I>&gt;<i>part correctly. I hope :)
+</I>&gt;<i>
+</I>Don't see the point since I modified qmdilib...
+
+&gt;<i>*10.* Each time you redistribute the Library (or any work based on the 
+</I>&gt;<i>Library), the recipient automatically receives a license from the original 
+</I>&gt;<i>licensor to copy, distribute, link with or modify the Library subject to 
+</I>&gt;<i>these terms and conditions. You may not impose any further restrictions on 
+</I>&gt;<i>the recipients' exercise of the rights granted herein. You are not 
+</I>&gt;<i>responsible for enforcing compliance by third parties with this License.
+</I>&gt;<i>It seems you need to put the copy of the LGPL with the distributed source. 
+</I>&gt;<i>Not a big problem, since in these days you can always search for it and 
+</I>&gt;<i>find it in a minute on the web.
+</I>
+Can be done I think...
+
+I guess we're done with those licensing stuff so here is my plan :
+- put the LGPL along with the archive I posted, and maybe state 
+modifications in qmdilib if you really wish it
+- rearchive them all
+- create a &quot;base&quot; folder in the svn repository
+- upload the modified archive there
+- track as many bugs as you can (everyone is welcome to do that...) and tell 
+me about them
+- in a few weeks I'll upload an usable version of the new base, after 
+testing it under win 9X/ME, win XP, various Linux distros and Mac OS X we'll 
+bacup the current trunk and set the base as trunk
+- then we'll be able to further the developpment of DevQt, especially the 
+defaut plugin
+
+This is just a short roadmap, please tell me if you agree or disagree.
+
+Offtopic :
+- a while ago you talked about putting on the svn a &quot;sphere&quot; stuff done with 
+thiago, where is it???
+- any news from the other members of the team or are we alone???
+
+_________________________________________________________________
+Windows Live Mail : d&#233;couvrez et testez la version b&#234;ta ! 
+<A HREF="http://www.imagine-msn.com/hotmail/default.aspx?locale=fr-fr">http://www.imagine-msn.com/hotmail/default.aspx?locale=fr-fr</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000046.html">[Devqt-devel] RE : new beta ?
+</A></li>
+	<LI>Next message: <A HREF="000048.html">[Devqt-devel] r73 - in tools/qmdilib: demos/mdi-tab src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

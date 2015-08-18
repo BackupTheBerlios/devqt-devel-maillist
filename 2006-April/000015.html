@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] qhocr 0.2.2 test1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20qhocr%200.2.2%20test1&In-Reply-To=%3Cecd9a7b10604051003h21fb6dd2t1f100d98dbc4617c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000014.html">
+   <LINK REL="Next"  HREF="000016.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] qhocr 0.2.2 test1</H1>
+    <B>Thiago Santos</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20qhocr%200.2.2%20test1&In-Reply-To=%3Cecd9a7b10604051003h21fb6dd2t1f100d98dbc4617c%40mail.gmail.com%3E"
+       TITLE="[Devqt-devel] qhocr 0.2.2 test1">thiago.salves at gmail.com
+       </A><BR>
+    <I>Wed Apr  5 19:03:47 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000014.html">[Devqt-devel] qhocr 0.2.2 test1
+</A></li>
+        <LI>Next message: <A HREF="000016.html">[Devqt-devel] devqt 0.2.2 test1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#15">[ date ]</a>
+              <a href="thread.html#15">[ thread ]</a>
+              <a href="subject.html#15">[ subject ]</a>
+              <a href="author.html#15">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok guys, let me expose my opinion:
+
+I think we should not open the road map and I really think we even have a
+0.0.1 version of DevQt.
+My work is consuming me and I'm with a little time to dedicate to DevQt. In
+this short time I'm thinking and testins some concepts to GUI and plugin
+system. At this point Highlights and Matchers are loaded via plugin system,
+very cool :D
+Before anyone tells me that I should commit to SVN that 'in progress' work
+let explain: Some codes I do here in work, after I finish my work time, so,
+I do not have SVN available, to be honest due the security politics of the
+company to use internet we have to deslocate our selfs to a cybercafe inside
+the company, so, update SVN from here not viable. Than I want to explain to
+you guys that I do not like to commin anything before I consider it usable
+and at some point bug free. Text editor was an exception becous many devs
+ask me to commit it to people see it. So, probably I'll not commit any thing
+that I consider buggy or awful.
+
+At my point of view we have some issues to reach any usable app:
+* We need a Qt/C++ parser to check semanthic error during type:
+This should be a QThread that connects it self to &quot;textChanged()&quot; slot from
+QTextDocument, and every time it detects the text changed, it runs the
+parser to check any errors.
+This could be a good point to store the class hierarchy of the file to be
+used on code complete.
+
+* We need a project manager system (qmake):
+The project manager must deal with directories, dependences and external
+tools, it must manage .PRO files and must provide some kind of wizard to
+create new projects.
+
+* We need a compilation system&quot;:
+When user push &quot;copile&quot; button, wee must inform the progress of the
+compilation to user. I'm thinking on some possibilities and one is:
+First run 'make -n' on the project tree and capture all the output from
+QProcess. After that run 'make' and every line received from QProcess we
+&quot;pop&quot; the corresponding line from the previous directory, this way we could
+calculate the progress from compilation.
+
+* We need the plugin system:
+The plugin system should be integrated with the main app and every feature
+used on app must be a plugin!
+The project manager must be a plugin, the compile system must be a plugin,
+and so on...
+Other thing to tell here is: A plugin could have other plugins inside it.
+
+* We need an app update system:
+This is crutial, expecialy for windows users. DevQt should be able to check
+if  a new version of system is available and if is, dowload it and install
+it (with user interaction of course).
+
+
+Well, as you see, in my opinion we have four huge parts of the system to
+work on, I know that test our dialogs and our codes withoud a mainwindow or
+other thing to follow is a bit complicated, and I understand that everyone
+needs the mainwindow working to start to code, and that is the reason I
+think we are rushing to much on the version system.
+
+So, this is just my opinion and to you know, as soon I have a working
+prototype of the things I'm working on, I release to you guys.
+
+On 4/5/06, henry badinter &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">fullmetalcoder at hotmail.fr</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Trunk compiles fine under WinME / mingw 3.4.2 / Qt 4.1.1
+</I>&gt;<i> Gonna test under my linux distro ASAP.
+</I>&gt;<i>
+</I>&gt;<i> elcuco, plz stop complaining, we coded something not usable yet but it's a
+</I>&gt;<i> damn good start. There's still a lot of things to do and we may need to
+</I>&gt;<i> redesign the GUI but the rest is coming to be good. Just look, we already
+</I>&gt;<i> have :
+</I>&gt;<i> - a good text editor nearly finished
+</I>&gt;<i> - a project management still a little buggy but that crush any other
+</I>&gt;<i> attempts (look at Qt4DS, it simply sucks in that domain)
+</I>&gt;<i> - a good settings handling
+</I>&gt;<i> - a basic compiling engine including a basic console as well
+</I>&gt;<i>
+</I>&gt;<i> BTW what does qhocr means???
+</I>&gt;<i>
+</I>&gt;<i> townk, really good work. I didn't chack the source yet but it works even
+</I>&gt;<i> if
+</I>&gt;<i> I found a bug : mixing multiline and persistent states sometimes close the
+</I>&gt;<i> app...
+</I>&gt;<i>
+</I>&gt;<i> Looks like the berlios forum is abandonned but I don't care as long as we
+</I>&gt;<i> use the mailing list.
+</I>&gt;<i>
+</I>&gt;<i> About the site : Safari failed loading it and Firefox renders it with a
+</I>&gt;<i> blue
+</I>&gt;<i> palette (tested under Kubuntu 5.10 and Win XP)
+</I>&gt;<i>
+</I>&gt;<i> I suggest we open a new thread in QtCentre.org to expose our roadmap, to
+</I>&gt;<i> give the beta (archive) and to ask for volunteers.
+</I>&gt;<i>
+</I>&gt;<i> &gt;From: Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;
+</I>&gt;<i> &gt;To: <A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">devqt-devel at lists.berlios.de</A>
+</I>&gt;<i> &gt;Subject: [Devqt-devel] qhocr 0.2.2 test1
+</I>&gt;<i> &gt;Date: Wed, 29 Mar 2006 22:12:47 +0200
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I am not calling this beta, since quite frankly it's crap ware. We were
+</I>&gt;<i> not
+</I>&gt;<i> &gt;able to code something usefull until now, that's simply the truth. Lets
+</I>&gt;<i> &gt;release this, and start over again.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;The current code, compiles and runs on
+</I>&gt;<i> &gt;* XP MingW 4, Qt 4.1.0/4.1.1
+</I>&gt;<i> &gt;* Open SuSE  10.0 Qt rsync from this weekend
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I need more input about where it compiles and runs.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;TODO:
+</I>&gt;<i> &gt;The about box is empty
+</I>&gt;<i> &gt;The goto line dialog is opened twise if you choose the menu command
+</I>&gt;<i> &gt;Toolbars are badly organized
+</I>&gt;<i> &gt;On compilation the compilation tab is not showed
+</I>&gt;<i> &gt;The status bar jumps too much (text changes size way too much)
+</I>&gt;<i> &gt;No keyboard shortcuts to move between tabs.
+</I>&gt;<i> &gt;Too many useless commands on the menus and dialogs
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Not working (not for this version):
+</I>&gt;<i> &gt;Openning new projects
+</I>&gt;<i> &gt;Search in project
+</I>&gt;<i> &gt;Replace in project
+</I>&gt;<i> &gt;Project properties
+</I>&gt;<i> &gt;Debugger
+</I>&gt;<i> &gt;Profiler
+</I>&gt;<i> &gt;Sane editor
+</I>&gt;<i> &gt;etc...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I will generate test2 this Friday, in hope that people will commit code
+</I>&gt;<i> to
+</I>&gt;<i> &gt;fix
+</I>&gt;<i> &gt;those problems into the SVN. The list in the TODO shuold be cleared. If I
+</I>&gt;<i> &gt;don't see cooperation, I will start V 0.3.x on trunk without releasing
+</I>&gt;<i> this
+</I>&gt;<i> &gt;code.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;The zip is available here:
+</I>&gt;<i> &gt;<A HREF="http://devqt.berlios.de/tmp/devqt-0.2.2-1.zip.txt">http://devqt.berlios.de/tmp/devqt-0.2.2-1.zip.txt</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Just rename it, and post how here how the compilation worked for you.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Wake up team!
+</I>&gt;<i> &gt;_______________________________________________
+</I>&gt;<i> &gt;Devqt-devel mailing list
+</I>&gt;<i> &gt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">Devqt-devel at lists.berlios.de</A>
+</I>&gt;<i> &gt;<A HREF="http://lists.berlios.de/mailman/listinfo/devqt-devel">http://lists.berlios.de/mailman/listinfo/devqt-devel</A>
+</I>&gt;<i>
+</I>&gt;<i> _________________________________________________________________
+</I>&gt;<i> MSN Hotmail : cr&#233;ez votre adresse e-mail gratuite &amp; &#224; vie !
+</I>&gt;<i> <A HREF="http://www.imagine-msn.com/Messenger/?locale=fr-fr">http://www.imagine-msn.com/Messenger/?locale=fr-fr</A>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Devqt-devel mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">Devqt-devel at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/devqt-devel">http://lists.berlios.de/mailman/listinfo/devqt-devel</A>
+</I>&gt;<i>
+</I>
+
+
+--
+Thiago dos Santos Alves
+Computer Scientist
+
+<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">thiago.salves at gmail.com</A>
+-----------------------------------------------------
+&quot;A mente que se abre a uma nova id&#233;ia jamais voltar&#225; ao seu tamanho
+original.&quot;
+- Albert Einstein
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/devqt-devel/attachments/20060405/1f02ab89/attachment.html">https://lists.berlios.de/pipermail/devqt-devel/attachments/20060405/1f02ab89/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000014.html">[Devqt-devel] qhocr 0.2.2 test1
+</A></li>
+	<LI>Next message: <A HREF="000016.html">[Devqt-devel] devqt 0.2.2 test1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#15">[ date ]</a>
+              <a href="thread.html#15">[ thread ]</a>
+              <a href="subject.html#15">[ subject ]</a>
+              <a href="author.html#15">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

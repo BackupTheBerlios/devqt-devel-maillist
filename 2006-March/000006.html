@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] trunk not working perperly
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20trunk%20not%20working%20perperly&In-Reply-To=%3C200603212045.10903.elcuco%40kde.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000003.html">
+   <LINK REL="Next"  HREF="000004.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] trunk not working perperly</H1>
+    <B>Diego Iastrubni</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20trunk%20not%20working%20perperly&In-Reply-To=%3C200603212045.10903.elcuco%40kde.org%3E"
+       TITLE="[Devqt-devel] trunk not working perperly">elcuco at kde.org
+       </A><BR>
+    <I>Tue Mar 21 19:45:10 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000003.html">[Devqt-devel] trunk not workign perperly
+</A></li>
+        <LI>Next message: <A HREF="000004.html">[Devqt-devel] new release on 10-4-2006 - devqt 0.2.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6">[ date ]</a>
+              <a href="thread.html#6">[ thread ]</a>
+              <a href="subject.html#6">[ subject ]</a>
+              <a href="author.html#6">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have just checked a clean copy, and made I can reconfirm this.
+
+bool DevWorkSpace::closeProject(const QString&amp; name)
+deletion(*p);
+cb-&gt;removeItem( index );
+
+The problem itself is in file devworkspace.cpp, line 449. The problem is that 
+index equals -1, which means no indexes have been found.
+
+The way to reproduce is to execute the application, and without opening a main 
+project, closing the main window. The fix has been comited to the SVN. 
+
+
+
+
+&#1489;&#1497;&#1493;&#1501; &#1513;&#1500;&#1497;&#1513;&#1497;, 21 &#1489;&#1502;&#1512;&#1509; 2006, 19:52, &#1504;&#1499;&#1514;&#1489; &#1506;&#1500; &#1497;&#1491;&#1497; Diego Iastrubni:
+&gt;<i> The current trunk crashes on me while I try and close the application.
+</I>&gt;<i>
+</I>&gt;<i> I am getting:
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at linux</A>:~/src/svn/devqt/trunk&gt; ./devqt
+</I>&gt;<i> App terminating....
+</I>&gt;<i> shutting down GUI...
+</I>&gt;<i> ASSERT: &quot;index &gt;= 0 &amp;&amp; index &lt; count()&quot; in file widgets/qcombobox.cpp, line
+</I>&gt;<i> 1520
+</I>&gt;<i> Aborted
+</I>&gt;<i>
+</I>&gt;<i> Does anyone know how to address it?
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000003.html">[Devqt-devel] trunk not workign perperly
+</A></li>
+	<LI>Next message: <A HREF="000004.html">[Devqt-devel] new release on 10-4-2006 - devqt 0.2.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6">[ date ]</a>
+              <a href="thread.html#6">[ thread ]</a>
+              <a href="subject.html#6">[ subject ]</a>
+              <a href="author.html#6">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

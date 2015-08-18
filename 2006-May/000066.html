@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] r81 - tools/qmdilib/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r81%20-%20tools/qmdilib/src&In-Reply-To=%3C200605071810.k47IAsLP021534%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000065.html">
+   <LINK REL="Next"  HREF="000067.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] r81 - tools/qmdilib/src</H1>
+    <B>elcuco at berlios.de</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r81%20-%20tools/qmdilib/src&In-Reply-To=%3C200605071810.k47IAsLP021534%40sheep.berlios.de%3E"
+       TITLE="[Devqt-devel] r81 - tools/qmdilib/src">elcuco at berlios.de
+       </A><BR>
+    <I>Sun May  7 20:10:54 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000065.html">[Devqt-devel] r80 - tools/qmdilib/demos/plugin-demo
+</A></li>
+        <LI>Next message: <A HREF="000067.html">[Devqt-devel] wiki is been born
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: elcuco
+Date: 2006-05-07 20:10:47 +0200 (Sun, 07 May 2006)
+New Revision: 81
+
+Modified:
+   tools/qmdilib/src/qmditabwidget.cpp
+   tools/qmdilib/src/qmditabwidget.h
+Log:
+
+new feature popup menus per mdi client
+
+if you right click the tabbar of the tabwidget, you will have a new
+popup menu, which asks if you want to close this widget, the others, or
+all the widgets available.
+
+todo:
+memory deallocations
+merging with a mdiclient pre defined menu
+
+
+
+
+Modified: tools/qmdilib/src/qmditabwidget.cpp
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.cpp	2006-05-06 18:51:23 UTC (rev 80)
++++ tools/qmdilib/src/qmditabwidget.cpp	2006-05-07 18:10:47 UTC (rev 81)
+@@ -1,5 +1,8 @@
++#include &lt;QEvent&gt;
++#include &lt;QMouseEvent&gt;
++#include &lt;QAction&gt;
++#include &lt;QMenu&gt;
+ #include &lt;QMainWindow&gt;
+-#include &lt;QAction&gt;
+ 
+ #include &quot;qmditabwidget.h&quot;
+ #include &quot;qmdihost.h&quot;
+@@ -14,8 +17,50 @@
+  * \see qmdiServer, QTabWidget
+  */
+ 
++/**
++ * \class qmdiTabBar
++ * \brief helper class for qmdiTabWidget
++ */
+ 
+ /**
++ * \brief mouse pressed event handler
++ * \param event
++ *
++ * This is an overloaded function, which will emit a signal
++ * with the tab number which was pressed. There are 2 signals
++ * emited: middleMousePressed(int) and rightMousePressed(int)
++ */
++void qmdiTabBar::mousePressEvent ( QMouseEvent * event )
++{
++	if (event-&gt;button() == Qt::MidButton)
++	{
++		int tabCount = count();
++		for( int i=0; i&lt;tabCount; i++ )
++		{
++			if (tabRect(i).contains(event-&gt;pos()))
++			{
++				emit middleMousePressed(i, event-&gt;pos());
++				break;
++			}
++		}
++	}
++	else if (event-&gt;button() == Qt::RightButton)
++	{
++		int tabCount = count();
++		for( int i=0; i&lt;tabCount; i++ )
++		{
++			if (tabRect(i).contains(event-&gt;pos()))
++			{
++				emit rightMousePressed(i, event-&gt;pos());
++				break;
++			}
++		}
++	}
++
++	QTabBar::mousePressEvent(event);
++}
++
++/**
+  * \class qmdiTabWidget
+  * \brief an advanced tab widget, which is capable of changing menus and toolbars on the fly
+  * 
+@@ -63,6 +108,11 @@
+ 	activeWidget = NULL;
+ 	
+ 	connect( this, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
++
++	QTabBar *b = new qmdiTabBar;
++	connect( b, SIGNAL(middleMousePressed(int,QPoint)), this, SLOT(tryCloseClient(int)));
++	connect( b, SIGNAL(rightMousePressed(int,QPoint)), this, SLOT(showClientMenu(int,QPoint)));
++	setTabBar( b );
+ }
+ 
+ 
+@@ -99,11 +149,108 @@
+ 		mdiHost-&gt;mergeClient( dynamic_cast&lt;qmdiClient*&gt;(activeWidget) );
+ 
+ 	QMainWindow *m = dynamic_cast&lt;QMainWindow*&gt;(mdiHost);
+-	mdiHost-&gt;updateGUI( m );
++	mdiHost-&gt;updateGUI( m );	
+ }
+ 
+ 
+ /**
++ * \brief request an mdi client to close
++ * \param i the number of the client (tab) to be closed
++ *
++ * Call this slot to ask the mdi client to close itself.
++ * The mdi client may show a dialog to ask for saving. It's not
++ * ganranteed that the action will be handled as the mdi client
++ * can abort the action.
++ *
++ * \see qmdiClient::closeClient()
++ */
++void qmdiTabWidget::tryCloseClient( int i )
++{
++	qmdiClient *client = dynamic_cast&lt;qmdiClient*&gt;(widget(i));
++	if (!client)
++		return;
++
++	client-&gt;closeClient();
++}
++
++
++/**
++ * \brief request to close all other clients
++ * \param i the number of the client to keep open
++ *
++ * Call this slot to ask all the mdi clients (but the i parameter).
++ * Each mdi client may show a dialog to ask for saving. It's not
++ * ganranteed that the action will be handled as the mdi client
++ * can abort the action. At the end, only the client number i will
++ * not be asked to close itself.
++ *
++ * \see qmdiClient::closeClient() tryCloseClient() tryCloseAllCliens
++ */
++void qmdiTabWidget::tryCloseAllButClient( int i )
++{
++	int c = count();
++
++	for( int j=0; j&lt;c; j++ )
++	{
++		if (j == i)
++			continue;
++		
++		qmdiClient *client = dynamic_cast&lt;qmdiClient*&gt;(widget(j));
++		if (!client)
++			continue;
++
++		client-&gt;closeClient();
++	}
++}
++
++
++/**
++ * \brief try to close all mdi clients
++ *
++ * Call this slot when you want to close all the mdi clients.
++ */
++void qmdiTabWidget::tryCloseAllCliens()
++{
++	int c = count();
++
++	for( int i=0; i&lt;c; i++ )
++	{
++		qmdiClient *client = dynamic_cast&lt;qmdiClient*&gt;(widget(i));
++		if (!client)
++			continue;
++
++		client-&gt;closeClient();
++	}	
++}
++
++
++void qmdiTabWidget::showClientMenu( int i, QPoint p )
++{
++	QAction *closeThis	= new QAction(tr(&quot;Close this window&quot;), this);
++	QAction *closeOthers	= new QAction(tr(&quot;Close other windows&quot;), this);
++	QAction *closeAll	= new QAction(tr(&quot;Close all windows&quot;), this);
++	QMenu *menu = new QMenu( tr(&quot;Local actions&quot;) );
++	menu-&gt;addAction( closeThis );
++	menu-&gt;addAction( closeOthers );
++	menu-&gt;addAction( closeAll );
++
++	QAction *q = menu-&gt;exec( this-&gt;mapToGlobal(p) );
++
++	if ( q == closeThis)
++	{
++		tryCloseClient( i );
++	}
++	else if  (q == closeOthers)
++	{
++		tryCloseAllButClient( i );
++	}
++	else if (q == closeAll )
++	{
++		tryCloseAllCliens();
++	}
++}
++
++/**
+  * \brief callback to get alarm of deleted object
+  * \param o the deleted object
+  * 
+
+Modified: tools/qmdilib/src/qmditabwidget.h
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.h	2006-05-06 18:51:23 UTC (rev 80)
++++ tools/qmdilib/src/qmditabwidget.h	2006-05-07 18:10:47 UTC (rev 81)
+@@ -10,11 +10,25 @@
+  */
+  
+ #include &lt;QTabWidget&gt;
++#include &lt;QTabBar&gt;
+ #include &quot;qmdiserver.h&quot;
+ 
+ class QWidget;
++class QPoint;
+ class qmdiHost;
+ 
++class qmdiTabBar: public QTabBar
++{
++	Q_OBJECT
++
++	protected:
++		void mousePressEvent ( QMouseEvent * event );
++		
++	signals:
++		void middleMousePressed(int tabNumber, QPoint where );
++		void rightMousePressed(int tabNumber, QPoint where );
++};
++
+ class qmdiTabWidget : public QTabWidget, public qmdiServer
+ {
+ 	Q_OBJECT
+@@ -23,12 +37,15 @@
+ 
+ public slots:
+ 	void tabChanged( int i );
++	void tryCloseClient( int i );
++	void tryCloseAllButClient( int i );
++	void tryCloseAllCliens();
++	void showClientMenu( int i, QPoint p );
+ 
+ protected:
+ 	void clientDeleted( QObject *o );
+ 	void tabInserted ( int index );
+ 	void tabRemoved ( int index );
+-	
+ 	void addClient( qmdiClient *client );
+ 	
+ private:
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000065.html">[Devqt-devel] r80 - tools/qmdilib/demos/plugin-demo
+</A></li>
+	<LI>Next message: <A HREF="000067.html">[Devqt-devel] wiki is been born
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

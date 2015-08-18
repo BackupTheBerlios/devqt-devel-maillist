@@ -1,0 +1,400 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] r70 - tools/qmdilib/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r70%20-%20tools/qmdilib/src&In-Reply-To=%3C200604161956.k3GJu0aT013833%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000036.html">
+   <LINK REL="Next"  HREF="000039.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] r70 - tools/qmdilib/src</H1>
+    <B>elcuco at berlios.de</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r70%20-%20tools/qmdilib/src&In-Reply-To=%3C200604161956.k3GJu0aT013833%40sheep.berlios.de%3E"
+       TITLE="[Devqt-devel] r70 - tools/qmdilib/src">elcuco at berlios.de
+       </A><BR>
+    <I>Sun Apr 16 21:56:00 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000036.html">[Devqt-devel] r69 - / www
+</A></li>
+        <LI>Next message: <A HREF="000039.html">[Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#38">[ date ]</a>
+              <a href="thread.html#38">[ thread ]</a>
+              <a href="subject.html#38">[ subject ]</a>
+              <a href="author.html#38">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: elcuco
+Date: 2006-04-16 21:55:33 +0200 (Sun, 16 Apr 2006)
+New Revision: 70
+
+Removed:
+   tools/qmdilib/src/qorderedmap.h
+Modified:
+   tools/qmdilib/src/qmdihost.cpp
+   tools/qmdilib/src/qmdiserver.cpp
+   tools/qmdilib/src/qmdiserver.h
+   tools/qmdilib/src/qmditabwidget.cpp
+   tools/qmdilib/src/qmditabwidget.h
+Log:
+
+small updates to mdilib:
+
+* removed non used file qorderedmap.h
+* mdiserver has now the ability to add clients by it's own (to be
+  implemented on derived classes (QMdiTabWidget for example)
+
+
+Modified: tools/qmdilib/src/qmdihost.cpp
+===================================================================
+--- tools/qmdilib/src/qmdihost.cpp	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmdihost.cpp	2006-04-16 19:55:33 UTC (rev 70)
+@@ -43,7 +43,10 @@
+ void qmdiHost::updateGUI( QMainWindow *window )
+ {
+ 	if (window == NULL)
++	{
++		qDebug(&quot;%s - warning, no QMainWindow specified&quot;, __FUNCTION__ );
+ 		return;
++	}
+ 		
+ 	toolBarList = toolbars.updateToolBar( toolBarList, window );
+ 	menus.updateMenu( window-&gt;menuBar() );
+
+Modified: tools/qmdilib/src/qmdiserver.cpp
+===================================================================
+--- tools/qmdilib/src/qmdiserver.cpp	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmdiserver.cpp	2006-04-16 19:55:33 UTC (rev 70)
+@@ -35,7 +35,31 @@
+ {
+ }
+ 
++
+ /**
++ * \fn qmdiServer::addClient( qmdiClient *client  )
++ * \brief insert a new client to the server
++ * \param client the new client to be added
++ * 
++ * When deriving this class, you should also supply a function 
++ * for adding new clients to it. For example when deriving QTabWidget,
++ * your new function should actually call QTabWidget::insertTab().
++ * 
++ * Users of this class should be able to add new clients, and 
++ * set the properties needed using this function, but you should 
++ * also supply more advanced fuctions provided by your new widget, like
++ * add the widget into another location, setting an icon for this client,
++ * etc.
++ *
++ * \see qmdiTabWidget
++ */
++#if 0
++void qmdiServer::addClient( qmdiClient *client  )
++{
++}
++#endif
++
++/**
+  * \brief callback to get alarm of deleted object
+  * \param o the deleted object
+  *
+
+Modified: tools/qmdilib/src/qmdiserver.h
+===================================================================
+--- tools/qmdilib/src/qmdiserver.h	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmdiserver.h	2006-04-16 19:55:33 UTC (rev 70)
+@@ -11,10 +11,13 @@
+ 
+ #include &quot;actiongroup.h&quot;
+ 
++class qmdiClient;
++
+ class qmdiServer
+ {
+ public:
+ 	virtual ~qmdiServer();
++	virtual void addClient( qmdiClient *client ) = 0;
+ 	virtual void clientDeleted( QObject *o );
+ };
+ 
+
+Modified: tools/qmdilib/src/qmditabwidget.cpp
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.cpp	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmditabwidget.cpp	2006-04-16 19:55:33 UTC (rev 70)
+@@ -26,7 +26,7 @@
+  * The relations are:
+  *  - qmdiHost   : main window
+  *  - qmdiClient : you new widgets
+- *  - qmdiServert: this class
++ *  - qmdiServer : this class
+  *
+  * When a new widget is selected on the qmdiServer (the user changes ), the old
+  * widget is removed from the qmdiHost, and only then the new mdi client is added
+@@ -83,7 +83,6 @@
+ 	if (mdiHost == NULL)
+ 		return;
+ 		
+-	qmdiClient *client = NULL;
+ 	QWidget *w = widget( i );
+ 
+ 	// nothing to do, if the same tab has been selected twise
+@@ -199,3 +198,28 @@
+ 	// this is done to shut up gcc warnings
+ 	index = 0;
+ }
++
++/**
++ * \brief add a new mdi client to this tab widget
++ * \param client the new client to be added
++ *
++ * This function is demanded by qmdiServer, and is implemented
++ * as a simple call to:
++ *
++ * \code
++ * QTabWidget::addTab( client, client-&gt;name ).
++ * \endcode
++ * 
++ * The client must derive also QWidget, since only widgets can
++ * be inserted into QTabWidget. If the client does not derive
++ * QWidget the function returns without doying anything.
++ */
++void qmdiTabWidget::addClient( qmdiClient *client )
++{
++	QWidget *w = dynamic_cast&lt;QWidget*&gt;(client);
++
++	if (w == NULL)
++		return;
++	
++	addTab( w, client-&gt;name );
++}
+
+Modified: tools/qmdilib/src/qmditabwidget.h
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.h	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmditabwidget.h	2006-04-16 19:55:33 UTC (rev 70)
+@@ -29,6 +29,8 @@
+ 	void tabInserted ( int index );
+ 	void tabRemoved ( int index );
+ 	
++	void addClient( qmdiClient *client );
++	
+ private:
+ 	QWidget *activeWidget;
+ 	qmdiHost *mdiHost;
+
+Deleted: tools/qmdilib/src/qorderedmap.h
+===================================================================
+--- tools/qmdilib/src/qorderedmap.h	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qorderedmap.h	2006-04-16 19:55:33 UTC (rev 70)
+@@ -1,175 +0,0 @@
+-#ifndef __QORDERED_MAP_H__
+-#define __QORDERED_MAP_H__
+-
+-#include &lt;QString&gt;
+-#include &lt;QList&gt;
+-#include &lt;QTextCharFormat&gt;
+-
+-template &lt;class K, class V&gt;
+-class QOrderedMapNode
+-{
+-public:
+-	QOrderedMapNode() {}
+-	QOrderedMapNode( K k, V v ): key(k),value(v)
+-	{ 
+-		key = k;
+-		value = v;
+-	}
+-	K key;
+-	V value;
+-};
+-
+-
+-template &lt;class K, class V&gt;
+-class QOrderedMap
+-{
+-public:
+-	QOrderedMap();
+-	~QOrderedMap();
+-	
+-	void add( K key, V value );
+-	void remove( K key );
+-	V* item( K key );
+-	bool contains( K key );
+-	void itemNumber( int i );
+-
+-	int  count();
+-	void clear();
+-	bool empty();
+-	QList&lt; QOrderedMapNode&lt;K,V&gt; &gt; keys();
+-
+-private:
+-	QList&lt; QOrderedMapNode&lt;K,V&gt; &gt; nodes;
+-};
+-
+-
+-/**
+- * \class QOrderedMap
+- * \brief The QOrderedMap class is a template class that provides ordered lists.
+- * 
+- * The QOrderedMap\&lt;T\&gt; is a template based class which provides 
+- * a very similar functionality as QMap and QHash. The difference is 
+- * that in a QOrderedMap, the items are stored in the order you insert
+- * then into the map. While QOrderedMap may be very slow for some operations
+- * it will garantee you that you will be able to iterate over the 
+- * 
+- * - QMap        : stores the items sorted by key
+- * - QHash       : stores the items sorted arbitrarily ordered.
+- * - QOrderedMap : stores the items sorted by order in which they were inserted to the map
+- *  
+- * \see QMap
+- * \see QHash
+- * \see QList
+- */
+-
+-
+-template &lt;class K, class V&gt;
+-QOrderedMap&lt;K,V&gt;::QOrderedMap()
+-{
+-}
+-
+-template &lt;class K, class V&gt;
+-QOrderedMap&lt;K,V&gt;::~QOrderedMap()
+-{
+-}
+-
+-/**
+- * \brief Add a new key/value pair to the map
+- * \param key   - the key name for the value
+- * \param value - the value to insert into the map
+- * 
+- * Inserts a new item with the key \p key and a value of value.
+- * If there is already an item with the key \p key, that item's value is replaced with \p value.
+- * (the original item is removed).
+- */
+-template &lt;class K, class V&gt;
+-void QOrderedMap&lt;K,V&gt;::add( K key, V value )
+-{
+-	if (contains(key))
+-		remove( key );
+-		
+-	QOrderedMapNode&lt;K, V&gt; node( key, value );
+-	nodes.append( node );
+-}
+-
+-/**
+- * \brief Remove a value from the map
+- * \param key - the key to be removed from the map
+- *
+- * Removes the item which key matches the \p key from the map;
+- */
+-template &lt;class K, class V&gt;
+-void QOrderedMap&lt;K,V&gt;::remove( K key )
+-{
+-	int i = 0;
+-	foreach( K n, nodes )
+-	{
+-		i ++;
+-		if (n.key == key )
+-		{
+-			nodes.removeAt( i );
+-			return;
+-		}
+-	}
+-}
+-
+-template &lt;class K, class V&gt;
+-V* QOrderedMap&lt;K,V&gt;::item( K key )
+-{	
+-	int c = count();
+-	for( int i; i&lt;c; i++)
+-	{
+-		QOrderedMapNode&lt;K,V&gt; t = nodes[i];
+-		if (t.key == key)
+-			return &amp;t.value;
+-	}
+-
+-	return NULL;
+-}
+-
+-template &lt;class K, class V&gt;
+-void QOrderedMap&lt;K,V&gt;::itemNumber( int i )
+-{
+-	return nodes.items( i );
+-}
+-
+-template &lt;class K, class V&gt;
+-bool QOrderedMap&lt;K,V&gt;::contains( K key )
+-{
+-	QOrderedMapNode&lt;K, V&gt; n;
+-
+-	foreach( n, nodes )
+-	{
+-		if (n.key == key )
+-			return true;
+-	}
+-	
+-	return false;
+-}
+-
+-template &lt;class K, class V&gt;
+-QList&lt; QOrderedMapNode&lt;K,V&gt; &gt; QOrderedMap&lt;K,V&gt;::keys()
+-{
+-	return nodes;
+-}
+-
+-template &lt;class K, class V&gt;
+-void QOrderedMap&lt;K,V&gt;::clear()
+-{
+-	nodes.clear();
+-}
+-
+-template &lt;class K, class V&gt;
+-int QOrderedMap&lt;K,V&gt;::count()
+-{
+-	return nodes.count();
+-}
+-
+-template &lt;class K, class V&gt;
+-bool QOrderedMap&lt;K,V&gt;::empty()
+-{
+-	return nodes.empty();
+-}
+-
+-
+-#endif //__QORDERED_MAP_H__
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000036.html">[Devqt-devel] r69 - / www
+</A></li>
+	<LI>Next message: <A HREF="000039.html">[Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#38">[ date ]</a>
+              <a href="thread.html#38">[ thread ]</a>
+              <a href="subject.html#38">[ subject ]</a>
+              <a href="author.html#38">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

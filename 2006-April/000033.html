@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] r67 - releases
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r67%20-%20releases&In-Reply-To=%3CBAY114-F152541C4B3903E8C18BEA9A7CC0%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000032.html">
+   <LINK REL="Next"  HREF="000034.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] r67 - releases</H1>
+    <B>henry badinter</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r67%20-%20releases&In-Reply-To=%3CBAY114-F152541C4B3903E8C18BEA9A7CC0%40phx.gbl%3E"
+       TITLE="[Devqt-devel] r67 - releases">fullmetalcoder at hotmail.fr
+       </A><BR>
+    <I>Mon Apr 10 17:16:09 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000032.html">[Devqt-devel] r67 - releases
+</A></li>
+        <LI>Next message: <A HREF="000034.html">[Devqt-devel] site update
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#33">[ date ]</a>
+              <a href="thread.html#33">[ thread ]</a>
+              <a href="subject.html#33">[ subject ]</a>
+              <a href="author.html#33">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I agree with you! Trunk has come to be unmaintainable, thus we need a new 
+base. I'm working on it : new relationship scheme, total splitting between 
+modules, plugin support (everything will be done with them) and more....
+
+ATM there is no real app, just a basic architecture which still need some 
+work. The project has been split into 3 parts :
+
+executable : devqt, just hold the main() function, less than 30kb
+shared lib   : devqt0.[dll/so/dylib], contains all the classes
+plugin(s)    : x.[dll/so/dylib], contains interfaces, specific to a langage 
+and/or a build system and/or a toolkit
+
+notes :
+- a default plugin will be provided to take care of C++/Qt4
+- a real SDK for plugin developpment will be provided as well
+- nothing will be realeased (not even an alpha) before a while because I'm 
+quite busy and I want this new base to be bug-free and efficient
+- this new base will use elcuco's qmdilib, maybe a little modified, but not 
+townk's editor because it's not stable enough and looks misdesigned for some 
+parts (state pattern...)
+
+&gt;<i>From: Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;
+</I>&gt;<i>To: <A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">devqt-devel at lists.berlios.de</A>
+</I>&gt;<i>Subject: Re: [Devqt-devel] r67 - releases
+</I>&gt;<i>Date: Sun, 9 Apr 2006 23:20:18 +0300
+</I>&gt;<i>
+</I>&gt;<i>I have made a tag from trunk.
+</I>&gt;<i>
+</I>&gt;<i>I do not dare releasing this, as I do not beleave this code is solid enough 
+</I>&gt;<i>to
+</I>&gt;<i>be released. Yes, it does work, sometimes, for me. But quite frankly, I
+</I>&gt;<i>cannot maintain it.
+</I>&gt;<i>
+</I>&gt;<i>I will start a new branch which will be easier (at least for me) to 
+</I>&gt;<i>maintain.
+</I>&gt;<i>I have been talking with Thiago in the last weeks, and we do seem to share 
+</I>&gt;<i>a
+</I>&gt;<i>few ideas. The branch will be available in the next days under the code 
+</I>&gt;<i>name
+</I>&gt;<i>&quot;shpere&quot;.
+</I>&gt;<i>
+</I>&gt;<i>Trunk is open for development, and if anyone wants to release V 0.2.2, the 
+</I>&gt;<i>tag
+</I>&gt;<i>as been made. If you need help with the release, I will be glad to help.
+</I>&gt;<i>
+</I>&gt;<i>As always, please do not commit anythingto the &quot;releases/.*&quot; dirs on svn, 
+</I>&gt;<i>as
+</I>&gt;<i>they are read only.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>&#215;&#145;&#215;&#153;&#215;&#149;&#215;&#157; &#215;&#168;&#215;&#144;&#215;&#169;&#215;&#149;&#215;&#159;, 9 &#215;&#145;&#215;&#144;&#215;&#164;&#215;&#168;&#215;&#153;&#215;&#156; 2006, 23:12, &#215;&#160;&#215;&#155;&#215;&#170;&#215;&#145; &#215;&#162;&#215;&#156; &#215;&#153;&#215;&#147;&#215;&#153; 
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at berlios.de</A>:
+</I>&gt;<i> &gt; Author: elcuco
+</I>&gt;<i> &gt; Date: 2006-04-09 22:12:29 +0200 (Sun, 09 Apr 2006)
+</I>&gt;<i> &gt; New Revision: 67
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Added:
+</I>&gt;<i> &gt;    releases/DEVQT_0_2_2/
+</I>&gt;<i> &gt; Log:
+</I>&gt;<i> &gt; generated a release tag for version 0.2.2.
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Devqt-devel mailing list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">Devqt-devel at lists.berlios.de</A>
+</I>&gt;<i><A HREF="http://lists.berlios.de/mailman/listinfo/devqt-devel">http://lists.berlios.de/mailman/listinfo/devqt-devel</A>
+</I>
+_________________________________________________________________
+Tout savoir sur la s&#233;curit&#233; de votre PC ! 
+<A HREF="http://go.msn.fr/10-channel/80-security/spam/default.asp">http://go.msn.fr/10-channel/80-security/spam/default.asp</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000032.html">[Devqt-devel] r67 - releases
+</A></li>
+	<LI>Next message: <A HREF="000034.html">[Devqt-devel] site update
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#33">[ date ]</a>
+              <a href="thread.html#33">[ thread ]</a>
+              <a href="subject.html#33">[ subject ]</a>
+              <a href="author.html#33">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

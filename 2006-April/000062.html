@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] r78 - in tools/qmdilib: demos/adv-menus demos/mdi-tab src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r78%20-%20in%20tools/qmdilib%3A%20demos/adv-menus%20demos/mdi-tab%20src&In-Reply-To=%3C200604282258.k3SMw2Uo010370%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000061.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] r78 - in tools/qmdilib: demos/adv-menus demos/mdi-tab src</H1>
+    <B>elcuco at berlios.de</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r78%20-%20in%20tools/qmdilib%3A%20demos/adv-menus%20demos/mdi-tab%20src&In-Reply-To=%3C200604282258.k3SMw2Uo010370%40sheep.berlios.de%3E"
+       TITLE="[Devqt-devel] r78 - in tools/qmdilib: demos/adv-menus demos/mdi-tab src">elcuco at berlios.de
+       </A><BR>
+    <I>Sat Apr 29 00:58:02 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000061.html">[Devqt-devel] r77 - tools/qmdilib/src
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#62">[ date ]</a>
+              <a href="thread.html#62">[ thread ]</a>
+              <a href="subject.html#62">[ subject ]</a>
+              <a href="author.html#62">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: elcuco
+Date: 2006-04-29 00:57:55 +0200 (Sat, 29 Apr 2006)
+New Revision: 78
+
+Modified:
+   tools/qmdilib/demos/adv-menus/mainwindow.cpp
+   tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+   tools/qmdilib/src/qmditabwidget.cpp
+   tools/qmdilib/src/qmditabwidget.h
+Log:
+avd-menus: start of documentation for this demo
+exeditor: usage of the new breack api, 
+exeditor: tab names is only the file name
+
+qmditabwidget: fixed a bug which accoured when you have 2 tabs and you
+close the first one (menus for the 2nd one was not displayed)
+
+
+
+Modified: tools/qmdilib/demos/adv-menus/mainwindow.cpp
+===================================================================
+--- tools/qmdilib/demos/adv-menus/mainwindow.cpp	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/demos/adv-menus/mainwindow.cpp	2006-04-28 22:57:55 UTC (rev 78)
+@@ -16,6 +16,37 @@
+  * \see MainWindow
+  */
+ 
++/**
++ * \class MainWindow
++ * \brief The main window of demo 1 - modify main menus on the fly
++ *
++ * This demostration shows how can you had and remove menus
++ * and toolbars on an application, on response to application
++ * events.
++ *
++ * This is done by adding a new mdi client and then merging and
++ * unmerging this on demand. After a merge new toolbars and menus
++ * will be seen on screen. When the event is called again, the new
++ * mdi client is unmerged, and the original menus are seen.
++ *
++ * The basic concept of this application, is:
++ *   - a main window derived from QMainWindow and qmdiHost
++ *   - on the main window, the menus and toolbars are defined
++ *     using the APIs defined in qmdiClient
++ *   - a new qmdiClient class is defined
++ *   - new menus and toolbars are defined using the APIs
++ *     defined in qmdiClient
++ *   - when the user chooses the &quot;Advanced menus&quot; the 
++ *     new qmdiClient is merged into the main window,
++ *     and the gui is updated.
++ *
++ * On this application there are also defined also some NULL
++ * QAction defined, just to fill up the menus and toolbars. They
++ * could easily be connected to real slots.
++ *
++ * There is more documentation available at the adv-menus.html
++ * file, which is displayed when the application starts.
++ */
+ 
+ MainWindow::MainWindow( QWidget *owner ):QMainWindow(owner)
+ {
+
+Modified: tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-28 22:57:55 UTC (rev 78)
+@@ -85,8 +85,11 @@
+ 	menus[&quot;&amp;Search&quot;]	-&gt;addAction( actionFind );
+ 
+ 	// define the toolbars for this widget
+-	toolbars[&quot;File&quot;]	-&gt;addAction( actionSave );
+-	toolbars[&quot;File&quot;]	-&gt;addAction( actionClose );
++	toolbars[&quot;File&quot;]-&gt;breakAfter = true;
++	toolbars[&quot;File&quot;]-&gt;addAction( actionSave );
++	toolbars[&quot;File&quot;]-&gt;addAction( actionClose );
++
++	
+ 	toolbars[&quot;Edit operations&quot;]-&gt;addAction( actionCopy );
+ 	toolbars[&quot;Edit operations&quot;]-&gt;addAction( actionCut );
+ 	toolbars[&quot;Edit operations&quot;]-&gt;addAction( actionPaste );
+@@ -122,10 +125,27 @@
+ 
+ bool QexTextEdit::openFile( QString newFile, QTextCodec *c )
+ {
+-	fileName = newFile;	// the full path of the loaded file
+-	name = newFile;		// the name of the object for it's mdi server
+-	setObjectName( name );	// the QObject name (same as &quot;name&quot; \?)
++	fileName = newFile;		// the full path of the loaded file
++	setObjectName( newFile );	// set the object name to the file name,
++	
+ 
++	// the name of the object for it's mdi server
++	// is the file name alone, without the directory
++	int i = newFile.lastIndexOf( '/' );
++	QString s;
++	if ( i != -1 )
++		s = newFile.mid( i+1 );
++	else
++	{
++		i = newFile.lastIndexOf( '\\' );
++		if ( i != -1 )
++			s = newFile.mid( i+1 );
++		else
++			s = newFile;
++	}
++	name = s;
++	
++
+ 	if (newFile.isEmpty())
+ 		return true;
+ 
+
+Modified: tools/qmdilib/src/qmditabwidget.cpp
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.cpp	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/src/qmditabwidget.cpp	2006-04-28 22:57:55 UTC (rev 78)
+@@ -1,4 +1,5 @@
+ #include &lt;QMainWindow&gt;
++#include &lt;QAction&gt;
+ 
+ #include &quot;qmditabwidget.h&quot;
+ #include &quot;qmdihost.h&quot;
+@@ -197,6 +198,11 @@
+ 
+ 	// this is done to shut up gcc warnings
+ 	index = 0;
++	
++//	if it's the only widget available, show it's number
++//	BUG is this supposed to be done by Qt?
++	if (count() == 1)
++		tabChanged( 0 );
+ }
+ 
+ /**
+
+Modified: tools/qmdilib/src/qmditabwidget.h
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.h	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/src/qmditabwidget.h	2006-04-28 22:57:55 UTC (rev 78)
+@@ -32,8 +32,8 @@
+ 	void addClient( qmdiClient *client );
+ 	
+ private:
+-	QWidget *activeWidget;
+-	qmdiHost *mdiHost;
++	QWidget		*activeWidget;
++	qmdiHost	*mdiHost;
+ };
+ 
+ #endif // __QMDI_TAB_WIDGET_H__
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000061.html">[Devqt-devel] r77 - tools/qmdilib/src
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#62">[ date ]</a>
+              <a href="thread.html#62">[ thread ]</a>
+              <a href="subject.html#62">[ subject ]</a>
+              <a href="author.html#62">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

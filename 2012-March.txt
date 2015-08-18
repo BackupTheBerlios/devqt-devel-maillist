@@ -1,0 +1,25 @@
+From bogus@does.not.exist.com  Wed Mar 14 13:25:17 2012
+From: bogus@does.not.exist.com ()
+Date: Wed, 14 Mar 2012 12:25:17 -0000
+Subject: No subject
+Message-ID: <mailman.0.1331727916.31303.devqt-devel@lists.berlios.de>
+
+will be freezed.
+
+People will test the building of the ZIP, and if it works and compiles for 
+all, the rc ZIP will be released as final. If it miscompiles, a small patch 
+will be commited, and a new ZIP will be created, and we will continue until 
+the ZIP works for everybody. 
+
+When we decide that the RC ZIP is going to final, new screen shots will be 
+uploaded to the SVN copy of the site, and to the berlios admin page, and only 
+when all people like the changes, the site will be uploaded, and a new tag 
+will be created on the SVN.
+
+When 0.2.3 will be released, we will start debating about how to start the 
+development on 0.3.x. Meanwhile, we need to release something, what is on SVN 
+trunk will be it.
+
+/me is fixing compilation warnings and GUI oopses on trunk. 
+
+

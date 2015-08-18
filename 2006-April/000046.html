@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] RE : new beta ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20RE%20%3A%20new%20beta%20%3F&In-Reply-To=%3C444BCE1B.8000601%40kde.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000045.html">
+   <LINK REL="Next"  HREF="000047.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] RE : new beta ?</H1>
+    <B>Diego Iastrubni</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20RE%20%3A%20new%20beta%20%3F&In-Reply-To=%3C444BCE1B.8000601%40kde.org%3E"
+       TITLE="[Devqt-devel] RE : new beta ?">elcuco at kde.org
+       </A><BR>
+    <I>Sun Apr 23 20:57:31 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000045.html">[Devqt-devel] RE : new beta ?
+</A></li>
+        <LI>Next message: <A HREF="000047.html">[Devqt-devel] RE : new beta ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#46">[ date ]</a>
+              <a href="thread.html#46">[ thread ]</a>
+              <a href="subject.html#46">[ subject ]</a>
+              <a href="author.html#46">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>henry badinter wrote:
+&gt;<i>
+</I>&gt;<i> I don't take any code from the demos.The plugin configuration dialog 
+</I>&gt;<i> seemed interesting but I didn't take the time to adapt it to my need. 
+</I>&gt;<i> What is a mess ? Code is not very well commented, names are not 
+</I>&gt;<i> self-explanative and lots of code appear to be commented (mostly in 
+</I>&gt;<i> headers) without even a word to explain what their purpose were and 
+</I>&gt;<i> why they were commented, plugins are hard-coded into the app, the code 
+</I>&gt;<i> standars are unstable and sometimes not human-readable (especially for 
+</I>&gt;<i> connect() stuff)...
+</I>The demos are not documented, indeed. I will take this to my 
+consideration and start documenting the demos as well. BTW, I never 
+comment headers, but CPP files, as those comments will have to be 
+ignored by the pre-compiler and this can lead to longer compilations.
+
+&quot;the code standars are unstable and sometimes not human-readable 
+(especially for connect() stuff)...&quot;
+
+Can you comment about that? What part did you find that was the weakest 
+on my code?
+
+I noticed your point about widgets on toolbars, and I will address it soon.
+
+&gt;<i>
+</I>&gt;<i> Quite frankly I didn't understood why you started creating a lib (that 
+</I>&gt;<i> is not really a lib BTW) as a tool for DevQt and stated that is wasn't 
+</I>&gt;<i> part of the project. I see the risk of fork but due to my poor 
+</I>&gt;<i> internet connection and lack of time and also because I was only 
+</I>&gt;<i> working on a beta, I didn't bothered you with my modifications.
+</I>And by this you are violating the license of the LGPL:
+
+2.a) The modified work must itself be a software library.
+Feel free to &quot;violate&quot; this. I don't mind, and and give permission to 
+everyone to link this so called library statically to every project you 
+want (as long as you have a valid Qt license for you needs of course).
+
+2.b) You must cause the files modified to carry prominent notices 
+stating that you changed the files and the date of any change.
+This one bothers me. If I want to improve my software, I need your help. 
+You are just not helping me to make a better software.
+
+*5.* A program that contains no derivative of any portion of the 
+Library, but is designed to work with the Library by being compiled or 
+linked with it, is called a &quot;work that uses the Library&quot;. Such a work, 
+in isolation, is not a derivative work of the Library, and therefore 
+falls outside the scope of this License.
+Just to make this clear if you do not modify mt library at all, and just 
+link to it (dynamically as I think LGPL states, or statically as I 
+pointed already), you have basically no restrictions. IANAL, but I think 
+I got this part correctly. I hope :)
+
+*10.* Each time you redistribute the Library (or any work based on the 
+Library), the recipient automatically receives a license from the 
+original licensor to copy, distribute, link with or modify the Library 
+subject to these terms and conditions. You may not impose any further 
+restrictions on the recipients' exercise of the rights granted herein. 
+You are not responsible for enforcing compliance by third parties with 
+this License.
+It seems you need to put the copy of the LGPL with the distributed 
+source. Not a big problem, since in these days you can always search for 
+it and find it in a minute on the web.
+
+The deal, is that you cannot choose which rights to use or not, you just 
+need to comply with them or use another library. Again, all I am asking 
+is &quot;what did you change&quot;, nothing more.
+&gt;<i> I can understand that you want to keep qmdilib apart from the project 
+</I>&gt;<i> but then you're bringing serious limitations to flexibility... In such 
+</I>&gt;<i> a case I'd like you to continue working on it without committing on 
+</I>&gt;<i> the SVN until you come to a working release that could be used without 
+</I>&gt;<i> uncompatibility and license troubles. In the meantime DevQt would keep 
+</I>&gt;<i> the modified verison of qmdilib that is currently used and wait for 
+</I>&gt;<i> your work to end.
+</I>I will definetly not do such thing. I am comiting my work to the SVN so 
+other people will be able to see what I am doing and help me improve my 
+code. I only hope that my code is helpful to them, and they will use it. 
+Taking the source from developers is the worst thing that a can be done 
+for this kind of project.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000045.html">[Devqt-devel] RE : new beta ?
+</A></li>
+	<LI>Next message: <A HREF="000047.html">[Devqt-devel] RE : new beta ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#46">[ date ]</a>
+              <a href="thread.html#46">[ thread ]</a>
+              <a href="subject.html#46">[ subject ]</a>
+              <a href="author.html#46">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

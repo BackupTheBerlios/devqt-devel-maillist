@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] DevQt Branch 3 Alpha
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20DevQt%20Branch%203%20Alpha&In-Reply-To=%3C200604281625.30414.alex.saal%40gmx.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000056.html">
+   <LINK REL="Next"  HREF="000058.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] DevQt Branch 3 Alpha</H1>
+    <B>Alexander Saal</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20DevQt%20Branch%203%20Alpha&In-Reply-To=%3C200604281625.30414.alex.saal%40gmx.de%3E"
+       TITLE="[Devqt-devel] DevQt Branch 3 Alpha">alex.saal at gmx.de
+       </A><BR>
+    <I>Fri Apr 28 16:25:30 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000056.html">[Devqt-devel] DevQt Branch 3 Alpha
+</A></li>
+        <LI>Next message: <A HREF="000058.html">[Devqt-devel] DevQt Branch 3 Alpha
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#57">[ date ]</a>
+              <a href="thread.html#57">[ thread ]</a>
+              <a href="subject.html#57">[ subject ]</a>
+              <a href="author.html#57">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &#1489;&#1497;&#1493;&#1501; &#1513;&#1497;&#1513;&#1497;, 28 &#1489;&#1488;&#1508;&#1512;&#1497;&#1500; 2006, 14:38, 
+</I>thx :)
+&gt;<i> 1) don't use ./, it may fail sometimes (not sure when, but it will)
+</I>ok ... thx
+
+&gt;<i> 2) you did not pass parameters to the binary. right now the application
+</I>&gt;<i> just ignores them, but some day command line parameters will be used.
+</I>&gt;<i> 3) debian has a policy that every shell script should be runnable using
+</I>&gt;<i> &quot;/bin/sh&quot;.
+</I>ok, but i use bash ;)
+
+&gt;<i> 4) No need to clear the screen.
+</I>ok
+
+&gt;<i> 5) The devqt binary should be called devqt.bin on unix, and the script
+</I>&gt;<i> &quot;devqt&quot;, just to make things clear.
+</I>i used this, but under linux is the executabel devqt and not
+devqt.bin ..
+
+&gt;<i> Is it possible to copy files using *.pro?
+</I>no, but you can change, if you use the win32 or mac or unix macro like this:
+unix{
+  TARGET = ../../build/devqt
+  #you can add version of your lib
+  VERSION = 0.3.0
+  #if you add version you must right enter the foowlling:
+  #remove all debug symbols
+  QMAKE_POST_LINK = strip -s ../../build/libdevqt.so.0.3.0
+  RCC_DIR = .unix/rcc
+  MOC_DIR += .unix/moc
+  OBJECTS_DIR += .unix/obj
+  UI_DIR += .unix/ui
+}
+
+win32 {
+  ....
+  # but without strip -s ;)
+  ....
+}
+
+&gt;<i> This should fix the ugly 
+</I>&gt;<i> compilation script your have for windows.
+</I>&gt;<i>
+</I>&gt;<i> Here is my version (untested outside this email):
+</I>&gt;<i>
+</I>&gt;<i> #! /bin/sh
+</I>&gt;<i> DEVQTDIR=`dirname $0`
+</I>&gt;<i> export LD_LIBRARY_PATH=&quot;$LD_LIBRARY_PATH:$DEVQT_DIR&quot;
+</I>&gt;<i> $DEVQTDIR/devqt.bin !@
+</I>thx ....
+
+mfg
+ChMaster (aka Alexander S.)
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000056.html">[Devqt-devel] DevQt Branch 3 Alpha
+</A></li>
+	<LI>Next message: <A HREF="000058.html">[Devqt-devel] DevQt Branch 3 Alpha
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#57">[ date ]</a>
+              <a href="thread.html#57">[ thread ]</a>
+              <a href="subject.html#57">[ subject ]</a>
+              <a href="author.html#57">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

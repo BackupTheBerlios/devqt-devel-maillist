@@ -1,0 +1,505 @@
+From thiago.salves at gmail.com  Sat Mar 18 20:34:45 2006
+From: thiago.salves at gmail.com (Thiago Santos)
+Date: Sat, 18 Mar 2006 16:34:45 -0300
+Subject: [Devqt-devel] Hello DevQt Sailors
+Message-ID: <ecd9a7b10603181134h5e28c70ew68f21a2ac73b270d@mail.gmail.com>
+
+Hello guys!
+First of all sorry to not be on the IRC meeting.
+
+Now, lets talk about the development:
+
+First I agree with Cesar, we really need a Roadmap, so it is my opinion that
+every thing coded until now is just a prototype, nothing more!
+
+Well, that I would like to know every one here, please could you reply this
+with your name, age, country, city, formation and Qt experience?
+Let me start:
+
+Name: Thiago Alves [Townk]
+Age: 27
+Country: Brazil (-3:00 GMT)
+City: Curitiba
+Formation: Computer Scientist and Master in Distributed Systems
+Qt experience: about 5 years (since Qt2)
+
+
+--
+Thiago dos Santos Alves
+Computer Scientist
+
+thiago.salves at gmail.com
+-----------------------------------------------------
+"A mente que se abre a uma nova id?ia jamais voltar? ao seu tamanho
+original."
+- Albert Einstein
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/devqt-devel/attachments/20060318/23faefc3/attachment.html>
+
+From elcuco at kde.org  Sat Mar 18 22:33:11 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Sat, 18 Mar 2006 23:33:11 +0200
+Subject: [Devqt-devel] Hello DevQt Sailors
+In-Reply-To: <ecd9a7b10603181134h5e28c70ew68f21a2ac73b270d@mail.gmail.com>
+References: <ecd9a7b10603181134h5e28c70ew68f21a2ac73b270d@mail.gmail.com>
+Message-ID: <200603182333.11765.elcuco@kde.org>
+
+Hi,
+
+I don't think that just throwing all the code that has been written is a good 
+idea, as we can reuse some of it. 
+
+Regarding a road map, I say in the next month release whats on SVN trunk as 
+0.2.3, and then decide where we can go to 0.3.0.
+
+I am reading KDE's code since 3.0.0, and I am quite n00b with Qt to be 
+honest :)
+
+Age 27, Software engineering student, Israel gmt+2.
+
+????, 18 ???? 2006, 21:34, ???? ?? ??? Thiago Santos:
+> Hello guys!
+> First of all sorry to not be on the IRC meeting.
+>
+> Now, lets talk about the development:
+>
+> First I agree with Cesar, we really need a Roadmap, so it is my opinion
+> that every thing coded until now is just a prototype, nothing more!
+>
+> Well, that I would like to know every one here, please could you reply this
+> with your name, age, country, city, formation and Qt experience?
+> Let me start:
+>
+> Name: Thiago Alves [Townk]
+> Age: 27
+> Country: Brazil (-3:00 GMT)
+> City: Curitiba
+> Formation: Computer Scientist and Master in Distributed Systems
+> Qt experience: about 5 years (since Qt2)
+>
+>
+> --
+> Thiago dos Santos Alves
+> Computer Scientist
+>
+> thiago.salves at gmail.com
+> -----------------------------------------------------
+> "A mente que se abre a uma nova id?ia jamais voltar? ao seu tamanho
+> original."
+> - Albert Einstein
+
+
+From ovidiu.sabou at gmail.com  Sat Mar 18 21:12:09 2006
+From: ovidiu.sabou at gmail.com (Ovidiu Sabou)
+Date: Sat, 18 Mar 2006 22:12:09 +0200
+Subject: [Devqt-devel] Hello DevQt Sailors
+In-Reply-To: <ecd9a7b10603181134h5e28c70ew68f21a2ac73b270d@mail.gmail.com>
+References: <ecd9a7b10603181134h5e28c70ew68f21a2ac73b270d@mail.gmail.com>
+Message-ID: <dc9ff62b0603181212w39785abpe66c95a6826c82ec@mail.gmail.com>
+
+Hi!
+Name: Ovidiu Sabou
+Age: 19
+Country: Romania (GMT +2)
+Formation: Computer Science student
+Qt experience: very little; i've written a small program with qt2:
+http://repchat.sf.net
+
+How I got interested in this project: I wanted an IDE with Qt integration.
+Eclipse is very good for C++ but it doesn't provide Qt support. I've seen
+this project on QtCentre and though why not contribute... I don't care if I
+use an IDE made with Qt or Java or whatever what I want it is to do the job.
+Since you want to do this in Qt from scratch I though it may be a good time
+for some contribution :) (although I don't have Qt experience I can adapt
+quickly)
+
+I've attached a small design document about what I'd like to have in an IDE.
+
+Yes, a roadmap and good planning is needed. I am happy that Thiago Santos
+has Qt experience; it is a good sign :)
+We talked on IRC about starting DevQt with the interface and the core of the
+IDE .. this means no integration with any tools, just the basic interface
+with configuration system, a basic editor, the plugin system and the build
+system for the IDE itself(the program should build on every platform that Qt
+builds). Thiago offered to write the UI system. What do you think about this
+?
+
+Another question that I have is about the Qt trademark. I am not sure if
+DevQt is a safe name; Trolltech may not be very happy about this. Maybe DevQ
+would be a better name ?
+
+
+
+On 3/18/06, Thiago Santos <thiago.salves at gmail.com> wrote:
+>
+> Hello guys!
+> First of all sorry to not be on the IRC meeting.
+>
+> Now, lets talk about the development:
+>
+> First I agree with Cesar, we really need a Roadmap, so it is my opinion
+> that every thing coded until now is just a prototype, nothing more!
+>
+> Well, that I would like to know every one here, please could you reply
+> this with your name, age, country, city, formation and Qt experience?
+> Let me start:
+>
+> Name: Thiago Alves [Townk]
+> Age: 27
+> Country: Brazil (-3:00 GMT)
+> City: Curitiba
+> Formation: Computer Scientist and Master in Distributed Systems
+> Qt experience: about 5 years (since Qt2)
+>
+>
+> --
+> Thiago dos Santos Alves
+> Computer Scientist
+>
+> thiago.salves at gmail.com
+> -----------------------------------------------------
+> "A mente que se abre a uma nova id?ia jamais voltar? ao seu tamanho
+> original."
+> - Albert Einstein
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/devqt-devel/attachments/20060318/2230c42a/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: DevQtDesignDraft.pdf
+Type: application/pdf
+Size: 126022 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/devqt-devel/attachments/20060318/2230c42a/attachment.pdf>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: DevQtDesignDraft.odt
+Type: application/vnd.oasis.opendocument.text
+Size: 15262 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/devqt-devel/attachments/20060318/2230c42a/attachment.odt>
+
+From elcuco at kde.org  Tue Mar 21 18:52:15 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Tue, 21 Mar 2006 19:52:15 +0200
+Subject: [Devqt-devel] trunk not workign perperly
+Message-ID: <200603211952.16079.elcuco@kde.org>
+
+The current trunk crashes on me while I try and close the application. 
+
+I am getting:
+elcuco at linux:~/src/svn/devqt/trunk> ./devqt
+App terminating....
+shutting down GUI...
+ASSERT: "index >= 0 && index < count()" in file widgets/qcombobox.cpp, line 
+1520
+Aborted
+
+Does anyone know how to address it?
+
+
+From elcuco at kde.org  Tue Mar 21 19:44:49 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Tue, 21 Mar 2006 20:44:49 +0200
+Subject: [Devqt-devel] new release on 10-4-2006 - devqt 0.2.3
+Message-ID: <200603212044.49750.elcuco@kde.org>
+
+Hi,
+
+I scheduling a release for 1-4-2006. The release cycle is as follows:
+
+Until 1-4-2006, the SVN will recive only  bug fixes. No new features.
+
+From elcuco at kde.org  Tue Mar 21 19:45:10 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Tue, 21 Mar 2006 20:45:10 +0200
+Subject: [Devqt-devel] trunk not working perperly
+In-Reply-To: <200603211952.16079.elcuco@kde.org>
+References: <200603211952.16079.elcuco@kde.org>
+Message-ID: <200603212045.10903.elcuco@kde.org>
+
+I have just checked a clean copy, and made I can reconfirm this.
+
+bool DevWorkSpace::closeProject(const QString& name)
+deletion(*p);
+cb->removeItem( index );
+
+The problem itself is in file devworkspace.cpp, line 449. The problem is that 
+index equals -1, which means no indexes have been found.
+
+The way to reproduce is to execute the application, and without opening a main 
+project, closing the main window. The fix has been comited to the SVN. 
+
+
+
+
+???? ?????, 21 ???? 2006, 19:52, ???? ?? ??? Diego Iastrubni:
+> The current trunk crashes on me while I try and close the application.
+>
+> I am getting:
+> elcuco at linux:~/src/svn/devqt/trunk> ./devqt
+> App terminating....
+> shutting down GUI...
+> ASSERT: "index >= 0 && index < count()" in file widgets/qcombobox.cpp, line
+> 1520
+> Aborted
+>
+> Does anyone know how to address it?
+
+
+From fullmetalcoder at hotmail.fr  Wed Mar 22 08:53:31 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Wed, 22 Mar 2006 08:53:31 +0100
+Subject: [Devqt-devel] new release on 10-4-2006 - devqt 0.2.3
+In-Reply-To: <200603212044.49750.elcuco@kde.org>
+Message-ID: <BAY114-F8ACE09EC6DB6B2452C85FA7D90@phx.gbl>
+
+Hi,
+
+I agree with the new release policy. There are a few bug fixes to do in 
+highlighting, I'll try to get rid of them and I may commit the current 
+version of project management part.
+
+
+>From: Diego Iastrubni <elcuco at kde.org>
+>To: "DevQt Mailing List" <devqt-devel at lists.berlios.de>
+>Subject: [Devqt-devel] new release on 10-4-2006 - devqt 0.2.3
+>Date: Tue, 21 Mar 2006 20:44:49 +0200
+>
+>Hi,
+>
+>I scheduling a release for 1-4-2006. The release cycle is as follows:
+>
+>Until 1-4-2006, the SVN will recive only  bug fixes. No new features.
+>From 1-4-2006 we will do build testing. A ZIP will be put on the site, and 
+>SVN
+>will be freezed.
+>
+>People will test the building of the ZIP, and if it works and compiles for
+>all, the rc ZIP will be released as final. If it miscompiles, a small patch
+>will be commited, and a new ZIP will be created, and we will continue until
+>the ZIP works for everybody.
+>
+>When we decide that the RC ZIP is going to final, new screen shots will be
+>uploaded to the SVN copy of the site, and to the berlios admin page, and 
+>only
+>when all people like the changes, the site will be uploaded, and a new tag
+>will be created on the SVN.
+>
+>When 0.2.3 will be released, we will start debating about how to start the
+>development on 0.3.x. Meanwhile, we need to release something, what is on 
+>SVN
+>trunk will be it.
+>
+>/me is fixing compilation warnings and GUI oopses on trunk.
+>_______________________________________________
+>Devqt-devel mailing list
+>Devqt-devel at lists.berlios.de
+>http://lists.berlios.de/mailman/listinfo/devqt-devel
+
+_________________________________________________________________
+MSN Hotmail : cr?ez votre adresse e-mail gratuite & ? vie ! 
+http://www.imagine-msn.com/Messenger/?locale=fr-fr
+
+
+
+From elcuco at kde.org  Wed Mar 22 20:04:55 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Wed, 22 Mar 2006 21:04:55 +0200
+Subject: [Devqt-devel] new release on 10-4-2006 - devqt 0.2.3
+In-Reply-To: <BAY114-F8ACE09EC6DB6B2452C85FA7D90@phx.gbl>
+References: <BAY114-F8ACE09EC6DB6B2452C85FA7D90@phx.gbl>
+Message-ID: <44219FD7.1030905@kde.org>
+
+henry badinter wrote:
+> Hi,
+>
+> I agree with the new release policy. There are a few bug fixes to do 
+> in highlighting, I'll try to get rid of them and I may commit the 
+> current version of project management part.
+>
+If you want to add the new project management  part, do this today or 
+tomorrow. We will get stucked on QA problems, and I want to tackle them 
+as fast as possible.
+
+
+Meanwhile, the project coredumps on win32, mingw4. This is way more 
+important then a new feature.
+
+
+
+From elcuco at kde.org  Thu Mar 23 23:53:42 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Fri, 24 Mar 2006 00:53:42 +0200
+Subject: [Devqt-devel] Re: my username
+In-Reply-To: <dc9ff62b0603171030r26567f10h5d1304fcdc1acfe@mail.gmail.com>
+References: <dc9ff62b0603170509m283ed98i25c9173de78cef6d@mail.gmail.com> <200603171605.20394.elcuco@kde.org> <dc9ff62b0603171030r26567f10h5d1304fcdc1acfe@mail.gmail.com>
+Message-ID: <200603240053.42255.elcuco@kde.org>
+
+are you on the list of developers yet?
+
+I think I forgot something...
+
+???? ????, 17 ???? 2006, 20:30, ???? ?? ??? Ovidiu Sabou:
+> i am still writing them :)
+>
+> On 3/17/06, Diego Iastrubni <elcuco at kde.org> wrote:
+> > you said something about docs. did not get any...
+> >
+> > ???? ????, 17 ???? 2006, 15:09, ????:
+> > > my username on BerliOS is ovidiu_s
+
+
+From elcuco at kde.org  Thu Mar 23 23:54:22 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Fri, 24 Mar 2006 00:54:22 +0200
+Subject: [Devqt-devel] qmdlib update
+Message-ID: <200603240054.22347.elcuco@kde.org>
+
+Hi all,
+
+I have updates the source in tools/qmdilib. Now most of the source should be 
+documented, and hopefully this documents will help people understand how to 
+use the APIs. Please comment on that.
+
+The new code ships with much usable APIs, while still exporting low level 
+APIs. The code for qmdiTabWidget is now much smaller, and much more readable. 
+
+I will see what can be done on the flickering of the toolbars. It flickers a 
+lot on X11, and on Win32 it's even worst. I also need to define merge points 
+(see where the same command is on "File" menus). 
+
+Thiago, I am still waiting to see your magic, you did not commit it yet
+
+:)
+
+
+From fullmetalcoder at hotmail.fr  Sun Mar 26 12:22:28 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Sun, 26 Mar 2006 12:22:28 +0200
+Subject: [Devqt-devel] qmdlib update
+In-Reply-To: <200603240054.22347.elcuco@kde.org>
+Message-ID: <BAY114-F12A7EADB99317001210CFA7DD0@phx.gbl>
+
+sorry, my magic will come later : my parents denied me the access to 
+computer for a week and I'm now in england (1 week)...
+
+>From: Diego Iastrubni <elcuco at kde.org>
+>To: devqt-devel at lists.berlios.de
+>Subject: [Devqt-devel] qmdlib update
+>Date: Fri, 24 Mar 2006 00:54:22 +0200
+>
+>Hi all,
+>
+>I have updates the source in tools/qmdilib. Now most of the source should 
+>be
+>documented, and hopefully this documents will help people understand how to
+>use the APIs. Please comment on that.
+>
+>The new code ships with much usable APIs, while still exporting low level
+>APIs. The code for qmdiTabWidget is now much smaller, and much more 
+>readable.
+>
+>I will see what can be done on the flickering of the toolbars. It flickers 
+>a
+>lot on X11, and on Win32 it's even worst. I also need to define merge 
+>points
+>(see where the same command is on "File" menus).
+>
+>Thiago, I am still waiting to see your magic, you did not commit it yet
+>
+>:)
+>_______________________________________________
+>Devqt-devel mailing list
+>Devqt-devel at lists.berlios.de
+>http://lists.berlios.de/mailman/listinfo/devqt-devel
+
+_________________________________________________________________
+MSN Hotmail : cr?ez votre adresse e-mail gratuite & ? vie ! 
+http://www.imagine-msn.com/Messenger/?locale=fr-fr
+
+
+
+From elcuco at kde.org  Wed Mar 29 00:24:29 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Wed, 29 Mar 2006 00:24:29 +0200
+Subject: [Devqt-devel] qmdlib update
+In-Reply-To: <BAY114-F12A7EADB99317001210CFA7DD0@phx.gbl>
+References: <BAY114-F12A7EADB99317001210CFA7DD0@phx.gbl>
+Message-ID: <200603290024.30290.elcuco@kde.org>
+
+???? ?????, 26 ???? 2006, 12:22, ???? ?? ??? henry badinter:
+> sorry, my magic will come later : my parents denied me the access to
+> computer for a week and I'm now in england (1 week)...
+
+?This means that your code will be added for 0.3.x.
+
+I will make a ZIP tomorrow, and we will start the testing of 0.2.2. 
+
+Meanwhile,
+Can anyone fix the bug with the goto line? Just choose gotoline from the menu, 
+and you will see the dialog twice.
+
+Please don't commit anything to the trunk, unless someone else reviewed your 
+code, please write in the commit log who reviewed your code, otherwise I will 
+just unapply the patch.
+
+Is anyone having building problems with trunk? please recheck it and compiled 
+it. It should work on the first try.
+
+Good night
+
+
+From elcuco at kde.org  Wed Mar 29 22:12:47 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Wed, 29 Mar 2006 22:12:47 +0200
+Subject: [Devqt-devel] qhocr 0.2.2 test1
+Message-ID: <200603292212.47513.elcuco@kde.org>
+
+Hi,
+
+I am not calling this beta, since quite frankly it's crap ware. We were not 
+able to code something usefull until now, that's simply the truth. Lets 
+release this, and start over again.
+
+The current code, compiles and runs on 
+* XP MingW 4, Qt 4.1.0/4.1.1
+* Open SuSE  10.0 Qt rsync from this weekend
+
+I need more input about where it compiles and runs. 
+
+TODO:
+The about box is empty
+The goto line dialog is opened twise if you choose the menu command
+Toolbars are badly organized
+On compilation the compilation tab is not showed
+The status bar jumps too much (text changes size way too much)
+No keyboard shortcuts to move between tabs.
+Too many useless commands on the menus and dialogs
+
+Not working (not for this version):
+Openning new projects
+Search in project
+Replace in project
+Project properties
+Debugger
+Profiler
+Sane editor
+etc...
+
+
+I will generate test2 this Friday, in hope that people will commit code to fix 
+those problems into the SVN. The list in the TODO shuold be cleared. If I 
+don't see cooperation, I will start V 0.3.x on trunk without releasing this 
+code. 
+
+The zip is available here:
+http://devqt.berlios.de/tmp/devqt-0.2.2-1.zip.txt
+
+Just rename it, and post how here how the compilation worked for you.
+
+Wake up team!
+
+

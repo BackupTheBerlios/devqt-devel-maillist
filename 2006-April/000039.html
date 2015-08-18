@@ -1,0 +1,1862 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r71%20-%20in%20tools/qmdilib/demos%3A%20.%20plugin-demo%20plugin-demo/images%20plugin-demo/plugins%20plugin-demo/plugins/editor%20plugin-demo/plugins/help&In-Reply-To=%3C200604162027.k3GKRjaJ025845%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000038.html">
+   <LINK REL="Next"  HREF="000040.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help</H1>
+    <B>elcuco at berlios.de</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r71%20-%20in%20tools/qmdilib/demos%3A%20.%20plugin-demo%20plugin-demo/images%20plugin-demo/plugins%20plugin-demo/plugins/editor%20plugin-demo/plugins/help&In-Reply-To=%3C200604162027.k3GKRjaJ025845%40sheep.berlios.de%3E"
+       TITLE="[Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help">elcuco at berlios.de
+       </A><BR>
+    <I>Sun Apr 16 22:27:45 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000038.html">[Devqt-devel] r70 - tools/qmdilib/src
+</A></li>
+        <LI>Next message: <A HREF="000040.html">[Devqt-devel] r71 - plugin-demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#39">[ date ]</a>
+              <a href="thread.html#39">[ thread ]</a>
+              <a href="subject.html#39">[ subject ]</a>
+              <a href="author.html#39">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: elcuco
+Date: 2006-04-16 22:27:11 +0200 (Sun, 16 Apr 2006)
+New Revision: 71
+
+Added:
+   tools/qmdilib/demos/plugin-demo/
+   tools/qmdilib/demos/plugin-demo/configdialog.cpp
+   tools/qmdilib/demos/plugin-demo/configdialog.h
+   tools/qmdilib/demos/plugin-demo/images/
+   tools/qmdilib/demos/plugin-demo/images/config.png
+   tools/qmdilib/demos/plugin-demo/images/query.png
+   tools/qmdilib/demos/plugin-demo/images/update.png
+   tools/qmdilib/demos/plugin-demo/iplugin.cpp
+   tools/qmdilib/demos/plugin-demo/iplugin.h
+   tools/qmdilib/demos/plugin-demo/main3.cpp
+   tools/qmdilib/demos/plugin-demo/mainwindow3.cpp
+   tools/qmdilib/demos/plugin-demo/mainwindow3.h
+   tools/qmdilib/demos/plugin-demo/plugin-demo.pro
+   tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop
+   tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop.pcs
+   tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses
+   tools/qmdilib/demos/plugin-demo/plugin_list.ui
+   tools/qmdilib/demos/plugin-demo/pluginmodel.cpp
+   tools/qmdilib/demos/plugin-demo/pluginmodel.h
+   tools/qmdilib/demos/plugin-demo/plugins/
+   tools/qmdilib/demos/plugin-demo/plugins/editor/
+   tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp
+   tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h
+   tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui
+   tools/qmdilib/demos/plugin-demo/plugins/help/
+   tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp
+   tools/qmdilib/demos/plugin-demo/plugins/help/help.h
+   tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui
+   tools/qmdilib/demos/plugin-demo/pluningmanager.cpp
+   tools/qmdilib/demos/plugin-demo/pluningmanager.h
+Log:
+added a pre release of the plugin demo.
+
+This demo shows how to code a plugin system. Each plugin is self
+contained and does not have to know anything about the main window, or
+the system used for the mdi. All the comunication is done via qmdiServer
+and qmdiHost.
+
+The application has also a configuration dialog, which will be (not
+implemented yet) with all the plugins from which you can enable/disable
+the available plugins (unless always enabled is on). The configuration
+dialog will also contain several pages for each plugin, if that plugin
+contains a configuration widget (not implemented yet). Each wdget will
+also have a configuration item prepared from which it will load/save
+it's
+state it on load/unload (not implemented yet).
+
+the demo currently abuses the code from the mdi-tab demo: it contains 2
+plugins : for file editing and for help. The plugins display the same
+widgets at the tab demo. The functionality of this application is not as
+good as the original demo, but it's on the way.
+
+todo:
+ 1) Plugins are hard coded/linked into the application. Need to find a
+    way to make the plugins loadable at run time. This means that you
+    can theoratically edit the plugins from the main application and
+    while it's working just unload/load the plugins to get newer
+    versions.
+ 2) Need to add new functionalities to mdi-clients: &quot;can you close
+    yourself?&quot; This will be used for providing a way to query the user
+    if he wants to save his work before closing the mdi-client.
+ 3) QSA. Programmers should have the ability to write plugins in JS/QSA
+    scripts.
+ 4) What if the plugins need plugins? for example, used defined plugins
+    for the editor.
+ 5) Interaction between plugins: how can the help plugin extend the
+    editor plugin?
+ 6) Dependencies between plugins: a project plugin will need the editor
+    plugin to be loaded.
+ 7) Clean up the code. It's a mess.
+ 8) Documentation.
+
+
+
+
+Added: tools/qmdilib/demos/plugin-demo/configdialog.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/configdialog.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/configdialog.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,87 @@
++/****************************************************************************
++**
++** Copyright (C) 2005-2006 Trolltech AS. All rights reserved.
++**
++** This file is part of the example classes of the Qt Toolkit.
++**
++** This file may be used under the terms of the GNU General Public
++** License version 2.0 as published by the Free Software Foundation
++** and appearing in the file LICENSE.GPL included in the packaging of
++** this file.  Please review the following information to ensure GNU
++** General Public Licensing requirements will be met:
++** <A HREF="http://www.trolltech.com/products/qt/opensource.html">http://www.trolltech.com/products/qt/opensource.html</A>
++**
++** If you are unsure which license is appropriate for your use, please
++** review the following information:
++** <A HREF="http://www.trolltech.com/products/qt/licensing.html">http://www.trolltech.com/products/qt/licensing.html</A> or contact the
++** sales department at <A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">sales at trolltech.com.</A>
++**
++** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
++** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
++**
++****************************************************************************/
++
++#include &lt;QtGui&gt;
++#include &lt;QIcon&gt;
++
++#include &quot;configdialog.h&quot;
++// #include &quot;pages.h&quot;
++
++ConfigDialog::ConfigDialog()
++{
++	contentsWidget = new QListWidget;
++	contentsWidget-&gt;setViewMode(QListView::IconMode);
++	contentsWidget-&gt;setIconSize(QSize(96, 84));
++	contentsWidget-&gt;setMovement(QListView::Static);
++	contentsWidget-&gt;setMaximumWidth(128);
++// 	contentsWidget-&gt;setSpacing(12);
++// 	contentsWidget-&gt;setModelColumn( 0 );
++	contentsWidget-&gt;setFlow( QListView::TopToBottom );
++
++	
++	pagesWidget = new QStackedWidget;
++	QPushButton *closeButton = new QPushButton(tr(&quot;Close&quot;));
++	
++	QHBoxLayout *horizontalLayout = new QHBoxLayout;
++	horizontalLayout-&gt;addWidget(contentsWidget);
++	horizontalLayout-&gt;addWidget(pagesWidget, 1);
++	
++	QHBoxLayout *buttonsLayout = new QHBoxLayout;
++	buttonsLayout-&gt;addStretch(1);
++	buttonsLayout-&gt;addWidget(closeButton);
++	
++	QVBoxLayout *mainLayout = new QVBoxLayout;
++	mainLayout-&gt;addLayout(horizontalLayout);
++	mainLayout-&gt;addStretch(1);
++	mainLayout-&gt;addSpacing(12);
++	mainLayout-&gt;addLayout(buttonsLayout);
++	setLayout(mainLayout);
++	
++	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
++	connect(contentsWidget,
++		SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
++		this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
++	
++	setWindowTitle(tr(&quot;Config Dialog&quot;));
++}
++
++void ConfigDialog::changePage(QListWidgetItem *current, QListWidgetItem *previous)
++{
++	if (!current)
++        	current = previous;
++
++	pagesWidget-&gt;setCurrentIndex(contentsWidget-&gt;row(current));
++}
++
++void ConfigDialog::addPage( QWidget *w, QIcon i )
++{
++	QListWidgetItem *item = new QListWidgetItem;
++	item-&gt;setIcon( i );
++	item-&gt;setText( w-&gt;objectName() );
++	item-&gt;setTextAlignment( Qt::AlignHCenter );
++	item-&gt;setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
++	
++	contentsWidget-&gt;insertItem( 0, item );
++
++	pagesWidget-&gt;addWidget( w );
++}
+
+Added: tools/qmdilib/demos/plugin-demo/configdialog.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/configdialog.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/configdialog.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,51 @@
++/****************************************************************************
++**
++** Copyright (C) 2005-2006 Trolltech AS. All rights reserved.
++**
++** This file is part of the example classes of the Qt Toolkit.
++**
++** This file may be used under the terms of the GNU General Public
++** License version 2.0 as published by the Free Software Foundation
++** and appearing in the file LICENSE.GPL included in the packaging of
++** this file.  Please review the following information to ensure GNU
++** General Public Licensing requirements will be met:
++** <A HREF="http://www.trolltech.com/products/qt/opensource.html">http://www.trolltech.com/products/qt/opensource.html</A>
++**
++** If you are unsure which license is appropriate for your use, please
++** review the following information:
++** <A HREF="http://www.trolltech.com/products/qt/licensing.html">http://www.trolltech.com/products/qt/licensing.html</A> or contact the
++** sales department at <A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">sales at trolltech.com.</A>
++**
++** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
++** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
++**
++****************************************************************************/
++
++#ifndef CONFIGDIALOG_H
++#define CONFIGDIALOG_H
++
++#include &lt;QDialog&gt;
++#include &lt;QIcon&gt;
++
++class QIcon;
++class QListWidget;
++class QListWidgetItem;
++class QStackedWidget;
++
++class ConfigDialog : public QDialog
++{
++	Q_OBJECT
++
++public:
++	ConfigDialog();
++
++public slots:
++	void changePage(QListWidgetItem *current, QListWidgetItem *previous);
++	void addPage( QWidget *w, QIcon i );
++
++private:
++	QListWidget *contentsWidget;
++	QStackedWidget *pagesWidget;
++};
++
++#endif
+
+Added: tools/qmdilib/demos/plugin-demo/images/config.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/images/config.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/images/query.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/images/query.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/images/update.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/images/update.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/iplugin.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/iplugin.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/iplugin.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,78 @@
++#include &lt;QAction&gt;
++#include &lt;QIcon&gt;
++
++#include &quot;iplugin.h&quot;
++
++// #define tr
++QAction* new_action( QIcon icon, QString name, QObject *obj, QString shortcut, QString status_tip, const char*slot )
++{
++	QAction * a = new QAction( icon, name, obj );
++	a-&gt;setShortcut(shortcut);
++	a-&gt;setStatusTip(status_tip);
++	a-&gt;connect( a, SIGNAL(triggered()), obj, slot );
++
++	return a;
++}
++
++
++IPlugin::IPlugin()
++{
++	alwaysEnabled = false;
++	autoEnabled = false;
++	enabled = false;
++}
++
++
++IPlugin::~IPlugin()
++{
++}
++
++void	IPlugin::showAbout()
++{
++}
++
++QWidget*IPlugin::getConfigDialog()
++{
++	return NULL;
++}
++
++void	IPlugin::getData()
++{
++}
++
++void	IPlugin::setData()
++{
++}
++
++void	IPlugin::loadConfig( QSettings &amp;settings )
++{
++}
++
++void	IPlugin::SaveConfig( QSettings &amp;settings )
++{
++}
++
++bool 	IPlugin::isEnabled()
++{
++	return enabled;
++}
++
++QString	IPlugin::getName()
++{
++	return name;
++}
++
++QString IPlugin::getAuthor()
++{
++	return author;
++}
++
++QString IPlugin::getsVersion()
++{
++	return sVersion;
++}
++
++int	IPlugin::getiVersion()
++{
++	return iVersion;
++}
+
+Added: tools/qmdilib/demos/plugin-demo/iplugin.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/iplugin.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/iplugin.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,47 @@
++#ifndef __IPLUGIN_H__
++#define __IPLUGIN_H__
++
++#include &lt;QObject&gt;
++#include &lt;QString&gt;
++#include &quot;qmdiclient.h&quot;
++
++class QWidget;
++class QSettings;
++class QAction;
++class QIcon;
++
++QAction* new_action( QIcon icon, QString name, QObject *obj, QString shortcut, QString status_tip, const char *slot );
++
++class IPlugin: public QObject, public qmdiClient
++{
++friend class PluginManager;
++
++public:
++	IPlugin();
++	virtual ~IPlugin();
++
++	virtual void showAbout();
++	virtual QWidget* getConfigDialog();
++	virtual void getData();
++	virtual void setData();
++
++	virtual void loadConfig( QSettings &amp;settings );
++	virtual void SaveConfig( QSettings &amp;settings );
++
++	bool 	isEnabled();
++	QString	getName();
++	QString getAuthor();
++	QString getsVersion();
++	int	getiVersion();
++	
++protected:
++	QString name;
++	QString author;
++	QString sVersion;
++	int	iVersion;
++	
++	bool alwaysEnabled;
++	bool autoEnabled;
++	bool enabled;
++};
++#endif // __IPLUGIN_H__
+
+Added: tools/qmdilib/demos/plugin-demo/main3.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/main3.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/main3.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,18 @@
++#include &lt;QApplication&gt;
++#include &quot;mainwindow3.h&quot;
++
++/**
++ * \file main3.c
++ * \brief Entry point of this demo
++ * \author Diego Iastrubni (<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>)
++ * License GPL
++ */
++
++int main( int argc, char *argv[] )
++{
++	QApplication app( argc, argv );
++	MainWindow3 w;
++	w.show();
++	return app.exec();
++}
++
+
+Added: tools/qmdilib/demos/plugin-demo/mainwindow3.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/mainwindow3.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/mainwindow3.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,54 @@
++#include &lt;QTimer&gt;
++#include &lt;QAction&gt;
++#include &lt;QStatusBar&gt;
++#include &lt;QToolButton&gt;
++
++#include &quot;mainwindow3.h&quot;
++#include &quot;pluningmanager.h&quot;
++#include &quot;qmditabwidget.h&quot;
++
++// plugins
++#include &quot;editor.h&quot;
++#include &quot;help.h&quot;
++
++
++MainWindow3::MainWindow3(QWidget *owner):
++	QMainWindow( owner )
++{
++	QTimer::singleShot( 0, this, SLOT(initGUI()));
++}
++
++MainWindow3::~MainWindow3()
++{
++	delete pluginManager;
++}
++
++void MainWindow3::initGUI()
++{
++	tabWidget = new qmdiTabWidget(this);
++	setCentralWidget( tabWidget );
++	
++	QToolButton *tabCloseBtn = new QToolButton(tabWidget);
++	tabCloseBtn-&gt;setAutoRaise( true );
++// 	connect( tabCloseBtn, SIGNAL(clicked()), this, SLOT(fileClose()));
++	tabCloseBtn-&gt;setIcon(QIcon(&quot;:images/closetab.png&quot;));
++
++	actionConfig = new QAction( &quot;config&quot;, this );
++
++	menus[tr(&quot;&amp;File&quot;)];
++	menus[tr(&quot;&amp;Edit&quot;)];
++	menus[tr(&quot;&amp;Search&quot;)];
++	menus[tr(&quot;&amp;Navigation&quot;)];
++	menus[tr(&quot;Se&amp;ttings&quot;)]-&gt;addAction( actionConfig );
++	menus[tr(&quot;&amp;Help&quot;)];
++
++	toolbars[&quot;Settings&quot;]-&gt;addAction( actionConfig );
++	
++	pluginManager = new PluginManager( this, dynamic_cast&lt;qmdiServer*&gt;(tabWidget) );
++	pluginManager-&gt;addPlugin( new HelpPlugin );
++	pluginManager-&gt;addPlugin( new EditorPlugin );
++	updateGUI( this );
++	
++	connect( actionConfig, SIGNAL(triggered()), pluginManager, SLOT(configurePlugins()));
++	statusBar()-&gt;showMessage(&quot;Welcome - feel free to configure the GUI to your needs&quot;,5000);
++}
+
+Added: tools/qmdilib/demos/plugin-demo/mainwindow3.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/mainwindow3.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/mainwindow3.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,28 @@
++#ifndef __MAINWINDOW3_H__
++#define __MAINWINDOW3_H__
++
++#include &lt;QMainWindow&gt;
++#include &quot;qmdihost.h&quot;
++
++class QAction;
++class QTabWidget;
++class PluginManager;
++
++class MainWindow3: public QMainWindow, public qmdiHost
++{
++	Q_OBJECT
++public:
++	MainWindow3( QWidget *owner = NULL);
++	~MainWindow3();
++
++public slots:
++	void initGUI();
++	
++private:
++	QTabWidget	*tabWidget;
++	QAction		*actionConfig;
++
++	PluginManager	*pluginManager;
++};
++
++#endif // __MAINWINDOW3_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugin-demo.pro
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin-demo.pro	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin-demo.pro	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,63 @@
++# File generated by kdevelop's qmake manager. 
++# ------------------------------------------- 
++# Subdir relative project main directory: .
++# Target is an application:  
++
++pluging_list.ui.target = pluging_list.ui 
++pluging_list.ui.commands = $$IDL_COMPILER 
++plugin_list.ui.target = plugin_list.ui 
++plugin_list.ui.commands = $$IDL_COMPILER 
++help_cfg.ui.target = plugins/help/help_cfg.ui 
++help_cfg.ui.commands = $$IDL_COMPILER 
++editor_cfg.ui.target = plugins/editor/editor_cfg.ui 
++editor_cfg.ui.commands = $$IDL_COMPILER 
++DEPENDPATH = . 
++INCLUDEPATH += ../mdi-tab \
++               plugins/editor \
++               plugins/help \
++               ../../src \
++               . 
++
++RESOURCES += ../mdi-tab/mdi-tab.qrc
++
++MOC_DIR = ../../tmp 
++UI_DIR = ../../tmp 
++OBJECTS_DIR = .tmp 
++CONFIG += debug \
++          warn_on 
++TEMPLATE = app 
++FORMS += plugins/editor/editor_cfg.ui \
++         plugins/help/help_cfg.ui \
++         plugin_list.ui 
++IDLS += plugin_list.ui 
++HEADERS += configdialog.h \
++           iplugin.h \
++           mainwindow3.h \
++           ../../src/actiongroup.h \
++           ../../src/actiongrouplist.h \
++           ../../src/qmdiclient.h \
++           ../../src/qmdihost.h \
++           ../../src/qmdiserver.h \
++           ../../src/qmditabwidget.h \
++           pluningmanager.h \
++           pluginmodel.h \
++           plugins/help/help.h \
++           plugins/editor/editor.h \
++           ../mdi-tab/helpbrowse.h \
++           ../mdi-tab/qexeditor.h 
++SOURCES += configdialog.cpp \
++           iplugin.cpp \
++           main3.cpp \
++           mainwindow3.cpp \
++           ../../src/actiongroup.cpp \
++           ../../src/actiongrouplist.cpp \
++           ../../src/qmdiclient.cpp \
++           ../../src/qmdihost.cpp \
++           ../../src/qmdiserver.cpp \
++           ../../src/qmditabwidget.cpp \
++           pluningmanager.cpp \
++           pluginmodel.cpp \
++           plugins/help/help.cpp \
++           plugins/editor/editor.cpp \
++           ../mdi-tab/helpbrowse.cpp \
++           ../mdi-tab/qexeditor.cpp 
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,155 @@
++&lt;?xml version = '1.0'?&gt;
++&lt;kdevelop&gt;
++  &lt;general&gt;
++    &lt;author&gt;Diego Iastrubni&lt;/author&gt;
++    &lt;email&gt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&lt;/email&gt;
++    &lt;version&gt;$VERSION$&lt;/version&gt;
++    &lt;projectmanagement&gt;KDevTrollProject&lt;/projectmanagement&gt;
++    &lt;primarylanguage&gt;C++&lt;/primarylanguage&gt;
++    &lt;keywords&gt;
++      &lt;keyword&gt;Qt&lt;/keyword&gt;
++    &lt;/keywords&gt;
++    &lt;projectdirectory&gt;.&lt;/projectdirectory&gt;
++    &lt;absoluteprojectpath&gt;false&lt;/absoluteprojectpath&gt;
++    &lt;description/&gt;
++    &lt;ignoreparts/&gt;
++    &lt;versioncontrol/&gt;
++  &lt;/general&gt;
++  &lt;kdevfileview&gt;
++    &lt;groups&gt;
++      &lt;group pattern=&quot;*.cpp;*.cxx;*.h&quot; name=&quot;Sources&quot; /&gt;
++      &lt;group pattern=&quot;*.ui&quot; name=&quot;User Interface&quot; /&gt;
++      &lt;group pattern=&quot;*.png&quot; name=&quot;Icons&quot; /&gt;
++      &lt;group pattern=&quot;*&quot; name=&quot;Others&quot; /&gt;
++      &lt;hidenonprojectfiles&gt;true&lt;/hidenonprojectfiles&gt;
++      &lt;hidenonlocation&gt;false&lt;/hidenonlocation&gt;
++    &lt;/groups&gt;
++    &lt;tree&gt;
++      &lt;hidepatterns&gt;*.o,*.lo,CVS&lt;/hidepatterns&gt;
++      &lt;hidenonprojectfiles&gt;false&lt;/hidenonprojectfiles&gt;
++    &lt;/tree&gt;
++  &lt;/kdevfileview&gt;
++  &lt;kdevdoctreeview&gt;
++    &lt;ignoretocs&gt;
++      &lt;toc&gt;bash&lt;/toc&gt;
++      &lt;toc&gt;bash_bugs&lt;/toc&gt;
++      &lt;toc&gt;clanlib&lt;/toc&gt;
++      &lt;toc&gt;w3c-dom-level2-html&lt;/toc&gt;
++      &lt;toc&gt;fortran_bugs_gcc&lt;/toc&gt;
++      &lt;toc&gt;gnome1&lt;/toc&gt;
++      &lt;toc&gt;gnustep&lt;/toc&gt;
++      &lt;toc&gt;gtk&lt;/toc&gt;
++      &lt;toc&gt;gtk_bugs&lt;/toc&gt;
++      &lt;toc&gt;haskell&lt;/toc&gt;
++      &lt;toc&gt;haskell_bugs_ghc&lt;/toc&gt;
++      &lt;toc&gt;java_bugs_gcc&lt;/toc&gt;
++      &lt;toc&gt;java_bugs_sun&lt;/toc&gt;
++      &lt;toc&gt;kde2book&lt;/toc&gt;
++      &lt;toc&gt;opengl&lt;/toc&gt;
++      &lt;toc&gt;pascal_bugs_fp&lt;/toc&gt;
++      &lt;toc&gt;php&lt;/toc&gt;
++      &lt;toc&gt;php_bugs&lt;/toc&gt;
++      &lt;toc&gt;perl&lt;/toc&gt;
++      &lt;toc&gt;perl_bugs&lt;/toc&gt;
++      &lt;toc&gt;python&lt;/toc&gt;
++      &lt;toc&gt;python_bugs&lt;/toc&gt;
++      &lt;toc&gt;qt-kdev3&lt;/toc&gt;
++      &lt;toc&gt;ruby&lt;/toc&gt;
++      &lt;toc&gt;ruby_bugs&lt;/toc&gt;
++      &lt;toc&gt;sdl&lt;/toc&gt;
++      &lt;toc&gt;stl&lt;/toc&gt;
++      &lt;toc&gt;w3c-svg&lt;/toc&gt;
++      &lt;toc&gt;sw&lt;/toc&gt;
++      &lt;toc&gt;w3c-uaag10&lt;/toc&gt;
++      &lt;toc&gt;wxwidgets_bugs&lt;/toc&gt;
++    &lt;/ignoretocs&gt;
++    &lt;ignoredoxygen&gt;
++      &lt;toc&gt;KDE Libraries (Doxygen)&lt;/toc&gt;
++    &lt;/ignoredoxygen&gt;
++  &lt;/kdevdoctreeview&gt;
++  &lt;kdevdebugger&gt;
++    &lt;general&gt;
++      &lt;dbgshell/&gt;
++      &lt;programargs/&gt;
++      &lt;gdbpath/&gt;
++      &lt;configGdbScript/&gt;
++      &lt;runShellScript/&gt;
++      &lt;runGdbScript/&gt;
++      &lt;breakonloadinglibs&gt;true&lt;/breakonloadinglibs&gt;
++      &lt;separatetty&gt;false&lt;/separatetty&gt;
++      &lt;floatingtoolbar&gt;false&lt;/floatingtoolbar&gt;
++    &lt;/general&gt;
++    &lt;display&gt;
++      &lt;staticmembers&gt;false&lt;/staticmembers&gt;
++      &lt;demanglenames&gt;true&lt;/demanglenames&gt;
++      &lt;outputradix&gt;10&lt;/outputradix&gt;
++    &lt;/display&gt;
++  &lt;/kdevdebugger&gt;
++  &lt;kdevfilecreate&gt;
++    &lt;useglobaltypes&gt;
++      &lt;type ext=&quot;ui&quot; /&gt;
++      &lt;type ext=&quot;cpp&quot; /&gt;
++      &lt;type ext=&quot;h&quot; /&gt;
++    &lt;/useglobaltypes&gt;
++  &lt;/kdevfilecreate&gt;
++  &lt;kdevtrollproject&gt;
++    &lt;general&gt;
++      &lt;activedir&gt;&lt;/activedir&gt;
++    &lt;/general&gt;
++    &lt;run&gt;
++      &lt;directoryradio&gt;executable&lt;/directoryradio&gt;
++      &lt;customdirectory&gt;/&lt;/customdirectory&gt;
++      &lt;mainprogram/&gt;
++      &lt;programargs/&gt;
++      &lt;terminal&gt;false&lt;/terminal&gt;
++      &lt;autocompile&gt;true&lt;/autocompile&gt;
++      &lt;envvars/&gt;
++    &lt;/run&gt;
++    &lt;make&gt;
++      &lt;abortonerror&gt;true&lt;/abortonerror&gt;
++      &lt;runmultiplejobs&gt;false&lt;/runmultiplejobs&gt;
++      &lt;numberofjobs&gt;1&lt;/numberofjobs&gt;
++      &lt;dontact&gt;false&lt;/dontact&gt;
++      &lt;makebin/&gt;
++      &lt;prio&gt;0&lt;/prio&gt;
++      &lt;envvars/&gt;
++    &lt;/make&gt;
++    &lt;subclassing/&gt;
++  &lt;/kdevtrollproject&gt;
++  &lt;kdevcppsupport&gt;
++    &lt;references&gt;
++      &lt;pcs&gt;qt4&lt;/pcs&gt;
++    &lt;/references&gt;
++    &lt;codecompletion&gt;
++      &lt;includeGlobalFunctions&gt;true&lt;/includeGlobalFunctions&gt;
++      &lt;includeTypes&gt;true&lt;/includeTypes&gt;
++      &lt;includeEnums&gt;true&lt;/includeEnums&gt;
++      &lt;includeTypedefs&gt;false&lt;/includeTypedefs&gt;
++      &lt;automaticCodeCompletion&gt;true&lt;/automaticCodeCompletion&gt;
++      &lt;automaticArgumentsHint&gt;true&lt;/automaticArgumentsHint&gt;
++      &lt;automaticHeaderCompletion&gt;true&lt;/automaticHeaderCompletion&gt;
++      &lt;codeCompletionDelay&gt;250&lt;/codeCompletionDelay&gt;
++      &lt;argumentsHintDelay&gt;400&lt;/argumentsHintDelay&gt;
++      &lt;headerCompletionDelay&gt;250&lt;/headerCompletionDelay&gt;
++    &lt;/codecompletion&gt;
++    &lt;qt&gt;
++      &lt;used&gt;true&lt;/used&gt;
++      &lt;version&gt;4&lt;/version&gt;
++      &lt;root&gt;/usr/local/Trolltech&lt;/root&gt;
++    &lt;/qt&gt;
++    &lt;creategettersetter&gt;
++      &lt;prefixGet/&gt;
++      &lt;prefixSet&gt;set&lt;/prefixSet&gt;
++      &lt;prefixVariable&gt;m_,_&lt;/prefixVariable&gt;
++      &lt;parameterName&gt;theValue&lt;/parameterName&gt;
++      &lt;inlineGet&gt;true&lt;/inlineGet&gt;
++      &lt;inlineSet&gt;true&lt;/inlineSet&gt;
++    &lt;/creategettersetter&gt;
++  &lt;/kdevcppsupport&gt;
++  &lt;cppsupportpart&gt;
++    &lt;filetemplates&gt;
++      &lt;interfacesuffix&gt;.h&lt;/interfacesuffix&gt;
++      &lt;implementationsuffix&gt;.cpp&lt;/implementationsuffix&gt;
++    &lt;/filetemplates&gt;
++  &lt;/cppsupportpart&gt;
++&lt;/kdevelop&gt;
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop.pcs
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop.pcs
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,35 @@
++&lt;?xml version = '1.0' encoding = 'UTF-8'?&gt;
++&lt;!DOCTYPE KDevPrjSession&gt;
++&lt;KDevPrjSession&gt;
++ &lt;DocsAndViews NumberOfDocuments=&quot;5&quot; &gt;
++  &lt;Doc0 NumberOfViews=&quot;1&quot; URL=&quot;<A HREF="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/iplugin.h">file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/iplugin.h</A>&quot; &gt;
++   &lt;View0 line=&quot;0&quot; Type=&quot;Source&quot; /&gt;
++  &lt;/Doc0&gt;
++  &lt;Doc1 NumberOfViews=&quot;1&quot; URL=&quot;<A HREF="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/mainwindow3.h">file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/mainwindow3.h</A>&quot; &gt;
++   &lt;View0 line=&quot;0&quot; Type=&quot;Source&quot; /&gt;
++  &lt;/Doc1&gt;
++  &lt;Doc2 NumberOfViews=&quot;1&quot; URL=&quot;<A HREF="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/mainwindow3.cpp">file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/mainwindow3.cpp</A>&quot; &gt;
++   &lt;View0 Type=&quot;Source&quot; /&gt;
++  &lt;/Doc2&gt;
++  &lt;Doc3 NumberOfViews=&quot;1&quot; URL=&quot;<A HREF="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp">file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp</A>&quot; &gt;
++   &lt;View0 line=&quot;5&quot; Type=&quot;Source&quot; /&gt;
++  &lt;/Doc3&gt;
++  &lt;Doc4 NumberOfViews=&quot;1&quot; URL=&quot;<A HREF="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/plugins/help/help.cpp">file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/plugins/help/help.cpp</A>&quot; &gt;
++   &lt;View0 line=&quot;6&quot; Type=&quot;Source&quot; /&gt;
++  &lt;/Doc4&gt;
++ &lt;/DocsAndViews&gt;
++ &lt;pluginList&gt;
++  &lt;kdevdebugger&gt;
++   &lt;breakpointList/&gt;
++  &lt;/kdevdebugger&gt;
++  &lt;kdevbookmarks&gt;
++   &lt;bookmarks/&gt;
++  &lt;/kdevbookmarks&gt;
++  &lt;kdevvalgrind&gt;
++   &lt;executable path=&quot;&quot; params=&quot;&quot; /&gt;
++   &lt;valgrind path=&quot;&quot; params=&quot;&quot; /&gt;
++   &lt;calltree path=&quot;&quot; params=&quot;&quot; /&gt;
++   &lt;kcachegrind path=&quot;&quot; /&gt;
++  &lt;/kdevvalgrind&gt;
++ &lt;/pluginList&gt;
++&lt;/KDevPrjSession&gt;
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_list.ui
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin_list.ui	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin_list.ui	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,120 @@
++&lt;ui version=&quot;4.0&quot; &gt;
++ &lt;author&gt;Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;&lt;/author&gt;
++ &lt;comment&gt;&lt;/comment&gt;
++ &lt;exportmacro&gt;&lt;/exportmacro&gt;
++ &lt;class&gt;plugin_list&lt;/class&gt;
++ &lt;widget class=&quot;QWidget&quot; name=&quot;plugin_list&quot; &gt;
++  &lt;property name=&quot;geometry&quot; &gt;
++   &lt;rect&gt;
++    &lt;x&gt;0&lt;/x&gt;
++    &lt;y&gt;0&lt;/y&gt;
++    &lt;width&gt;400&lt;/width&gt;
++    &lt;height&gt;300&lt;/height&gt;
++   &lt;/rect&gt;
++  &lt;/property&gt;
++  &lt;property name=&quot;windowTitle&quot; &gt;
++   &lt;string&gt;Form&lt;/string&gt;
++  &lt;/property&gt;
++  &lt;layout class=&quot;QGridLayout&quot; &gt;
++   &lt;property name=&quot;margin&quot; &gt;
++    &lt;number&gt;9&lt;/number&gt;
++   &lt;/property&gt;
++   &lt;property name=&quot;spacing&quot; &gt;
++    &lt;number&gt;6&lt;/number&gt;
++   &lt;/property&gt;
++   &lt;item row=&quot;4&quot; column=&quot;2&quot; &gt;
++    &lt;spacer&gt;
++     &lt;property name=&quot;orientation&quot; &gt;
++      &lt;enum&gt;Qt::Vertical&lt;/enum&gt;
++     &lt;/property&gt;
++     &lt;property name=&quot;sizeHint&quot; &gt;
++      &lt;size&gt;
++       &lt;width&gt;20&lt;/width&gt;
++       &lt;height&gt;40&lt;/height&gt;
++      &lt;/size&gt;
++     &lt;/property&gt;
++    &lt;/spacer&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;5&quot; column=&quot;2&quot; &gt;
++    &lt;widget class=&quot;QPushButton&quot; name=&quot;btnConfigure&quot; &gt;
++     &lt;property name=&quot;text&quot; &gt;
++      &lt;string&gt;&amp;Configure&lt;/string&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;5&quot; column=&quot;1&quot; &gt;
++    &lt;widget class=&quot;QPushButton&quot; name=&quot;btnAbout&quot; &gt;
++     &lt;property name=&quot;text&quot; &gt;
++      &lt;string&gt;&amp;About&lt;/string&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;4&quot; column=&quot;1&quot; &gt;
++    &lt;widget class=&quot;QCheckBox&quot; name=&quot;cbEnabled&quot; &gt;
++     &lt;property name=&quot;text&quot; &gt;
++      &lt;string&gt;Enabled&lt;/string&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;2&quot; column=&quot;1&quot; &gt;
++    &lt;widget class=&quot;QLabel&quot; name=&quot;label_2&quot; &gt;
++     &lt;property name=&quot;text&quot; &gt;
++      &lt;string&gt;Author:&lt;/string&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;3&quot; column=&quot;1&quot; &gt;
++    &lt;widget class=&quot;QLabel&quot; name=&quot;label_3&quot; &gt;
++     &lt;property name=&quot;text&quot; &gt;
++      &lt;string&gt;Version:&lt;/string&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;1&quot; column=&quot;1&quot; &gt;
++    &lt;widget class=&quot;QLabel&quot; name=&quot;label&quot; &gt;
++     &lt;property name=&quot;text&quot; &gt;
++      &lt;string&gt;Name:&lt;/string&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;0&quot; column=&quot;1&quot; colspan=&quot;2&quot; &gt;
++    &lt;widget class=&quot;QLabel&quot; name=&quot;label_4&quot; &gt;
++     &lt;property name=&quot;text&quot; &gt;
++      &lt;string&gt;&lt;h2&gt;Plugin Information&lt;/h2&gt;&lt;/string&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item rowspan=&quot;6&quot; row=&quot;0&quot; column=&quot;0&quot; &gt;
++    &lt;widget class=&quot;QListView&quot; name=&quot;listWidget&quot; &gt;
++     &lt;property name=&quot;layoutMode&quot; &gt;
++      &lt;enum&gt;QListView::Batched&lt;/enum&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;2&quot; column=&quot;2&quot; &gt;
++    &lt;widget class=&quot;QLineEdit&quot; name=&quot;authorName&quot; &gt;
++     &lt;property name=&quot;readOnly&quot; &gt;
++      &lt;bool&gt;true&lt;/bool&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;3&quot; column=&quot;2&quot; &gt;
++    &lt;widget class=&quot;QLineEdit&quot; name=&quot;versionString&quot; &gt;
++     &lt;property name=&quot;readOnly&quot; &gt;
++      &lt;bool&gt;true&lt;/bool&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++   &lt;item row=&quot;1&quot; column=&quot;2&quot; &gt;
++    &lt;widget class=&quot;QLineEdit&quot; name=&quot;pluginName&quot; &gt;
++     &lt;property name=&quot;readOnly&quot; &gt;
++      &lt;bool&gt;true&lt;/bool&gt;
++     &lt;/property&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++  &lt;/layout&gt;
++ &lt;/widget&gt;
++ &lt;pixmapfunction&gt;&lt;/pixmapfunction&gt;
++ &lt;resources/&gt;
++ &lt;connections/&gt;
++&lt;/ui&gt;
+
+Added: tools/qmdilib/demos/plugin-demo/pluginmodel.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluginmodel.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluginmodel.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,62 @@
++#include &lt;QModelIndex&gt;
++
++#include &quot;iplugin.h&quot;
++#include &quot;pluginmodel.h&quot;
++
++PluginModel::PluginModel( QList&lt;IPlugin*&gt;* p, QObject *parent )
++// 	: QAbstractItemModel( parent )
++	: QStandardItemModel( parent )
++{
++	plugins = p;
++}
++/*
++QModelIndex PluginModel::index ( int row, int column, const QModelIndex &amp;parent ) const
++{
++}
++
++QModelIndex PluginModel::parent ( const QModelIndex &amp;index ) const
++{
++}
++
++int PluginModel::rowCount ( const QModelIndex &amp;parent ) const
++{
++	return plugins.count();
++}
++
++int PluginModel::columnCount ( const QModelIndex &amp;parent ) const
++{
++	return 2;
++}
++*/
++
++
++QVariant PluginModel::data ( const QModelIndex &amp;index, int role ) const
++{
++#if 0	
++	IPlugin *plugin = NULL;
++
++	if (plugins)
++		plugin = (*plugins)[index.row()];
++	else
++		plugin = NULL;
++	
++	
++	if (plugin)
++	{
++		qDebug( &quot;getting data for row: %d, column: %d [%s]&quot;, index.row(), index.column(), qPrintable(plugin-&gt;getName()) );
++		return QVariant(plugin-&gt;getName());
++	}
++	else
++	{
++		qDebug( &quot;getting data for row: %d, column: %d&quot;, index.row(), index.column() );
++		return &quot;no name&quot;;
++	}
++#else
++	return QStandardItemModel::data(index,role);
++#endif
++}
++
++Qt::ItemFlags PluginModel::flags ( const QModelIndex &amp; index ) const
++{
++	return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
++}
+
+Added: tools/qmdilib/demos/plugin-demo/pluginmodel.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluginmodel.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluginmodel.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,30 @@
++#ifndef __PLUGIN_MODEL_H__
++#define __PLUGIN_MODEL_H__
++
++#include &lt;QAbstractItemModel&gt;
++#include &lt;QStandardItemModel&gt;
++#include &lt;QList&gt;
++
++class IPlugin;
++class QModelIndex;
++
++class PluginModel : public QStandardItemModel
++// 		QAbstractItemModel
++{
++	Q_OBJECT
++public:
++	PluginModel( QList&lt;IPlugin*&gt;* p, QObject *parent=0 );
++	
++/*	QModelIndex index( int row, int column, const QModelIndex &amp;parent = QModelIndex() ) const;	
++	QModelIndex parent ( const QModelIndex &amp; index ) const;
++	int rowCount ( const QModelIndex &amp; parent = QModelIndex() )const;
++	int columnCount ( const QModelIndex &amp; parent = QModelIndex() )const;*/
++	
++ 	QVariant data ( const QModelIndex &amp; index, int role = Qt::DisplayRole )const;
++// 	bool setData( const QModelIndex &amp; index, const QVariant &amp; value, int role = Qt::EditRole );
++	Qt::ItemFlags flags ( const QModelIndex &amp; index ) const;
++private:
++	QList&lt;IPlugin*&gt;	*plugins;
++};
++
++#endif// __PLUGIN_MODEL_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,54 @@
++#include &lt;QAction&gt;
++#include &lt;QMessageBox&gt;
++
++#include &quot;iplugin.h&quot;
++#include &quot;qmdiserver.h&quot;
++#include &quot;editor.h&quot;
++#include &quot;qexeditor.h&quot;
++
++
++EditorPlugin::EditorPlugin()
++{
++	actionNew	= new_action( QIcon(&quot;:images/filenew.png&quot;), tr(&quot;&amp;New&quot;), this, tr(&quot;Ctrl+N&quot;), tr(&quot;Create a new file&quot;), SLOT(fileNew()) );
++	actionOpen	= new_action( QIcon(&quot;:images/filenew.png&quot;), tr(&quot;&amp;Open&quot;), this, tr(&quot;Ctrl+O&quot;), tr(&quot;Load a file&quot;), SLOT(fileOpen()) );
++
++	name = tr(&quot;Text editor plugin&quot;);
++	author = tr(&quot;Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;&quot;);
++	iVersion = 0;
++	sVersion = &quot;0.0.1&quot;;
++	autoEnabled = true;
++	alwaysEnabled = false;
++
++	menus[&quot;&amp;File&quot;]-&gt;addAction( actionNew );
++	menus[&quot;&amp;File&quot;]-&gt;addAction( actionOpen );
++}
++
++EditorPlugin::~EditorPlugin()
++{
++	delete actionNew;
++	delete actionOpen;
++}
++
++void EditorPlugin::showAbout()
++{
++	QMessageBox::about( NULL, tr(&quot;Text Editor plugin&quot;), tr(&quot;This plugin brings text editing capabilities to the application&quot;) );
++}
++
++void EditorPlugin::fileNew()
++{
++	if (!mdiServer)
++	{
++		qDebug(&quot;%s - warning no mdiServer defined&quot;, __FUNCTION__ );
++		return;
++	}
++
++	QexTextEdit *editor = new QexTextEdit;
++	editor-&gt;hide();
++	editor-&gt;name = &quot;No name&quot;;
++	editor-&gt;setObjectName( editor-&gt;name );
++	mdiServer-&gt;addClient( editor );
++}
++
++void EditorPlugin::fileOpen()
++{
++}
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,26 @@
++#ifndef __EDITOR_PLUGIN_H__
++#define __EDITOR_PLUGIN_H__
++
++#include &quot;iplugin.h&quot;
++
++class QAction;
++
++class EditorPlugin: public IPlugin
++{
++	Q_OBJECT
++public:
++	EditorPlugin();
++	~EditorPlugin();
++
++	void showAbout();
++
++public slots:
++	void fileNew();
++	void fileOpen();
++	
++private:
++	QAction *actionNew;
++	QAction *actionOpen;
++};
++
++#endif// __EDITOR_PLUGIN_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,173 @@
++&lt;ui version=&quot;4.0&quot; &gt;
++ &lt;author&gt;&lt;/author&gt;
++ &lt;comment&gt;&lt;/comment&gt;
++ &lt;exportmacro&gt;&lt;/exportmacro&gt;
++ &lt;class&gt;EditorCfgUI&lt;/class&gt;
++ &lt;widget class=&quot;QWidget&quot; name=&quot;EditorCfgUI&quot; &gt;
++  &lt;property name=&quot;geometry&quot; &gt;
++   &lt;rect&gt;
++    &lt;x&gt;0&lt;/x&gt;
++    &lt;y&gt;0&lt;/y&gt;
++    &lt;width&gt;287&lt;/width&gt;
++    &lt;height&gt;245&lt;/height&gt;
++   &lt;/rect&gt;
++  &lt;/property&gt;
++  &lt;property name=&quot;windowTitle&quot; &gt;
++   &lt;string&gt;Form&lt;/string&gt;
++  &lt;/property&gt;
++  &lt;layout class=&quot;QVBoxLayout&quot; &gt;
++   &lt;property name=&quot;margin&quot; &gt;
++    &lt;number&gt;9&lt;/number&gt;
++   &lt;/property&gt;
++   &lt;property name=&quot;spacing&quot; &gt;
++    &lt;number&gt;6&lt;/number&gt;
++   &lt;/property&gt;
++   &lt;item&gt;
++    &lt;widget class=&quot;QTabWidget&quot; name=&quot;tabWidget&quot; &gt;
++     &lt;property name=&quot;currentIndex&quot; &gt;
++      &lt;number&gt;0&lt;/number&gt;
++     &lt;/property&gt;
++     &lt;widget class=&quot;QWidget&quot; name=&quot;tab&quot; &gt;
++      &lt;attribute name=&quot;title&quot; &gt;
++       &lt;string&gt;General&lt;/string&gt;
++      &lt;/attribute&gt;
++      &lt;layout class=&quot;QVBoxLayout&quot; &gt;
++       &lt;property name=&quot;margin&quot; &gt;
++        &lt;number&gt;9&lt;/number&gt;
++       &lt;/property&gt;
++       &lt;property name=&quot;spacing&quot; &gt;
++        &lt;number&gt;6&lt;/number&gt;
++       &lt;/property&gt;
++       &lt;item&gt;
++        &lt;widget class=&quot;QGroupBox&quot; name=&quot;groupBox&quot; &gt;
++         &lt;property name=&quot;title&quot; &gt;
++          &lt;string&gt;GroupBox&lt;/string&gt;
++         &lt;/property&gt;
++         &lt;layout class=&quot;QVBoxLayout&quot; &gt;
++          &lt;property name=&quot;margin&quot; &gt;
++           &lt;number&gt;9&lt;/number&gt;
++          &lt;/property&gt;
++          &lt;property name=&quot;spacing&quot; &gt;
++           &lt;number&gt;6&lt;/number&gt;
++          &lt;/property&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Make backups&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox_2&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Show line numbers&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox_3&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Mark current line&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox_4&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Word wrap&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++         &lt;/layout&gt;
++        &lt;/widget&gt;
++       &lt;/item&gt;
++       &lt;item&gt;
++        &lt;layout class=&quot;QHBoxLayout&quot; &gt;
++         &lt;property name=&quot;margin&quot; &gt;
++          &lt;number&gt;0&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;property name=&quot;spacing&quot; &gt;
++          &lt;number&gt;6&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QToolButton&quot; name=&quot;toolButton&quot; &gt;
++           &lt;property name=&quot;text&quot; &gt;
++            &lt;string&gt;...&lt;/string&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QLabel&quot; name=&quot;label&quot; &gt;
++           &lt;property name=&quot;text&quot; &gt;
++            &lt;string&gt;Editor font&lt;/string&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QLineEdit&quot; name=&quot;lineEdit&quot; &gt;
++           &lt;property name=&quot;enabled&quot; &gt;
++            &lt;bool&gt;false&lt;/bool&gt;
++           &lt;/property&gt;
++           &lt;property name=&quot;readOnly&quot; &gt;
++            &lt;bool&gt;true&lt;/bool&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++        &lt;/layout&gt;
++       &lt;/item&gt;
++       &lt;item&gt;
++        &lt;layout class=&quot;QHBoxLayout&quot; &gt;
++         &lt;property name=&quot;margin&quot; &gt;
++          &lt;number&gt;0&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;property name=&quot;spacing&quot; &gt;
++          &lt;number&gt;6&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QLabel&quot; name=&quot;label_2&quot; &gt;
++           &lt;property name=&quot;text&quot; &gt;
++            &lt;string&gt;End of line&lt;/string&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QComboBox&quot; name=&quot;comboBox&quot; &gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Don't modify&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Unix (CR)&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;DOS/Window (CR/LF)&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Mac (LF)&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++        &lt;/layout&gt;
++       &lt;/item&gt;
++      &lt;/layout&gt;
++     &lt;/widget&gt;
++     &lt;widget class=&quot;QWidget&quot; name=&quot;tab_2&quot; &gt;
++      &lt;attribute name=&quot;title&quot; &gt;
++       &lt;string&gt;Tab 2&lt;/string&gt;
++      &lt;/attribute&gt;
++     &lt;/widget&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++  &lt;/layout&gt;
++ &lt;/widget&gt;
++ &lt;pixmapfunction&gt;&lt;/pixmapfunction&gt;
++ &lt;resources/&gt;
++ &lt;connections/&gt;
++&lt;/ui&gt;
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,62 @@
++#include &lt;QAction&gt;
++#include &lt;QApplication&gt;
++#include &lt;QUrl&gt;
++#include &lt;QLibraryInfo&gt;
++#include &lt;QMessageBox&gt;
++
++#include &quot;iplugin.h&quot;
++#include &quot;qmdiserver.h&quot;
++#include &quot;help.h&quot;
++#include &quot;helpbrowse.h&quot;
++
++
++HelpPlugin::HelpPlugin()
++	: IPlugin()
++{
++	actionAbout	= new_action( QIcon(), tr(&quot;&amp;About&quot;), this, &quot;&quot;, tr(&quot;XXXXX&quot;), SLOT(showAboutApp()) );
++	actionAboutQt	= new_action( QIcon(), tr(&quot;&amp;About Qt&quot;), this, &quot;&quot;, tr(&quot;XXXXX&quot;), SLOT(showAboutQt()) );
++ 	actionShowQtHelp= new_action( QIcon(), tr(&quot;&amp;Qt help&quot;), this, &quot;&quot;, tr(&quot;XXXXX&quot;), SLOT(showQtHelp()) );
++
++	name = &quot;Help plugin&quot;;
++	author = &quot;Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;&quot;;
++	iVersion = 0;
++	sVersion = &quot;0.0.1&quot;;
++	autoEnabled = true;
++	alwaysEnabled = true;
++
++	menus[&quot;&amp;Help&quot;]-&gt;addAction( actionShowQtHelp );
++	menus[&quot;&amp;Help&quot;]-&gt;addSeparator();
++	menus[&quot;&amp;Help&quot;]-&gt;addAction( actionAbout );
++	menus[&quot;&amp;Help&quot;]-&gt;addAction( actionAboutQt );
++}
++
++HelpPlugin::~HelpPlugin()
++{
++	delete actionAbout;
++	delete actionAboutQt;
++	delete actionShowQtHelp;
++}
++
++void HelpPlugin::showAbout()
++{
++}
++
++void HelpPlugin::showAboutApp()
++{
++	QMessageBox::about( 0, &quot;qmdilib demo&quot;, &quot;A small demo for loading plugins&lt;br&gt;Diego Iastrubni (<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>) - lgpl)&quot; );
++}
++
++void HelpPlugin::showAboutQt()
++{
++	QApplication::aboutQt();
++}
++
++void HelpPlugin::showQtHelp()
++{
++	QString helpFile = QLibraryInfo::location(QLibraryInfo::DocumentationPath) + QLatin1String(&quot;/html/index.html&quot;);
++	QexHelpBrowser *browser = new QexHelpBrowser( QUrl(helpFile) );
++	browser-&gt;hide();
++	browser-&gt;name = &quot;Qt help&quot;;
++	browser-&gt;setObjectName( browser-&gt;name );
++	mdiServer-&gt;addClient( browser );
++}
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/help/help.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/help/help.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/help/help.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,27 @@
++#ifndef __HELP_PLUGIN_H__
++#define __HELP_PLUGIN_H__
++
++#include &quot;iplugin.h&quot;
++
++class QAction;
++
++class HelpPlugin: public IPlugin
++{
++	Q_OBJECT
++public:
++	HelpPlugin();
++	~HelpPlugin();
++
++public slots:
++	void showAbout();
++	void showAboutApp();
++	void showAboutQt();
++	void showQtHelp();
++	
++private:
++	QAction *actionAbout;
++	QAction *actionAboutQt;
++	QAction *actionShowQtHelp;
++};
++
++#endif// __HELP_PLUGIN_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,173 @@
++&lt;ui version=&quot;4.0&quot; &gt;
++ &lt;author&gt;&lt;/author&gt;
++ &lt;comment&gt;&lt;/comment&gt;
++ &lt;exportmacro&gt;&lt;/exportmacro&gt;
++ &lt;class&gt;EditorCfgUI&lt;/class&gt;
++ &lt;widget class=&quot;QWidget&quot; name=&quot;EditorCfgUI&quot; &gt;
++  &lt;property name=&quot;geometry&quot; &gt;
++   &lt;rect&gt;
++    &lt;x&gt;0&lt;/x&gt;
++    &lt;y&gt;0&lt;/y&gt;
++    &lt;width&gt;287&lt;/width&gt;
++    &lt;height&gt;245&lt;/height&gt;
++   &lt;/rect&gt;
++  &lt;/property&gt;
++  &lt;property name=&quot;windowTitle&quot; &gt;
++   &lt;string&gt;Form&lt;/string&gt;
++  &lt;/property&gt;
++  &lt;layout class=&quot;QVBoxLayout&quot; &gt;
++   &lt;property name=&quot;margin&quot; &gt;
++    &lt;number&gt;9&lt;/number&gt;
++   &lt;/property&gt;
++   &lt;property name=&quot;spacing&quot; &gt;
++    &lt;number&gt;6&lt;/number&gt;
++   &lt;/property&gt;
++   &lt;item&gt;
++    &lt;widget class=&quot;QTabWidget&quot; name=&quot;tabWidget&quot; &gt;
++     &lt;property name=&quot;currentIndex&quot; &gt;
++      &lt;number&gt;0&lt;/number&gt;
++     &lt;/property&gt;
++     &lt;widget class=&quot;QWidget&quot; name=&quot;tab&quot; &gt;
++      &lt;attribute name=&quot;title&quot; &gt;
++       &lt;string&gt;General&lt;/string&gt;
++      &lt;/attribute&gt;
++      &lt;layout class=&quot;QVBoxLayout&quot; &gt;
++       &lt;property name=&quot;margin&quot; &gt;
++        &lt;number&gt;9&lt;/number&gt;
++       &lt;/property&gt;
++       &lt;property name=&quot;spacing&quot; &gt;
++        &lt;number&gt;6&lt;/number&gt;
++       &lt;/property&gt;
++       &lt;item&gt;
++        &lt;widget class=&quot;QGroupBox&quot; name=&quot;groupBox&quot; &gt;
++         &lt;property name=&quot;title&quot; &gt;
++          &lt;string&gt;GroupBox&lt;/string&gt;
++         &lt;/property&gt;
++         &lt;layout class=&quot;QVBoxLayout&quot; &gt;
++          &lt;property name=&quot;margin&quot; &gt;
++           &lt;number&gt;9&lt;/number&gt;
++          &lt;/property&gt;
++          &lt;property name=&quot;spacing&quot; &gt;
++           &lt;number&gt;6&lt;/number&gt;
++          &lt;/property&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Make backups&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox_2&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Show line numbers&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox_3&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Mark current line&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++          &lt;item&gt;
++           &lt;widget class=&quot;QCheckBox&quot; name=&quot;checkBox_4&quot; &gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Word wrap&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/widget&gt;
++          &lt;/item&gt;
++         &lt;/layout&gt;
++        &lt;/widget&gt;
++       &lt;/item&gt;
++       &lt;item&gt;
++        &lt;layout class=&quot;QHBoxLayout&quot; &gt;
++         &lt;property name=&quot;margin&quot; &gt;
++          &lt;number&gt;0&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;property name=&quot;spacing&quot; &gt;
++          &lt;number&gt;6&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QToolButton&quot; name=&quot;toolButton&quot; &gt;
++           &lt;property name=&quot;text&quot; &gt;
++            &lt;string&gt;...&lt;/string&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QLabel&quot; name=&quot;label&quot; &gt;
++           &lt;property name=&quot;text&quot; &gt;
++            &lt;string&gt;Editor font&lt;/string&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QLineEdit&quot; name=&quot;lineEdit&quot; &gt;
++           &lt;property name=&quot;enabled&quot; &gt;
++            &lt;bool&gt;false&lt;/bool&gt;
++           &lt;/property&gt;
++           &lt;property name=&quot;readOnly&quot; &gt;
++            &lt;bool&gt;true&lt;/bool&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++        &lt;/layout&gt;
++       &lt;/item&gt;
++       &lt;item&gt;
++        &lt;layout class=&quot;QHBoxLayout&quot; &gt;
++         &lt;property name=&quot;margin&quot; &gt;
++          &lt;number&gt;0&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;property name=&quot;spacing&quot; &gt;
++          &lt;number&gt;6&lt;/number&gt;
++         &lt;/property&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QLabel&quot; name=&quot;label_2&quot; &gt;
++           &lt;property name=&quot;text&quot; &gt;
++            &lt;string&gt;End of line&lt;/string&gt;
++           &lt;/property&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++         &lt;item&gt;
++          &lt;widget class=&quot;QComboBox&quot; name=&quot;comboBox&quot; &gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Don't modify&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Unix (CR)&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;DOS/Window (CR/LF)&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++           &lt;item&gt;
++            &lt;property name=&quot;text&quot; &gt;
++             &lt;string&gt;Mac (LF)&lt;/string&gt;
++            &lt;/property&gt;
++           &lt;/item&gt;
++          &lt;/widget&gt;
++         &lt;/item&gt;
++        &lt;/layout&gt;
++       &lt;/item&gt;
++      &lt;/layout&gt;
++     &lt;/widget&gt;
++     &lt;widget class=&quot;QWidget&quot; name=&quot;tab_2&quot; &gt;
++      &lt;attribute name=&quot;title&quot; &gt;
++       &lt;string&gt;Tab 2&lt;/string&gt;
++      &lt;/attribute&gt;
++     &lt;/widget&gt;
++    &lt;/widget&gt;
++   &lt;/item&gt;
++  &lt;/layout&gt;
++ &lt;/widget&gt;
++ &lt;pixmapfunction&gt;&lt;/pixmapfunction&gt;
++ &lt;resources/&gt;
++ &lt;connections/&gt;
++&lt;/ui&gt;
+
+Added: tools/qmdilib/demos/plugin-demo/pluningmanager.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluningmanager.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluningmanager.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,162 @@
++//
++// C++ Implementation: pluningmanager
++//
++// Description: 
++//
++//
++// Author: Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;, (C) 2006
++//
++// Copyright: See COPYING file that comes with this distribution
++//
++//
++#include &lt;QStandardItemModel&gt;
++#include &lt;QMainWindow&gt;
++
++#include &quot;qmdihost.h&quot;
++#include &quot;qmdiserver.h&quot;
++#include &quot;iplugin.h&quot;
++#include &quot;pluningmanager.h&quot;
++#include &quot;pluginmodel.h&quot;
++
++/**
++ * \brief A class which manages a list of plugins and merges their menus and toolbars to the main application
++ * \author Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;
++ * 
++ */
++PluginManager::PluginManager( qmdiHost *host, qmdiServer *server )
++{
++	mdiHost = host;
++	mdiServer = server;
++
++	QWidget *w = new QWidget;
++	ui.setupUi( w );
++	w-&gt;setObjectName(&quot;config&quot;);
++	
++	pluginModel = new PluginModel( &amp;plugins );
++	ui.listWidget-&gt;setModel( pluginModel );
++	connect( ui.cbEnabled, SIGNAL(toggled(bool)), this, SLOT(on_cbEnabled_togglged(bool)));
++	connect( ui.btnAbout, SIGNAL(clicked()), this, SLOT(on_aboutPlugin_clicked()));
++	
++	connect( ui.listWidget, SIGNAL(activated(QModelIndex)), this, SLOT(on_listWidget_activated(QModelIndex)));
++	connect( ui.listWidget, SIGNAL(entered(QModelIndex)), this, SLOT(on_listWidget_activated(QModelIndex)));
++	connect( ui.listWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(on_listWidget_activated(QModelIndex)));
++
++	dlg.addPage( w, QIcon(&quot;images/config.png&quot;) );
++}
++
++PluginManager::~PluginManager()
++{
++}
++
++void PluginManager::configurePlugins()
++{
++	if (dlg.isVisible())
++		dlg.hide();
++	else
++		dlg.show();
++}
++
++void PluginManager::addPlugin( IPlugin *newplugin )
++{
++	plugins &lt;&lt; newplugin;
++	
++	if (!newplugin)
++		return;
++
++	QModelIndex parent = pluginModel-&gt;index(0, 0, parent);
++	int count = pluginModel-&gt;columnCount();
++	
++	pluginModel-&gt;insertRows(count, 1, parent);
++	pluginModel-&gt;insertColumns(count, 1, parent);
++	QModelIndex index = pluginModel-&gt;index(count, 0, parent);
++	pluginModel-&gt;setData(index, newplugin-&gt;getName() );
++
++	newplugin-&gt;mdiServer = mdiServer;
++	if (newplugin-&gt;alwaysEnabled)
++		newplugin-&gt;autoEnabled = true;
++	
++	if (newplugin-&gt;autoEnabled)
++	{
++		newplugin-&gt;enabled = true;
++		mdiHost-&gt;mergeClient( newplugin );
++	}
++
++
++	// ugly work arround to fix the selection of the first item
++	if (plugins.count() == 1)
++	{
++		ui.pluginName-&gt;setText( newplugin-&gt;getName() );
++		ui.pluginName-&gt;setCursorPosition( 0 );
++	
++		ui.authorName-&gt;setText( newplugin-&gt;getAuthor() );
++		ui.authorName-&gt;setCursorPosition( 0 );
++	
++		ui.versionString-&gt;setText( newplugin-&gt;getsVersion() );
++		ui.versionString-&gt;setCursorPosition( 0 );
++
++		ui.cbEnabled-&gt;setEnabled( !newplugin-&gt;alwaysEnabled );
++// 		TODO why does this crash?
++// 		ui.cbEnabled-&gt;setChecked( newplugin-&gt;isEnabled() );
++	}
++}
++
++// called when the user seleccts a new plugin
++void PluginManager::on_listWidget_activated(const QModelIndex &amp; index )
++{
++	IPlugin *plugin = plugins[index.row()];
++
++	if (!plugin)
++		return;
++
++	ui.pluginName-&gt;setText( plugin-&gt;getName() );
++	ui.pluginName-&gt;setCursorPosition( 0 );
++	
++	ui.authorName-&gt;setText( plugin-&gt;getAuthor() );
++	ui.authorName-&gt;setCursorPosition( 0 );
++	
++	ui.versionString-&gt;setText( plugin-&gt;getsVersion() );
++	ui.versionString-&gt;setCursorPosition( 0 );
++
++	ui.cbEnabled-&gt;setEnabled( !plugin-&gt;alwaysEnabled );
++	ui.cbEnabled-&gt;setChecked( plugin-&gt;isEnabled() );
++}
++
++// called when the user checks on unchecks to enable a plugin
++void PluginManager::on_cbEnabled_togglged( bool checked )
++{
++	QModelIndex index = ui.listWidget-&gt;currentIndex();
++	IPlugin *plugin = plugins[index.row()];
++
++	if (!plugin)
++		return;
++
++	plugin-&gt;enabled = checked;
++	if (checked)
++	{		
++		// TODO add also the configuration dialog for this plugin
++		mdiHost-&gt;mergeClient( plugin );
++	}
++	else
++	{
++		// TODO remove also the configuration dialog for this plugin
++		mdiHost-&gt;unmergeClient( plugin );
++	}
++	mdiHost-&gt;updateGUI( dynamic_cast&lt;QMainWindow*&gt;(mdiHost) );
++}
++
++void PluginManager::on_aboutPlugin_clicked()
++{
++	QModelIndex index = ui.listWidget-&gt;currentIndex();
++	IPlugin *plugin = plugins[index.row()];
++
++	if (!plugin)
++		return;
++
++	dlg.raise();
++	dlg.setFocus();
++	
++	plugin-&gt;showAbout();
++
++	dlg.raise();
++	dlg.setFocus();
++}
+
+Added: tools/qmdilib/demos/plugin-demo/pluningmanager.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluningmanager.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluningmanager.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,50 @@
++//
++// C++ Interface: pluningmanager
++//
++// Description:
++//
++//
++// Author: Diego Iastrubni &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/devqt-devel">elcuco at kde.org</A>&gt;, (C) 2006
++//
++// Copyright: See COPYING file that comes with this distribution
++//
++//
++#ifndef PLUNINGMANAGER_H
++#define PLUNINGMANAGER_H
++
++#include &lt;QObject&gt;
++#include &quot;configdialog.h&quot;
++#include &quot;ui_plugin_list.h&quot;
++
++class qmdiHost;
++class qmdiServer;
++
++class IPlugin;
++class PluginModel;
++class QStandardItemModel;
++
++class PluginManager: public QObject
++{
++	Q_OBJECT
++	
++public:
++	PluginManager( qmdiHost *host, qmdiServer *server );
++	virtual ~PluginManager();
++
++public slots:
++	void configurePlugins();
++	void addPlugin( IPlugin *newplugin );
++	void on_listWidget_activated(const QModelIndex &amp; index );
++	void on_cbEnabled_togglged( bool checked );
++	void on_aboutPlugin_clicked();
++	
++private:
++	QList&lt;IPlugin*&gt;		plugins;
++	QStandardItemModel	*pluginModel;
++	qmdiHost		*mdiHost;
++	qmdiServer		*mdiServer;
++	ConfigDialog		dlg;
++	Ui::plugin_list ui;
++};
++
++#endif
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000038.html">[Devqt-devel] r70 - tools/qmdilib/src
+</A></li>
+	<LI>Next message: <A HREF="000040.html">[Devqt-devel] r71 - plugin-demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#39">[ date ]</a>
+              <a href="thread.html#39">[ thread ]</a>
+              <a href="subject.html#39">[ subject ]</a>
+              <a href="author.html#39">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

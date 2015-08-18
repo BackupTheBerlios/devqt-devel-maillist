@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] RE : new beta ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20RE%20%3A%20new%20beta%20%3F&In-Reply-To=%3CBAY114-F365C16492451F11E8D1A5AA7B90%40phx.gbl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000044.html">
+   <LINK REL="Next"  HREF="000046.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] RE : new beta ?</H1>
+    <B>henry badinter</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20RE%20%3A%20new%20beta%20%3F&In-Reply-To=%3CBAY114-F365C16492451F11E8D1A5AA7B90%40phx.gbl%3E"
+       TITLE="[Devqt-devel] RE : new beta ?">fullmetalcoder at hotmail.fr
+       </A><BR>
+    <I>Sun Apr 23 14:50:27 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000044.html">New beta? (was Re: [Devqt-devel] r71 - plugin-demo)
+</A></li>
+        <LI>Next message: <A HREF="000046.html">[Devqt-devel] RE : new beta ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#45">[ date ]</a>
+              <a href="thread.html#45">[ thread ]</a>
+              <a href="subject.html#45">[ subject ]</a>
+              <a href="author.html#45">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+&gt;<i>In future, please don't do releases as posts on forums or mailing lists. 
+</I>&gt;<i>There are more traditional ways of doing this kind of things.
+</I>
+on which forum??? Berlios developpment forum does not support attachement 
+AFAIK and I wouldn't like to use QtCentre to post such an experimental 
+thing.
+
+
+&gt;<i>I assume you do not want community helping you with this project. 
+</I>&gt;<i>Otherwise, you would announce that you are about to release a new beta, and 
+</I>&gt;<i>what are your goals for that beta. People would then check your code and 
+</I>&gt;<i>help you debug it.
+</I>&gt;<i>
+</I>&gt;<i>At least upload your source to the SVN, and hopefully  in a same matter, in 
+</I>&gt;<i>small increments so we can understand what are you changing in the code.
+</I>
+You seem quite bitter elcuco... I apologize if I'm the one who make you feel 
+that way but that's not the point right now. I did announce that I was about 
+to release a new beta (at least it was my understanding of what I said...) 
+and if I post it as a &quot;release file&quot; on Berlios that's only because it was 
+the easiest and fastest way for me to give you the opportunity to check the 
+code...
+Uploading on the SVN would have been a bit longer and I was unsure about 
+where to put it...
+- Tools? I don't think of it as a tool but rather as a new base from which 
+we would be able to write DevQt as a flexible IDE.
+- Source? either it would have been unnoticed either I would have had to 
+lcear the current trunk which I don't want..
+- New folder? what name? and how to create them with SVN (I guess I'd need 
+to read the docs ;-) )
+
+
+&gt;<i>The toolbars keep location bewteen context changes, at least no my box. The 
+</I>&gt;<i>flickers, I konw, I will see how can I take care of it. Not a high priority 
+</I>&gt;<i>at the moment.
+</I>&gt;<i>
+</I>
+Yep! The toolbars keep their posistion with your system and not with mine 
+but the toolbars only allow actions with yours, no toolbarbreaks nor 
+widgets... We've got to merge them to get something nice. I understand that 
+you don't really care about the flicker right now but still, it's something 
+to get rid of before a release candidate
+
+&gt;&gt;&gt;<i>- does it compiles on your PC ?
+</I>&gt;<i>Yes.
+</I>Nice ! As you have always had troubles with older versions I can't help but 
+shouting my happiness to the world! :-)
+
+&gt;&gt;&gt;<i>- does it runs fine on your PC ?
+</I>&gt;<i>Yes. XP QT 4.1.1 MinGW 4.
+</I>
+Anyone tested it under Linux???
+BTW I didn't know mingw 4.x.x had been released... When has that occured???
+
+&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>@Elcuco : I tested your plugin demo and there are interesting stuff but 
+</I>&gt;&gt;&gt;<i>you were right : the code is a mess !!!
+</I>&gt;<i>Can you comment more briefly what &quot;is a mess&quot;? I understood that you 
+</I>&gt;<i>modified the code, but the changes are lost in the complexity of the 
+</I>&gt;<i>program. I just don't see them.
+</I>
+I don't take any code from the demos.The plugin configuration dialog seemed 
+interesting but I didn't take the time to adapt it to my need. What is a 
+mess ? Code is not very well commented, names are not self-explanative and 
+lots of code appear to be commented (mostly in headers) without even a word 
+to explain what their purpose were and why they were commented, plugins are 
+hard-coded into the app, the code standars are unstable and sometimes not 
+human-readable (especially for connect() stuff)...
+
+&gt;<i>Can you describe how much flexible your code is? How is it done?
+</I>&gt;<i>I don't want to be picky, but according to GPL (yes, my library is LGPL, 
+</I>&gt;<i>but similar rules apply here) you are supposed to describe the changes to 
+</I>&gt;<i>each file at the top. It's used to use some VCS to maintain those things. 
+</I>&gt;<i>You are not doing any of them.
+</I>&gt;<i>
+</I>&gt;<i>Quite frankly, I dont care about the license issue. But, if you want to 
+</I>&gt;<i>make my life easier in helping you, please document the changes, and ask 
+</I>&gt;<i>for new features. in qmdilib. I am thinking about new functionalities I 
+</I>&gt;<i>want to add  to the lib, and if you don't talk, you will find your code 
+</I>&gt;<i>going in another direction then mine. This is called a fork.
+</I>&gt;<i>
+</I>
+Quite frankly I didn't understood why you started creating a lib (that is 
+not really a lib BTW) as a tool for DevQt and stated that is wasn't part of 
+the project. I see the risk of fork but due to my poor internet connection 
+and lack of time and also because I was only working on a beta, I didn't 
+bothered you with my modifications.
+I can understand that you want to keep qmdilib apart from the project but 
+then you're bringing serious limitations to flexibility... In such a case 
+I'd like you to continue working on it without committing on the SVN until 
+you come to a working release that could be used without uncompatibility and 
+license troubles. In the meantime DevQt would keep the modified verison of 
+qmdilib that is currently used and wait for your work to end.
+
+_________________________________________________________________
+Retrouvez tout en un clin d'oeil avec la barre d'outil MSN Search ! 
+<A HREF="http://desktop.msn.fr/">http://desktop.msn.fr/</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000044.html">New beta? (was Re: [Devqt-devel] r71 - plugin-demo)
+</A></li>
+	<LI>Next message: <A HREF="000046.html">[Devqt-devel] RE : new beta ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#45">[ date ]</a>
+              <a href="thread.html#45">[ thread ]</a>
+              <a href="subject.html#45">[ subject ]</a>
+              <a href="author.html#45">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>

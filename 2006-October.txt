@@ -1,0 +1,28 @@
+From elcuco at kde.org  Thu Oct  5 18:40:45 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Thu, 5 Oct 2006 18:40:45 +0200
+Subject: [Devqt-devel] qide
+In-Reply-To: <451E78D4.4030203@qtfr.org>
+References: <45102B67.9080007@kde.org> <200609301650.33736.elcuco@kde.org>
+	<451E78D4.4030203@qtfr.org>
+Message-ID: <200610051840.45247.elcuco@kde.org>
+
+Congratulations on the new site!
+
+????, 30 ??????? 2006, 17:01, ???? ?? ??? jlbiord at qtfr.org:
+> Diego Iastrubni a ?crit :
+> > wait... did you get this domain from a dud ...? he offered it to me (when
+> > devqt was still a good idea...) ...?
+>
+> Yes, just a transfer. I paid the domain name, it is all. You were in the
+> team devqt, I did not know!
+>
+> JL
+
+-- 
+diego, kde-il translation team - http://il.kde.org
+
+Please avoid sending me Word or PowerPoint attachments.
+See http://www.fsf.org/philosophy/no-word-attachments.html
+
+

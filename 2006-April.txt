@@ -1,0 +1,5274 @@
+From fullmetalcoder at hotmail.fr  Wed Apr  5 12:33:44 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Wed, 05 Apr 2006 12:33:44 +0200
+Subject: [Devqt-devel] qhocr 0.2.2 test1
+In-Reply-To: <200603292212.47513.elcuco@kde.org>
+Message-ID: <BAY114-F250AF9BDC27D99200B1F74A7CB0@phx.gbl>
+
+Trunk compiles fine under WinME / mingw 3.4.2 / Qt 4.1.1
+Gonna test under my linux distro ASAP.
+
+elcuco, plz stop complaining, we coded something not usable yet but it's a 
+damn good start. There's still a lot of things to do and we may need to 
+redesign the GUI but the rest is coming to be good. Just look, we already 
+have :
+- a good text editor nearly finished
+- a project management still a little buggy but that crush any other 
+attempts (look at Qt4DS, it simply sucks in that domain)
+- a good settings handling
+- a basic compiling engine including a basic console as well
+
+BTW what does qhocr means???
+
+townk, really good work. I didn't chack the source yet but it works even if 
+I found a bug : mixing multiline and persistent states sometimes close the 
+app...
+
+Looks like the berlios forum is abandonned but I don't care as long as we 
+use the mailing list.
+
+About the site : Safari failed loading it and Firefox renders it with a blue 
+palette (tested under Kubuntu 5.10 and Win XP)
+
+I suggest we open a new thread in QtCentre.org to expose our roadmap, to 
+give the beta (archive) and to ask for volunteers.
+
+>From: Diego Iastrubni <elcuco at kde.org>
+>To: devqt-devel at lists.berlios.de
+>Subject: [Devqt-devel] qhocr 0.2.2 test1
+>Date: Wed, 29 Mar 2006 22:12:47 +0200
+>
+>Hi,
+>
+>I am not calling this beta, since quite frankly it's crap ware. We were not
+>able to code something usefull until now, that's simply the truth. Lets
+>release this, and start over again.
+>
+>The current code, compiles and runs on
+>* XP MingW 4, Qt 4.1.0/4.1.1
+>* Open SuSE  10.0 Qt rsync from this weekend
+>
+>I need more input about where it compiles and runs.
+>
+>TODO:
+>The about box is empty
+>The goto line dialog is opened twise if you choose the menu command
+>Toolbars are badly organized
+>On compilation the compilation tab is not showed
+>The status bar jumps too much (text changes size way too much)
+>No keyboard shortcuts to move between tabs.
+>Too many useless commands on the menus and dialogs
+>
+>Not working (not for this version):
+>Openning new projects
+>Search in project
+>Replace in project
+>Project properties
+>Debugger
+>Profiler
+>Sane editor
+>etc...
+>
+>
+>I will generate test2 this Friday, in hope that people will commit code to 
+>fix
+>those problems into the SVN. The list in the TODO shuold be cleared. If I
+>don't see cooperation, I will start V 0.3.x on trunk without releasing this
+>code.
+>
+>The zip is available here:
+>http://devqt.berlios.de/tmp/devqt-0.2.2-1.zip.txt
+>
+>Just rename it, and post how here how the compilation worked for you.
+>
+>Wake up team!
+>_______________________________________________
+>Devqt-devel mailing list
+>Devqt-devel at lists.berlios.de
+>http://lists.berlios.de/mailman/listinfo/devqt-devel
+
+_________________________________________________________________
+MSN Hotmail : cr?ez votre adresse e-mail gratuite & ? vie ! 
+http://www.imagine-msn.com/Messenger/?locale=fr-fr
+
+
+
+From thiago.salves at gmail.com  Wed Apr  5 19:03:47 2006
+From: thiago.salves at gmail.com (Thiago Santos)
+Date: Wed, 5 Apr 2006 14:03:47 -0300
+Subject: [Devqt-devel] qhocr 0.2.2 test1
+In-Reply-To: <BAY114-F250AF9BDC27D99200B1F74A7CB0@phx.gbl>
+References: <200603292212.47513.elcuco@kde.org>
+	 <BAY114-F250AF9BDC27D99200B1F74A7CB0@phx.gbl>
+Message-ID: <ecd9a7b10604051003h21fb6dd2t1f100d98dbc4617c@mail.gmail.com>
+
+Ok guys, let me expose my opinion:
+
+I think we should not open the road map and I really think we even have a
+0.0.1 version of DevQt.
+My work is consuming me and I'm with a little time to dedicate to DevQt. In
+this short time I'm thinking and testins some concepts to GUI and plugin
+system. At this point Highlights and Matchers are loaded via plugin system,
+very cool :D
+Before anyone tells me that I should commit to SVN that 'in progress' work
+let explain: Some codes I do here in work, after I finish my work time, so,
+I do not have SVN available, to be honest due the security politics of the
+company to use internet we have to deslocate our selfs to a cybercafe inside
+the company, so, update SVN from here not viable. Than I want to explain to
+you guys that I do not like to commin anything before I consider it usable
+and at some point bug free. Text editor was an exception becous many devs
+ask me to commit it to people see it. So, probably I'll not commit any thing
+that I consider buggy or awful.
+
+At my point of view we have some issues to reach any usable app:
+* We need a Qt/C++ parser to check semanthic error during type:
+This should be a QThread that connects it self to "textChanged()" slot from
+QTextDocument, and every time it detects the text changed, it runs the
+parser to check any errors.
+This could be a good point to store the class hierarchy of the file to be
+used on code complete.
+
+* We need a project manager system (qmake):
+The project manager must deal with directories, dependences and external
+tools, it must manage .PRO files and must provide some kind of wizard to
+create new projects.
+
+* We need a compilation system":
+When user push "copile" button, wee must inform the progress of the
+compilation to user. I'm thinking on some possibilities and one is:
+First run 'make -n' on the project tree and capture all the output from
+QProcess. After that run 'make' and every line received from QProcess we
+"pop" the corresponding line from the previous directory, this way we could
+calculate the progress from compilation.
+
+* We need the plugin system:
+The plugin system should be integrated with the main app and every feature
+used on app must be a plugin!
+The project manager must be a plugin, the compile system must be a plugin,
+and so on...
+Other thing to tell here is: A plugin could have other plugins inside it.
+
+* We need an app update system:
+This is crutial, expecialy for windows users. DevQt should be able to check
+if  a new version of system is available and if is, dowload it and install
+it (with user interaction of course).
+
+
+Well, as you see, in my opinion we have four huge parts of the system to
+work on, I know that test our dialogs and our codes withoud a mainwindow or
+other thing to follow is a bit complicated, and I understand that everyone
+needs the mainwindow working to start to code, and that is the reason I
+think we are rushing to much on the version system.
+
+So, this is just my opinion and to you know, as soon I have a working
+prototype of the things I'm working on, I release to you guys.
+
+On 4/5/06, henry badinter <fullmetalcoder at hotmail.fr> wrote:
+>
+>
+> Trunk compiles fine under WinME / mingw 3.4.2 / Qt 4.1.1
+> Gonna test under my linux distro ASAP.
+>
+> elcuco, plz stop complaining, we coded something not usable yet but it's a
+> damn good start. There's still a lot of things to do and we may need to
+> redesign the GUI but the rest is coming to be good. Just look, we already
+> have :
+> - a good text editor nearly finished
+> - a project management still a little buggy but that crush any other
+> attempts (look at Qt4DS, it simply sucks in that domain)
+> - a good settings handling
+> - a basic compiling engine including a basic console as well
+>
+> BTW what does qhocr means???
+>
+> townk, really good work. I didn't chack the source yet but it works even
+> if
+> I found a bug : mixing multiline and persistent states sometimes close the
+> app...
+>
+> Looks like the berlios forum is abandonned but I don't care as long as we
+> use the mailing list.
+>
+> About the site : Safari failed loading it and Firefox renders it with a
+> blue
+> palette (tested under Kubuntu 5.10 and Win XP)
+>
+> I suggest we open a new thread in QtCentre.org to expose our roadmap, to
+> give the beta (archive) and to ask for volunteers.
+>
+> >From: Diego Iastrubni <elcuco at kde.org>
+> >To: devqt-devel at lists.berlios.de
+> >Subject: [Devqt-devel] qhocr 0.2.2 test1
+> >Date: Wed, 29 Mar 2006 22:12:47 +0200
+> >
+> >Hi,
+> >
+> >I am not calling this beta, since quite frankly it's crap ware. We were
+> not
+> >able to code something usefull until now, that's simply the truth. Lets
+> >release this, and start over again.
+> >
+> >The current code, compiles and runs on
+> >* XP MingW 4, Qt 4.1.0/4.1.1
+> >* Open SuSE  10.0 Qt rsync from this weekend
+> >
+> >I need more input about where it compiles and runs.
+> >
+> >TODO:
+> >The about box is empty
+> >The goto line dialog is opened twise if you choose the menu command
+> >Toolbars are badly organized
+> >On compilation the compilation tab is not showed
+> >The status bar jumps too much (text changes size way too much)
+> >No keyboard shortcuts to move between tabs.
+> >Too many useless commands on the menus and dialogs
+> >
+> >Not working (not for this version):
+> >Openning new projects
+> >Search in project
+> >Replace in project
+> >Project properties
+> >Debugger
+> >Profiler
+> >Sane editor
+> >etc...
+> >
+> >
+> >I will generate test2 this Friday, in hope that people will commit code
+> to
+> >fix
+> >those problems into the SVN. The list in the TODO shuold be cleared. If I
+> >don't see cooperation, I will start V 0.3.x on trunk without releasing
+> this
+> >code.
+> >
+> >The zip is available here:
+> >http://devqt.berlios.de/tmp/devqt-0.2.2-1.zip.txt
+> >
+> >Just rename it, and post how here how the compilation worked for you.
+> >
+> >Wake up team!
+> >_______________________________________________
+> >Devqt-devel mailing list
+> >Devqt-devel at lists.berlios.de
+> >http://lists.berlios.de/mailman/listinfo/devqt-devel
+>
+> _________________________________________________________________
+> MSN Hotmail : cr?ez votre adresse e-mail gratuite & ? vie !
+> http://www.imagine-msn.com/Messenger/?locale=fr-fr
+>
+> _______________________________________________
+> Devqt-devel mailing list
+> Devqt-devel at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/devqt-devel
+>
+
+
+
+--
+Thiago dos Santos Alves
+Computer Scientist
+
+thiago.salves at gmail.com
+-----------------------------------------------------
+"A mente que se abre a uma nova id?ia jamais voltar? ao seu tamanho
+original."
+- Albert Einstein
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/devqt-devel/attachments/20060405/1f02ab89/attachment.html>
+
+From elcuco at kde.org  Wed Apr  5 20:12:56 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Wed, 05 Apr 2006 21:12:56 +0300
+Subject: [Devqt-devel] devqt 0.2.2 test1
+In-Reply-To: <ecd9a7b10604051003h21fb6dd2t1f100d98dbc4617c@mail.gmail.com>
+References: <200603292212.47513.elcuco@kde.org>
+	 <BAY114-F250AF9BDC27D99200B1F74A7CB0@phx.gbl>
+	 <ecd9a7b10604051003h21fb6dd2t1f100d98dbc4617c@mail.gmail.com>
+Message-ID: <1144260776.4697.13.camel@localhost.localdomain>
+
+Oops, sorry. I have been confunded with another project of mine :)
+
+FMC, can you test the zip file (not the trunk) I have posted a week ago?
+
+On Wed, 2006-04-05 at 14:03 -0300, Thiago Santos wrote:
+> Ok guys, let me expose my opinion:
+> 
+Future is good, but please let us keep our feet on the ground. We need
+to talk about the present. We need to release, we have 5 days for it.
+Can you spend some time and try to find out where does the code crash?
+
+> On 4/5/06, henry badinter <fullmetalcoder at hotmail.fr> wrote:
+>         
+>         Trunk compiles fine under WinME / mingw 3.4.2 / Qt 4.1.1
+>         Gonna test under my linux distro ASAP.
+Thiago complained that it compiled for him, but crashed on start. I also
+sent him a huge patch which cleans up the UI. 
+
+Thago, as you seem to have no time to review it, can you forward it to
+FMC? Thanks.
+>         
+>         elcuco, plz stop complaining, we coded something not usable
+>         yet but it's a
+>         damn good start. There's still a lot of things to do and we
+>         may
+It crashses for a developer. It crashed to me until I spent 3 hours to
+fix the crash (the clipboard got connected before it was happen, and
+some slot was trying to be connected to NULL).
+
+>          need to 
+>         redesign the GUI but the rest is coming to be good. Just look,
+>         we already
+>         have :
+>         - a good text editor nearly finished
+See the goto line bug on the tracker.
+Does it inform you of changes outside the editor? (someone deleted the
+file, or modified outside the editor).
+
+>         - a project management still a little buggy but that crush any
+>         other
+>         attempts (look at Qt4DS, it simply sucks in that domain) 
+Qt4DS loaded a few projects of mine. Some even included sub directories.
+It still kept the original structore of the project. DevQt does not.
+
+BTW, the new code on the project manager did not crash for me. It seems
+to be stable.
+
+>         - a good settings handling
+How do I go back to the defaults? Many of the "options" on the GUI are
+just GUI. Nothing behind it. What really frustrates me about the current
+code is that we have no separation between functionality and GUI. We
+need a clear separation between them. Not only for unit-testing, also
+for portability. 
+
+>         - a basic compiling engine including a basic console as well
+BTW, this is a bad idea. Because of the "console support" I managed to
+stuck devqt several times. There are a lot of commands which are
+interactive. We cannot filter them out, and we cannot handle them at all
+("less devqt.pro", "mc"). 
+>         
+>         BTW what does qhocr means???
+http://iglu.org.il/~diego/qhocr
+It's an OCR software for Hebrew written (partly) on Qt. I am about to
+release a new version soon, hence the confusion. Sorry, my bad.
+
+
+>         Looks like the berlios forum is abandonned but I don't care as
+>         long as we
+>         use the mailing list.
+We decided to use the ML no? I prefer the ML.
+>         
+>         About the site : Safari failed loading it and Firefox renders
+>         it with a blue
+>         palette (tested under Kubuntu 5.10 and Win XP)
+The forums? or site? If it's the site, it will be changed this WE. We
+cannot afford having a none working site.
+
+
+
+
+
+From elcuco at kde.org  Thu Apr  6 21:13:48 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Thu, 06 Apr 2006 22:13:48 +0300
+Subject: [Devqt-devel] devqt 0.2.2 test1
+In-Reply-To: <1144260776.4697.13.camel@localhost.localdomain>
+References: <200603292212.47513.elcuco@kde.org>
+	 <BAY114-F250AF9BDC27D99200B1F74A7CB0@phx.gbl>
+	 <ecd9a7b10604051003h21fb6dd2t1f100d98dbc4617c@mail.gmail.com>
+	 <1144260776.4697.13.camel@localhost.localdomain>
+Message-ID: <1144350829.12525.1.camel@localhost.localdomain>
+
+I can only assume no one has tested the source...? 
+Otherwise someon would have found that the application crahses... I
+managed to reproduce what Thiago explained in Ubuntu Dapper. 
+
+I will start to try and fix the problem. 
+
+
+On Wed, 2006-04-05 at 21:12 +0300, Diego Iastrubni wrote:
+> Oops, sorry. I have been confunded with another project of mine :)
+> 
+> FMC, can you test the zip file (not the trunk) I have posted a week ago?
+> 
+> On Wed, 2006-04-05 at 14:03 -0300, Thiago Santos wrote:
+> > Ok guys, let me expose my opinion:
+> > 
+> Future is good, but please let us keep our feet on the ground. We need
+> to talk about the present. We need to release, we have 5 days for it.
+> Can you spend some time and try to find out where does the code crash?
+
+
+
+
+From elcuco at kde.org  Thu Apr  6 22:47:54 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Thu, 06 Apr 2006 23:47:54 +0300
+Subject: [Devqt-devel] devqt 0.2.2 test1
+In-Reply-To: <1144350829.12525.1.camel@localhost.localdomain>
+References: <200603292212.47513.elcuco@kde.org>
+	 <BAY114-F250AF9BDC27D99200B1F74A7CB0@phx.gbl>
+	 <ecd9a7b10604051003h21fb6dd2t1f100d98dbc4617c@mail.gmail.com>
+	 <1144260776.4697.13.camel@localhost.localdomain>
+	 <1144350829.12525.1.camel@localhost.localdomain>
+Message-ID: <1144356474.7259.2.camel@localhost.localdomain>
+
+Ok, fun fun fun...
+
+The offending line is line 630 in src/gui/devgui.cpp:  
+Explorer->setWindowIcon(QIcon(":/explorer.png"));
+
+Remarking this makes the project go up.
+
+The PNG's seem ok, and as far as I understand they are compiled into the
+project. This is fun. :(
+
+
+
+On Thu, 2006-04-06 at 22:13 +0300, Diego Iastrubni wrote:
+> I can only assume no one has tested the source...? 
+> Otherwise someon would have found that the application crahses... I
+> managed to reproduce what Thiago explained in Ubuntu Dapper. 
+> 
+> I will start to try and fix the problem. 
+> 
+> 
+> On Wed, 2006-04-05 at 21:12 +0300, Diego Iastrubni wrote:
+> > Oops, sorry. I have been confunded with another project of mine :)
+> > 
+> > FMC, can you test the zip file (not the trunk) I have posted a week ago?
+> > 
+> > On Wed, 2006-04-05 at 14:03 -0300, Thiago Santos wrote:
+> > > Ok guys, let me expose my opinion:
+> > > 
+> > Future is good, but please let us keep our feet on the ground. We need
+> > to talk about the present. We need to release, we have 5 days for it.
+> > Can you spend some time and try to find out where does the code crash?
+
+
+
+
+From becker at plaasoft.com  Fri Apr  7 13:07:18 2006
+From: becker at plaasoft.com (Florian Becker)
+Date: Fri, 07 Apr 2006 13:07:18 +0200
+Subject: [Devqt-devel] I want to join, maybe i can get some informations
+Message-ID: <443647E6.9060409@plaasoft.com>
+
+Hi @all,
+
+i'm new since a few minutes to this list. Maybe someone can help me for 
+the first time.
+
+I want to join the group and send some code for following things:
+- support for monotone archives
+- work fine with for all my needs - some options i prefer
+
+How can i begin? Shall i send you diffs with new files?
+Shall i write a plugin interface?
+I there a roadmap or something else?
+
+I'm the maintainer of the german qtforum, so i think i have enough skills :D
+
+Thanks for your answers.
+
+Best regards.
+-- 
+--------------------------------------------------------
+Florian Becker
+becker at plaasoft.com
+
+PlaaSoft Technologies
+Rosenplatz 1
+D - 92224 Amberg / Gailoh
+
+http://www.plaasoft.com
+
+Telefon: +49 96 21 / 60 70 50
+Telefax: +49 96 21 / 60 70 51
+--------------------------------------------------------
+
+
+From elcuco at kde.org  Fri Apr  7 15:11:03 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Fri, 07 Apr 2006 16:11:03 +0300
+Subject: [Devqt-devel] I want to join, maybe i can get some informations
+In-Reply-To: <443647E6.9060409@plaasoft.com>
+References: <443647E6.9060409@plaasoft.com>
+Message-ID: <1144415464.8187.5.camel@localhost.localdomain>
+
+Hi Florian,
+
+We are about to release V 0.2.2, this is whats found on the trunk ATM.
+The release is scheduled for 10 of April. 
+
+We are not sure what will happen with this release, as I started
+founding a lot of crahses under Ubuntu Dapper. It worked for me fine on
+XP and SuSE, and for FMC under WinME, but for Thiago it crashes as well
+under XP (no more info about were does it fail).
+
+Thiago and me where thinking about making a new modular system for the
+branch 0.3.x, but I am not sure how to handle it ATM. I Will probably
+start developing in some branch and let the rest of the team work on
+trunk. 
+
+I may suggest to start getting the whole SVN and telling us if trunk
+works for you. It should compile for you without any oopses, and run
+smoothly. Next week we will debate about how to continue the
+development. 
+
+Reguarding patches, just put the on the berios site, or mail them, to
+any of the devlopers. We will make good use of them.
+
+
+On Fri, 2006-04-07 at 13:07 +0200, Florian Becker wrote:
+> Hi @all,
+> 
+> i'm new since a few minutes to this list. Maybe someone can help me for 
+> the first time.
+> 
+> I want to join the group and send some code for following things:
+> - support for monotone archives
+> - work fine with for all my needs - some options i prefer
+> 
+> How can i begin? Shall i send you diffs with new files?
+> Shall i write a plugin interface?
+> I there a roadmap or something else?
+> 
+> I'm the maintainer of the german qtforum, so i think i have enough skills :D
+> 
+> Thanks for your answers.
+> 
+> Best regards.
+
+
+
+From admin at berlios.de  Fri Apr  7 17:03:03 2006
+From: admin at berlios.de (admin at berlios.de)
+Date: Fri, 7 Apr 2006 07:03:03 -0800 (AKDT)
+Subject: [Devqt-devel] [Bug #7053] test
+Message-ID: <200604071503.k37F33Ii017145@unicorn.berlios.de>
+
+Bug #7053, was updated on 2006-Apr-07 07:03
+Here is a current snapshot of the bug.
+
+Project: DevQt
+Category: None
+Status: Open
+Resolution: None
+Bug Group: None
+Priority: 1
+Submitted by: elcuco
+Assigned to : none
+Summary: test
+
+Details: this is a test - please ignore
+
+For detailed info, follow this link:
+http://developer.berlios.de/bugs/?func=detailbug&bug_id=7053&group_id=6155
+
+
+From admin at berlios.de  Fri Apr  7 17:05:19 2006
+From: admin at berlios.de (admin at berlios.de)
+Date: Fri, 7 Apr 2006 07:05:19 -0800 (AKDT)
+Subject: [Devqt-devel] [Bug #7053] test
+Message-ID: <200604071505.k37F5J58017175@unicorn.berlios.de>
+
+Bug #7053, was updated on 2006-Apr-07 07:03
+Here is a current snapshot of the bug.
+
+Project: DevQt
+Category: None
+Status: Closed
+Resolution: Works For Me
+Bug Group: None
+Priority: 1
+Submitted by: elcuco
+Assigned to : none
+Summary: test
+
+Details: this is a test - please ignore
+
+Follow-Ups:
+
+Date: 2006-Apr-07 07:05
+By: elcuco
+
+Comment:
+this was just a test. closed and forgotten.
+-------------------------------------------------------
+
+For detailed info, follow this link:
+http://developer.berlios.de/bugs/?func=detailbug&bug_id=7053&group_id=6155
+
+
+From elcuco at kde.org  Fri Apr  7 17:17:22 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Fri, 07 Apr 2006 18:17:22 +0300
+Subject: [Devqt-devel] Bug system is connected to this mailing list
+Message-ID: <1144423042.4957.3.camel@localhost.localdomain>
+
+Hi all,
+
+I have connected the bug system into this mailing list, this means that
+every bug report will be seen here. 
+
+I will gid arround and see how can I connect the SVN to this list, so we
+can see changes on the SVN "live".
+
+I will work on the site (only on SVN) as preparation for the release in
+the next days, I am kindly ask you all to fill the changelogs and other
+related docs into the svn trunk. 
+
+The problems found on trunk will be released, as no one seems to
+reproduce them - and we cannot fix them.
+
+I will start a new development branch for a modular system. Thiago, feel
+free to start abusing it (it will take me a few days, don't worry).
+
+
+
+
+From elcuco at berlios.de  Fri Apr  7 17:50:19 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Fri, 7 Apr 2006 17:50:19 +0200
+Subject: [Devqt-devel] r64 - www
+Message-ID: <200604071550.k37FoJiA015919@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-07 17:50:08 +0200 (Fri, 07 Apr 2006)
+New Revision: 64
+
+Modified:
+   www/upload_site.sh
+Log:
+more tests...
+
+
+Modified: www/upload_site.sh
+===================================================================
+--- www/upload_site.sh	2006-04-07 15:43:13 UTC (rev 63)
++++ www/upload_site.sh	2006-04-07 15:50:08 UTC (rev 64)
+@@ -1,6 +1,6 @@
+ #! /bin/sh
+ 
+-# 1
++# 
+ rsync -vzr --delete --exclude '.svn' --exclude '*.sh' --exclude "*~" ./ elcuco at shell.berlios.de:/home/users/elcuco/devqt/
+ 
+ 
+
+
+
+From elcuco at berlios.de  Fri Apr  7 17:55:13 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Fri, 7 Apr 2006 17:55:13 +0200
+Subject: [Devqt-devel] r65 - www
+Message-ID: <200604071555.k37FtDvL016535@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-07 17:55:07 +0200 (Fri, 07 Apr 2006)
+New Revision: 65
+
+Modified:
+   www/upload_site.sh
+Log:
+ ... new test... once again..
+
+
+
+Modified: www/upload_site.sh
+===================================================================
+--- www/upload_site.sh	2006-04-07 15:50:08 UTC (rev 64)
++++ www/upload_site.sh	2006-04-07 15:55:07 UTC (rev 65)
+@@ -1,6 +1,6 @@
+ #! /bin/sh
+ 
+-# 
++# 123
+ rsync -vzr --delete --exclude '.svn' --exclude '*.sh' --exclude "*~" ./ elcuco at shell.berlios.de:/home/users/elcuco/devqt/
+ 
+ 
+
+
+
+From elcuco at berlios.de  Fri Apr  7 17:58:23 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Fri, 7 Apr 2006 17:58:23 +0200
+Subject: [Devqt-devel] r66 - www
+Message-ID: <200604071558.k37FwNBN016882@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-07 17:58:10 +0200 (Fri, 07 Apr 2006)
+New Revision: 66
+
+Modified:
+   www/upload_site.sh
+Log:
+hopefully one of the last tests...
+
+
+
+Modified: www/upload_site.sh
+===================================================================
+--- www/upload_site.sh	2006-04-07 15:55:07 UTC (rev 65)
++++ www/upload_site.sh	2006-04-07 15:58:10 UTC (rev 66)
+@@ -1,6 +1,6 @@
+ #! /bin/sh
+ 
+-# 123
++# 12123
+ rsync -vzr --delete --exclude '.svn' --exclude '*.sh' --exclude "*~" ./ elcuco at shell.berlios.de:/home/users/elcuco/devqt/
+ 
+ 
+
+
+
+From admin at berlios.de  Fri Apr  7 17:55:19 2006
+From: admin at berlios.de (admin at berlios.de)
+Date: Fri, 7 Apr 2006 07:55:19 -0800 (AKDT)
+Subject: [Devqt-devel] [Bug #7053] test
+Message-ID: <200604071555.k37FtJp6018085@unicorn.berlios.de>
+
+Bug #7053, was updated on 2006-Apr-07 07:03
+Here is a current snapshot of the bug.
+
+Project: DevQt
+Category: None
+Status: Closed
+Resolution: Works For Me
+Bug Group: None
+Priority: 1
+Submitted by: elcuco
+Assigned to : none
+Summary: test
+
+Details: this is a test - please ignore
+
+Follow-Ups:
+
+Date: 2006-Apr-07 07:55
+By: elcuco
+
+Comment:
+justing once more/...
+-------------------------------------------------------
+
+Date: 2006-Apr-07 07:05
+By: elcuco
+
+Comment:
+this was just a test. closed and forgotten.
+-------------------------------------------------------
+
+For detailed info, follow this link:
+http://developer.berlios.de/bugs/?func=detailbug&bug_id=7053&group_id=6155
+
+
+From admin at berlios.de  Fri Apr  7 18:47:10 2006
+From: admin at berlios.de (admin at berlios.de)
+Date: Fri, 7 Apr 2006 08:47:10 -0800 (AKDT)
+Subject: [Devqt-devel] [Bug #7053] test
+Message-ID: <200604071647.k37GlA6d019333@unicorn.berlios.de>
+
+Bug #7053, was updated on 2006-Apr-07 07:03
+Here is a current snapshot of the bug.
+
+Project: DevQt
+Category: None
+Status: Closed
+Resolution: Works For Me
+Bug Group: None
+Priority: 1
+Submitted by: elcuco
+Assigned to : none
+Summary: test
+
+Details: this is a test - please ignore
+
+Follow-Ups:
+
+Date: 2006-Apr-07 08:47
+By: elcuco
+
+Comment:
+justing once more/...
+-------------------------------------------------------
+
+Date: 2006-Apr-07 07:55
+By: elcuco
+
+Comment:
+justing once more/...
+-------------------------------------------------------
+
+Date: 2006-Apr-07 07:05
+By: elcuco
+
+Comment:
+this was just a test. closed and forgotten.
+-------------------------------------------------------
+
+For detailed info, follow this link:
+http://developer.berlios.de/bugs/?func=detailbug&bug_id=7053&group_id=6155
+
+
+From elcuco at kde.org  Fri Apr  7 19:08:41 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Fri, 07 Apr 2006 20:08:41 +0300
+Subject: [Devqt-devel] Bug system is connected to this mailing list
+In-Reply-To: <1144423042.4957.3.camel@localhost.localdomain>
+References: <1144423042.4957.3.camel@localhost.localdomain>
+Message-ID: <1144429721.5070.1.camel@localhost.localdomain>
+
+There is a huge latancy (the messages take about  1-2 hours to arrive).
+Cool.
+
+I also connected the SVN to this list. 
+
+Each commit will be sent here. If the traffic gets to high, I will open
+a new mailing list devqt-svn at .... meanwhile, we can tolarate the
+traffic.
+
+
+On Fri, 2006-04-07 at 18:17 +0300, Diego Iastrubni wrote:
+> Hi all,
+> 
+> I have connected the bug system into this mailing list, this means that
+> every bug report will be seen here. 
+> 
+> I will gid arround and see how can I connect the SVN to this list, so we
+> can see changes on the SVN "live".
+> 
+> I will work on the site (only on SVN) as preparation for the release in
+> the next days, I am kindly ask you all to fill the changelogs and other
+> related docs into the svn trunk. 
+> 
+> The problems found on trunk will be released, as no one seems to
+> reproduce them - and we cannot fix them.
+> 
+> I will start a new development branch for a modular system. Thiago, feel
+> free to start abusing it (it will take me a few days, don't worry).
+
+
+
+
+From admin at berlios.de  Sat Apr  8 20:43:48 2006
+From: admin at berlios.de (admin at berlios.de)
+Date: Sat, 8 Apr 2006 20:43:48 +0200 (CEST)
+Subject: [Devqt-devel] [Bug #7072] Switching dir in compiler?
+Message-ID: <200604081843.k38IhmCS026298@unicorn.berlios.de>
+
+Bug #7072, was updated on 2006-Apr-08 20:43
+Here is a current snapshot of the bug.
+
+Project: DevQt
+Category: None
+Status: Open
+Resolution: None
+Bug Group: None
+Priority: 5
+Submitted by: naresh
+Assigned to : none
+Summary: Switching dir in compiler?
+
+Details: I've switched dir in compiler (typed command cd ../mydir). And the compiler shown the change as "Switching directory to..." but it wasn't changed at all. I typed ls command and it shown me files (w/o dirs) from DevQt source path
+
+For detailed info, follow this link:
+http://developer.berlios.de/bugs/?func=detailbug&bug_id=7072&group_id=6155
+
+
+From elcuco at berlios.de  Sun Apr  9 22:12:46 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Sun, 9 Apr 2006 22:12:46 +0200
+Subject: [Devqt-devel] r67 - releases
+Message-ID: <200604092012.k39KCkt1021190@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-09 22:12:29 +0200 (Sun, 09 Apr 2006)
+New Revision: 67
+
+Added:
+   releases/DEVQT_0_2_2/
+Log:
+generated a release tag for version 0.2.2.
+
+
+
+
+Copied: releases/DEVQT_0_2_2 (from rev 66, trunk)
+
+
+
+From elcuco at kde.org  Sun Apr  9 22:20:18 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Sun, 9 Apr 2006 23:20:18 +0300
+Subject: [Devqt-devel] r67 - releases
+In-Reply-To: <200604092012.k39KCkt1021190@sheep.berlios.de>
+References: <200604092012.k39KCkt1021190@sheep.berlios.de>
+Message-ID: <200604092320.19231.elcuco@kde.org>
+
+I have made a tag from trunk.
+
+I do not dare releasing this, as I do not beleave this code is solid enough to 
+be released. Yes, it does work, sometimes, for me. But quite frankly, I 
+cannot maintain it.
+
+I will start a new branch which will be easier (at least for me) to maintain. 
+I have been talking with Thiago in the last weeks, and we do seem to share a 
+few ideas. The branch will be available in the next days under the code name 
+"shpere".
+
+Trunk is open for development, and if anyone wants to release V 0.2.2, the tag 
+as been made. If you need help with the release, I will be glad to help.
+
+As always, please do not commit anythingto the "releases/.*" dirs on svn, as 
+they are read only.
+
+
+???? ?????, 9 ?????? 2006, 23:12, ???? ?? ??? elcuco at berlios.de:
+> Author: elcuco
+> Date: 2006-04-09 22:12:29 +0200 (Sun, 09 Apr 2006)
+> New Revision: 67
+>
+> Added:
+>    releases/DEVQT_0_2_2/
+> Log:
+> generated a release tag for version 0.2.2.
+
+
+From fullmetalcoder at hotmail.fr  Mon Apr 10 17:16:09 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Mon, 10 Apr 2006 17:16:09 +0200
+Subject: [Devqt-devel] r67 - releases
+In-Reply-To: <200604092320.19231.elcuco@kde.org>
+Message-ID: <BAY114-F152541C4B3903E8C18BEA9A7CC0@phx.gbl>
+
+I agree with you! Trunk has come to be unmaintainable, thus we need a new 
+base. I'm working on it : new relationship scheme, total splitting between 
+modules, plugin support (everything will be done with them) and more....
+
+ATM there is no real app, just a basic architecture which still need some 
+work. The project has been split into 3 parts :
+
+executable : devqt, just hold the main() function, less than 30kb
+shared lib   : devqt0.[dll/so/dylib], contains all the classes
+plugin(s)    : x.[dll/so/dylib], contains interfaces, specific to a langage 
+and/or a build system and/or a toolkit
+
+notes :
+- a default plugin will be provided to take care of C++/Qt4
+- a real SDK for plugin developpment will be provided as well
+- nothing will be realeased (not even an alpha) before a while because I'm 
+quite busy and I want this new base to be bug-free and efficient
+- this new base will use elcuco's qmdilib, maybe a little modified, but not 
+townk's editor because it's not stable enough and looks misdesigned for some 
+parts (state pattern...)
+
+>From: Diego Iastrubni <elcuco at kde.org>
+>To: devqt-devel at lists.berlios.de
+>Subject: Re: [Devqt-devel] r67 - releases
+>Date: Sun, 9 Apr 2006 23:20:18 +0300
+>
+>I have made a tag from trunk.
+>
+>I do not dare releasing this, as I do not beleave this code is solid enough 
+>to
+>be released. Yes, it does work, sometimes, for me. But quite frankly, I
+>cannot maintain it.
+>
+>I will start a new branch which will be easier (at least for me) to 
+>maintain.
+>I have been talking with Thiago in the last weeks, and we do seem to share 
+>a
+>few ideas. The branch will be available in the next days under the code 
+>name
+>"shpere".
+>
+>Trunk is open for development, and if anyone wants to release V 0.2.2, the 
+>tag
+>as been made. If you need help with the release, I will be glad to help.
+>
+>As always, please do not commit anythingto the "releases/.*" dirs on svn, 
+>as
+>they are read only.
+>
+>
+>???????? ??????????, 9 ???????????? 2006, 23:12, ???????? ???? ?????? 
+>elcuco at berlios.de:
+> > Author: elcuco
+> > Date: 2006-04-09 22:12:29 +0200 (Sun, 09 Apr 2006)
+> > New Revision: 67
+> >
+> > Added:
+> >    releases/DEVQT_0_2_2/
+> > Log:
+> > generated a release tag for version 0.2.2.
+>_______________________________________________
+>Devqt-devel mailing list
+>Devqt-devel at lists.berlios.de
+>http://lists.berlios.de/mailman/listinfo/devqt-devel
+
+_________________________________________________________________
+Tout savoir sur la s?curit? de votre PC ! 
+http://go.msn.fr/10-channel/80-security/spam/default.asp
+
+
+
+From elcuco at kde.org  Tue Apr 11 11:03:36 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Tue, 11 Apr 2006 12:03:36 +0300
+Subject: [Devqt-devel] site update
+Message-ID: <200604111203.36567.elcuco@kde.org>
+
+Hi all,
+
+I am updating the site, and moving jsportal into tools. The web page will now 
+be just plain html. 
+
+If someone wants to work on this area, be my guest. Just commit to the svn and 
+then update the site. 
+
+
+
+From elcuco at berlios.de  Tue Apr 11 11:04:44 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Tue, 11 Apr 2006 11:04:44 +0200
+Subject: [Devqt-devel] r68 - / tools
+Message-ID: <200604110904.k3B94iDU011617@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-11 11:04:27 +0200 (Tue, 11 Apr 2006)
+New Revision: 68
+
+Added:
+   tools/jsportal/
+Removed:
+   www/
+Log:
+moved the old web site into tools, soon i will add a new web site to the
+svn
+
+
+
+Copied: tools/jsportal (from rev 66, www)
+
+
+
+From elcuco at berlios.de  Tue Apr 11 11:08:05 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Tue, 11 Apr 2006 11:08:05 +0200
+Subject: [Devqt-devel] r69 - / www
+Message-ID: <200604110908.k3B985Xa015020@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-11 11:07:27 +0200 (Tue, 11 Apr 2006)
+New Revision: 69
+
+Added:
+   www/
+   www/download.html
+   www/index.html
+   www/screenshots/
+   www/template.html
+Log:
+new web site. 
+
+
+Added: www/download.html
+===================================================================
+--- www/download.html	2006-04-11 09:04:27 UTC (rev 68)
++++ www/download.html	2006-04-11 09:07:27 UTC (rev 69)
+@@ -0,0 +1,41 @@
++<html>
++
++<head>
++	<title>DevQt - a free IDE for Qt4</title>
++</head>
++
++<body>
++	<h1>Download
++		<a href="http://developer.berlios.de" title="BerliOS Developer" style="float: right">
++			<img style="border:0;width:93px;height:24px"
++				src="http://developer.berlios.de/bslogo.php?group_id=6155"
++				alt="BerliOS Developer Logo" />
++		</a>
++	</h1>
++	<p>
++		Our latest release is 0.2.1:
++		<a href="http://developer.berlios.de/project/shownotes.php?release_id=9117">Release notes</a><br>
++		Direct link for download:
++		<a href="http://prdownload.berlios.de/devqt/devqt-0.2.1.zip">http://prdownload.berlios.de/devqt/devqt-0.2.1.zip</a>
++		<br><br>
++		To see the list of released files please visit: <br>
++		<a href="http://developer.berlios.de/project/showfiles.php?group_id=6155">http://developer.berlios.de/project/showfiles.php?group_id=6155</a>
++	</p>
++
++	<h1>Unstable code on our subversion repository</h1>
++	<p>
++		We are still in early development stage, and our code can be found in our Subversion repository:
++		
++		<pre>svn checkout http://svn.berlios.de/svnroot/repos/devqt/trunk</pre>
++		
++		... or from our ViewCVS: <a href="http://svn.berlios.de/viewcvs/devqt">http://svn.berlios.de/viewcvs/devqt</a><br>
++		... or from our WebSVN: <a href="http://svn.berlios.de/wsvn/devqt">http://svn.berlios.de/wsvn/devqt</a>
++	</p>
++
++	<br>
++	<p>
++		<a href="index.html">Back</a>
++	</p>
++</body>
++
++</html>
+
+Added: www/index.html
+===================================================================
+--- www/index.html	2006-04-11 09:04:27 UTC (rev 68)
++++ www/index.html	2006-04-11 09:07:27 UTC (rev 69)
+@@ -0,0 +1,57 @@
++<html>
++
++<head>
++	<title>DevQt - a free IDE for Qt4</title>
++</head>
++
++<body>
++	<h1>DevQt
++		<a href="http://developer.berlios.de" title="BerliOS Developer" style="float: right">
++			<img style="border:0;width:93px;height:24px"
++				src="http://developer.berlios.de/bslogo.php?group_id=6155"
++				alt="BerliOS Developer Logo" />
++		</a>
++	</h1>
++
++	<p>
++		DevQt is a new project aiming at developing a full featured
++		IDE using Trolltech's Qt library.
++		<br><br>
++		We would like to thank the <a href="http://www.qtcentre.org">QtCentre</a> community for helping we with the start
++		of this project, and <a href="http://www.berlios.de">Berlios</a> for hosting it now.
++		<br><br>
++		You can also visit our <a href="http://developer.berlios.de/projects/devqt/">home page</a> at berlios</li>.
++	</p>
++
++	<h1>Latest version</h1>
++	<p>
++		Out latest version is 0.2.1, get it on the <a href="download.html">download</a> page.<br>
++		Direct download link: <a href="http://prdownload.berlios.de/devqt/devqt-0.2.1.zip">http://prdownload.berlios.de/devqt/devqt-0.2.1.zip</a> - 170kb.<br>
++		Screenshot: <a href="screenshots/devqt-0.2.1-opensuse-10.jpg">devqt-0.2.1-opensuse-10.jpg</a> - 180kb.<br>
++		Older screenshots can be seen on the <a href="screenshots">screenshots folder</a>.
++	</p>
++
++	<h1>Forums and mailing list</h1>
++	<p>
++		We use a mailing list hosted at berlios for our communication. Click <a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">
++		here for subscription</a> or <a href="https://lists.berlios.de/pipermail/devqt-devel/">click here for the archives</a>.
++		<br><br>
++		We have several forums avialable (not really maintained to be honest):
++		<ul>
++			<li><a href="http://www.qtcentre.org/forum/showthread.php?t=586">New versions, feature requests and bug reports</a></li>
++			<li><a href="http://www.qtcentre.org/forum/showthread.php?t=754">General discussion</a></li>
++			<li><a href="http://developer.berlios.de/forum/forum.php?forum_id=18460">DevQt development discussions</a></li>
++		</ul>
++		We also have a <a href="http://developer.berlios.de/bugs/?group_id=6155">bugs database</a>.
++	</p>
++
++	<h1>News</h1>
++	<ul>
++		<li>Feb 24, 2006 - We released a new version, 0.2.1, get it on the <a href="download.html">download</a> page.
++		<li>Feb 22, 2006 - The files that have been released on <a href="http://www.qtcentre.org">QtCentre</a> have been added 
++			as releses on this site.</li>
++		<li>Feb 22, 2006 - SVN available - see <a href="download.html">download</a> page.</li>
++	</ul>
++</body>
++
++</html>
+
+Copied: www/screenshots (from rev 68, tools/jsportal/screenshots)
+
+Added: www/template.html
+===================================================================
+--- www/template.html	2006-04-11 09:04:27 UTC (rev 68)
++++ www/template.html	2006-04-11 09:07:27 UTC (rev 69)
+@@ -0,0 +1,10 @@
++<html>
++
++<head>
++	<title></title>
++</head>
++
++<body>
++</body>
++
++</html>
+\ No newline at end of file
+
+
+
+From fullmetalcoder at hotmail.fr  Tue Apr 11 15:05:32 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Tue, 11 Apr 2006 15:05:32 +0200
+Subject: [Devqt-devel] site update
+In-Reply-To: <200604111203.36567.elcuco@kde.org>
+Message-ID: <BAY114-F2645EFA060CB63C2230A82A7CD0@phx.gbl>
+
+Hi all,
+
+The previous site was awesome but buggy under some browser. The new one is 
+compatible with every browser AFAIK, but quite ugly IMHO.
+
+We need to find another way. I'm not a web-guru and I've not enough time to 
+work on both a new base and a new site. Moreover there are plenty of 
+framework that offer a simple web site design, a compatibility insurance and 
+a quite decent performance. So I think we could use one of them. I 
+personally suggest MediaWiki. It's free, simple and would give another 
+advantage :
+!!! updates could be done at any time by any member of the team in an easy 
+way !!!
+
+We have to take a common decision about that, I'm waiting for your 
+opinions...
+
+>From: Diego Iastrubni <elcuco at kde.org>
+>To: devqt-devel at lists.berlios.de
+>Subject: [Devqt-devel] site update
+>Date: Tue, 11 Apr 2006 12:03:36 +0300
+>
+>Hi all,
+>
+>I am updating the site, and moving jsportal into tools. The web page will 
+>now
+>be just plain html.
+>
+>If someone wants to work on this area, be my guest. Just commit to the svn 
+>and
+>then update the site.
+>
+>_______________________________________________
+>Devqt-devel mailing list
+>Devqt-devel at lists.berlios.de
+>http://lists.berlios.de/mailman/listinfo/devqt-devel
+
+_________________________________________________________________
+Tout savoir sur la s?curit? de votre PC ! 
+http://go.msn.fr/10-channel/80-security/spam/default.asp
+
+
+
+From elcuco at berlios.de  Sun Apr 16 21:56:00 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Sun, 16 Apr 2006 21:56:00 +0200
+Subject: [Devqt-devel] r70 - tools/qmdilib/src
+Message-ID: <200604161956.k3GJu0aT013833@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-16 21:55:33 +0200 (Sun, 16 Apr 2006)
+New Revision: 70
+
+Removed:
+   tools/qmdilib/src/qorderedmap.h
+Modified:
+   tools/qmdilib/src/qmdihost.cpp
+   tools/qmdilib/src/qmdiserver.cpp
+   tools/qmdilib/src/qmdiserver.h
+   tools/qmdilib/src/qmditabwidget.cpp
+   tools/qmdilib/src/qmditabwidget.h
+Log:
+
+small updates to mdilib:
+
+* removed non used file qorderedmap.h
+* mdiserver has now the ability to add clients by it's own (to be
+  implemented on derived classes (QMdiTabWidget for example)
+
+
+Modified: tools/qmdilib/src/qmdihost.cpp
+===================================================================
+--- tools/qmdilib/src/qmdihost.cpp	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmdihost.cpp	2006-04-16 19:55:33 UTC (rev 70)
+@@ -43,7 +43,10 @@
+ void qmdiHost::updateGUI( QMainWindow *window )
+ {
+ 	if (window == NULL)
++	{
++		qDebug("%s - warning, no QMainWindow specified", __FUNCTION__ );
+ 		return;
++	}
+ 		
+ 	toolBarList = toolbars.updateToolBar( toolBarList, window );
+ 	menus.updateMenu( window->menuBar() );
+
+Modified: tools/qmdilib/src/qmdiserver.cpp
+===================================================================
+--- tools/qmdilib/src/qmdiserver.cpp	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmdiserver.cpp	2006-04-16 19:55:33 UTC (rev 70)
+@@ -35,7 +35,31 @@
+ {
+ }
+ 
++
+ /**
++ * \fn qmdiServer::addClient( qmdiClient *client  )
++ * \brief insert a new client to the server
++ * \param client the new client to be added
++ * 
++ * When deriving this class, you should also supply a function 
++ * for adding new clients to it. For example when deriving QTabWidget,
++ * your new function should actually call QTabWidget::insertTab().
++ * 
++ * Users of this class should be able to add new clients, and 
++ * set the properties needed using this function, but you should 
++ * also supply more advanced fuctions provided by your new widget, like
++ * add the widget into another location, setting an icon for this client,
++ * etc.
++ *
++ * \see qmdiTabWidget
++ */
++#if 0
++void qmdiServer::addClient( qmdiClient *client  )
++{
++}
++#endif
++
++/**
+  * \brief callback to get alarm of deleted object
+  * \param o the deleted object
+  *
+
+Modified: tools/qmdilib/src/qmdiserver.h
+===================================================================
+--- tools/qmdilib/src/qmdiserver.h	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmdiserver.h	2006-04-16 19:55:33 UTC (rev 70)
+@@ -11,10 +11,13 @@
+ 
+ #include "actiongroup.h"
+ 
++class qmdiClient;
++
+ class qmdiServer
+ {
+ public:
+ 	virtual ~qmdiServer();
++	virtual void addClient( qmdiClient *client ) = 0;
+ 	virtual void clientDeleted( QObject *o );
+ };
+ 
+
+Modified: tools/qmdilib/src/qmditabwidget.cpp
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.cpp	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmditabwidget.cpp	2006-04-16 19:55:33 UTC (rev 70)
+@@ -26,7 +26,7 @@
+  * The relations are:
+  *  - qmdiHost   : main window
+  *  - qmdiClient : you new widgets
+- *  - qmdiServert: this class
++ *  - qmdiServer : this class
+  *
+  * When a new widget is selected on the qmdiServer (the user changes ), the old
+  * widget is removed from the qmdiHost, and only then the new mdi client is added
+@@ -83,7 +83,6 @@
+ 	if (mdiHost == NULL)
+ 		return;
+ 		
+-	qmdiClient *client = NULL;
+ 	QWidget *w = widget( i );
+ 
+ 	// nothing to do, if the same tab has been selected twise
+@@ -199,3 +198,28 @@
+ 	// this is done to shut up gcc warnings
+ 	index = 0;
+ }
++
++/**
++ * \brief add a new mdi client to this tab widget
++ * \param client the new client to be added
++ *
++ * This function is demanded by qmdiServer, and is implemented
++ * as a simple call to:
++ *
++ * \code
++ * QTabWidget::addTab( client, client->name ).
++ * \endcode
++ * 
++ * The client must derive also QWidget, since only widgets can
++ * be inserted into QTabWidget. If the client does not derive
++ * QWidget the function returns without doying anything.
++ */
++void qmdiTabWidget::addClient( qmdiClient *client )
++{
++	QWidget *w = dynamic_cast<QWidget*>(client);
++
++	if (w == NULL)
++		return;
++	
++	addTab( w, client->name );
++}
+
+Modified: tools/qmdilib/src/qmditabwidget.h
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.h	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qmditabwidget.h	2006-04-16 19:55:33 UTC (rev 70)
+@@ -29,6 +29,8 @@
+ 	void tabInserted ( int index );
+ 	void tabRemoved ( int index );
+ 	
++	void addClient( qmdiClient *client );
++	
+ private:
+ 	QWidget *activeWidget;
+ 	qmdiHost *mdiHost;
+
+Deleted: tools/qmdilib/src/qorderedmap.h
+===================================================================
+--- tools/qmdilib/src/qorderedmap.h	2006-04-11 09:07:27 UTC (rev 69)
++++ tools/qmdilib/src/qorderedmap.h	2006-04-16 19:55:33 UTC (rev 70)
+@@ -1,175 +0,0 @@
+-#ifndef __QORDERED_MAP_H__
+-#define __QORDERED_MAP_H__
+-
+-#include <QString>
+-#include <QList>
+-#include <QTextCharFormat>
+-
+-template <class K, class V>
+-class QOrderedMapNode
+-{
+-public:
+-	QOrderedMapNode() {}
+-	QOrderedMapNode( K k, V v ): key(k),value(v)
+-	{ 
+-		key = k;
+-		value = v;
+-	}
+-	K key;
+-	V value;
+-};
+-
+-
+-template <class K, class V>
+-class QOrderedMap
+-{
+-public:
+-	QOrderedMap();
+-	~QOrderedMap();
+-	
+-	void add( K key, V value );
+-	void remove( K key );
+-	V* item( K key );
+-	bool contains( K key );
+-	void itemNumber( int i );
+-
+-	int  count();
+-	void clear();
+-	bool empty();
+-	QList< QOrderedMapNode<K,V> > keys();
+-
+-private:
+-	QList< QOrderedMapNode<K,V> > nodes;
+-};
+-
+-
+-/**
+- * \class QOrderedMap
+- * \brief The QOrderedMap class is a template class that provides ordered lists.
+- * 
+- * The QOrderedMap\<T\> is a template based class which provides 
+- * a very similar functionality as QMap and QHash. The difference is 
+- * that in a QOrderedMap, the items are stored in the order you insert
+- * then into the map. While QOrderedMap may be very slow for some operations
+- * it will garantee you that you will be able to iterate over the 
+- * 
+- * - QMap        : stores the items sorted by key
+- * - QHash       : stores the items sorted arbitrarily ordered.
+- * - QOrderedMap : stores the items sorted by order in which they were inserted to the map
+- *  
+- * \see QMap
+- * \see QHash
+- * \see QList
+- */
+-
+-
+-template <class K, class V>
+-QOrderedMap<K,V>::QOrderedMap()
+-{
+-}
+-
+-template <class K, class V>
+-QOrderedMap<K,V>::~QOrderedMap()
+-{
+-}
+-
+-/**
+- * \brief Add a new key/value pair to the map
+- * \param key   - the key name for the value
+- * \param value - the value to insert into the map
+- * 
+- * Inserts a new item with the key \p key and a value of value.
+- * If there is already an item with the key \p key, that item's value is replaced with \p value.
+- * (the original item is removed).
+- */
+-template <class K, class V>
+-void QOrderedMap<K,V>::add( K key, V value )
+-{
+-	if (contains(key))
+-		remove( key );
+-		
+-	QOrderedMapNode<K, V> node( key, value );
+-	nodes.append( node );
+-}
+-
+-/**
+- * \brief Remove a value from the map
+- * \param key - the key to be removed from the map
+- *
+- * Removes the item which key matches the \p key from the map;
+- */
+-template <class K, class V>
+-void QOrderedMap<K,V>::remove( K key )
+-{
+-	int i = 0;
+-	foreach( K n, nodes )
+-	{
+-		i ++;
+-		if (n.key == key )
+-		{
+-			nodes.removeAt( i );
+-			return;
+-		}
+-	}
+-}
+-
+-template <class K, class V>
+-V* QOrderedMap<K,V>::item( K key )
+-{	
+-	int c = count();
+-	for( int i; i<c; i++)
+-	{
+-		QOrderedMapNode<K,V> t = nodes[i];
+-		if (t.key == key)
+-			return &t.value;
+-	}
+-
+-	return NULL;
+-}
+-
+-template <class K, class V>
+-void QOrderedMap<K,V>::itemNumber( int i )
+-{
+-	return nodes.items( i );
+-}
+-
+-template <class K, class V>
+-bool QOrderedMap<K,V>::contains( K key )
+-{
+-	QOrderedMapNode<K, V> n;
+-
+-	foreach( n, nodes )
+-	{
+-		if (n.key == key )
+-			return true;
+-	}
+-	
+-	return false;
+-}
+-
+-template <class K, class V>
+-QList< QOrderedMapNode<K,V> > QOrderedMap<K,V>::keys()
+-{
+-	return nodes;
+-}
+-
+-template <class K, class V>
+-void QOrderedMap<K,V>::clear()
+-{
+-	nodes.clear();
+-}
+-
+-template <class K, class V>
+-int QOrderedMap<K,V>::count()
+-{
+-	return nodes.count();
+-}
+-
+-template <class K, class V>
+-bool QOrderedMap<K,V>::empty()
+-{
+-	return nodes.empty();
+-}
+-
+-
+-#endif //__QORDERED_MAP_H__
+
+
+
+From elcuco at berlios.de  Sun Apr 16 22:27:45 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Sun, 16 Apr 2006 22:27:45 +0200
+Subject: [Devqt-devel] r71 - in tools/qmdilib/demos: . plugin-demo plugin-demo/images plugin-demo/plugins plugin-demo/plugins/editor plugin-demo/plugins/help
+Message-ID: <200604162027.k3GKRjaJ025845@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-16 22:27:11 +0200 (Sun, 16 Apr 2006)
+New Revision: 71
+
+Added:
+   tools/qmdilib/demos/plugin-demo/
+   tools/qmdilib/demos/plugin-demo/configdialog.cpp
+   tools/qmdilib/demos/plugin-demo/configdialog.h
+   tools/qmdilib/demos/plugin-demo/images/
+   tools/qmdilib/demos/plugin-demo/images/config.png
+   tools/qmdilib/demos/plugin-demo/images/query.png
+   tools/qmdilib/demos/plugin-demo/images/update.png
+   tools/qmdilib/demos/plugin-demo/iplugin.cpp
+   tools/qmdilib/demos/plugin-demo/iplugin.h
+   tools/qmdilib/demos/plugin-demo/main3.cpp
+   tools/qmdilib/demos/plugin-demo/mainwindow3.cpp
+   tools/qmdilib/demos/plugin-demo/mainwindow3.h
+   tools/qmdilib/demos/plugin-demo/plugin-demo.pro
+   tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop
+   tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop.pcs
+   tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses
+   tools/qmdilib/demos/plugin-demo/plugin_list.ui
+   tools/qmdilib/demos/plugin-demo/pluginmodel.cpp
+   tools/qmdilib/demos/plugin-demo/pluginmodel.h
+   tools/qmdilib/demos/plugin-demo/plugins/
+   tools/qmdilib/demos/plugin-demo/plugins/editor/
+   tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp
+   tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h
+   tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui
+   tools/qmdilib/demos/plugin-demo/plugins/help/
+   tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp
+   tools/qmdilib/demos/plugin-demo/plugins/help/help.h
+   tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui
+   tools/qmdilib/demos/plugin-demo/pluningmanager.cpp
+   tools/qmdilib/demos/plugin-demo/pluningmanager.h
+Log:
+added a pre release of the plugin demo.
+
+This demo shows how to code a plugin system. Each plugin is self
+contained and does not have to know anything about the main window, or
+the system used for the mdi. All the comunication is done via qmdiServer
+and qmdiHost.
+
+The application has also a configuration dialog, which will be (not
+implemented yet) with all the plugins from which you can enable/disable
+the available plugins (unless always enabled is on). The configuration
+dialog will also contain several pages for each plugin, if that plugin
+contains a configuration widget (not implemented yet). Each wdget will
+also have a configuration item prepared from which it will load/save
+it's
+state it on load/unload (not implemented yet).
+
+the demo currently abuses the code from the mdi-tab demo: it contains 2
+plugins : for file editing and for help. The plugins display the same
+widgets at the tab demo. The functionality of this application is not as
+good as the original demo, but it's on the way.
+
+todo:
+ 1) Plugins are hard coded/linked into the application. Need to find a
+    way to make the plugins loadable at run time. This means that you
+    can theoratically edit the plugins from the main application and
+    while it's working just unload/load the plugins to get newer
+    versions.
+ 2) Need to add new functionalities to mdi-clients: "can you close
+    yourself?" This will be used for providing a way to query the user
+    if he wants to save his work before closing the mdi-client.
+ 3) QSA. Programmers should have the ability to write plugins in JS/QSA
+    scripts.
+ 4) What if the plugins need plugins? for example, used defined plugins
+    for the editor.
+ 5) Interaction between plugins: how can the help plugin extend the
+    editor plugin?
+ 6) Dependencies between plugins: a project plugin will need the editor
+    plugin to be loaded.
+ 7) Clean up the code. It's a mess.
+ 8) Documentation.
+
+
+
+
+Added: tools/qmdilib/demos/plugin-demo/configdialog.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/configdialog.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/configdialog.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,87 @@
++/****************************************************************************
++**
++** Copyright (C) 2005-2006 Trolltech AS. All rights reserved.
++**
++** This file is part of the example classes of the Qt Toolkit.
++**
++** This file may be used under the terms of the GNU General Public
++** License version 2.0 as published by the Free Software Foundation
++** and appearing in the file LICENSE.GPL included in the packaging of
++** this file.  Please review the following information to ensure GNU
++** General Public Licensing requirements will be met:
++** http://www.trolltech.com/products/qt/opensource.html
++**
++** If you are unsure which license is appropriate for your use, please
++** review the following information:
++** http://www.trolltech.com/products/qt/licensing.html or contact the
++** sales department at sales at trolltech.com.
++**
++** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
++** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
++**
++****************************************************************************/
++
++#include <QtGui>
++#include <QIcon>
++
++#include "configdialog.h"
++// #include "pages.h"
++
++ConfigDialog::ConfigDialog()
++{
++	contentsWidget = new QListWidget;
++	contentsWidget->setViewMode(QListView::IconMode);
++	contentsWidget->setIconSize(QSize(96, 84));
++	contentsWidget->setMovement(QListView::Static);
++	contentsWidget->setMaximumWidth(128);
++// 	contentsWidget->setSpacing(12);
++// 	contentsWidget->setModelColumn( 0 );
++	contentsWidget->setFlow( QListView::TopToBottom );
++
++	
++	pagesWidget = new QStackedWidget;
++	QPushButton *closeButton = new QPushButton(tr("Close"));
++	
++	QHBoxLayout *horizontalLayout = new QHBoxLayout;
++	horizontalLayout->addWidget(contentsWidget);
++	horizontalLayout->addWidget(pagesWidget, 1);
++	
++	QHBoxLayout *buttonsLayout = new QHBoxLayout;
++	buttonsLayout->addStretch(1);
++	buttonsLayout->addWidget(closeButton);
++	
++	QVBoxLayout *mainLayout = new QVBoxLayout;
++	mainLayout->addLayout(horizontalLayout);
++	mainLayout->addStretch(1);
++	mainLayout->addSpacing(12);
++	mainLayout->addLayout(buttonsLayout);
++	setLayout(mainLayout);
++	
++	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
++	connect(contentsWidget,
++		SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
++		this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
++	
++	setWindowTitle(tr("Config Dialog"));
++}
++
++void ConfigDialog::changePage(QListWidgetItem *current, QListWidgetItem *previous)
++{
++	if (!current)
++        	current = previous;
++
++	pagesWidget->setCurrentIndex(contentsWidget->row(current));
++}
++
++void ConfigDialog::addPage( QWidget *w, QIcon i )
++{
++	QListWidgetItem *item = new QListWidgetItem;
++	item->setIcon( i );
++	item->setText( w->objectName() );
++	item->setTextAlignment( Qt::AlignHCenter );
++	item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
++	
++	contentsWidget->insertItem( 0, item );
++
++	pagesWidget->addWidget( w );
++}
+
+Added: tools/qmdilib/demos/plugin-demo/configdialog.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/configdialog.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/configdialog.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,51 @@
++/****************************************************************************
++**
++** Copyright (C) 2005-2006 Trolltech AS. All rights reserved.
++**
++** This file is part of the example classes of the Qt Toolkit.
++**
++** This file may be used under the terms of the GNU General Public
++** License version 2.0 as published by the Free Software Foundation
++** and appearing in the file LICENSE.GPL included in the packaging of
++** this file.  Please review the following information to ensure GNU
++** General Public Licensing requirements will be met:
++** http://www.trolltech.com/products/qt/opensource.html
++**
++** If you are unsure which license is appropriate for your use, please
++** review the following information:
++** http://www.trolltech.com/products/qt/licensing.html or contact the
++** sales department at sales at trolltech.com.
++**
++** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
++** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
++**
++****************************************************************************/
++
++#ifndef CONFIGDIALOG_H
++#define CONFIGDIALOG_H
++
++#include <QDialog>
++#include <QIcon>
++
++class QIcon;
++class QListWidget;
++class QListWidgetItem;
++class QStackedWidget;
++
++class ConfigDialog : public QDialog
++{
++	Q_OBJECT
++
++public:
++	ConfigDialog();
++
++public slots:
++	void changePage(QListWidgetItem *current, QListWidgetItem *previous);
++	void addPage( QWidget *w, QIcon i );
++
++private:
++	QListWidget *contentsWidget;
++	QStackedWidget *pagesWidget;
++};
++
++#endif
+
+Added: tools/qmdilib/demos/plugin-demo/images/config.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/images/config.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/images/query.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/images/query.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/images/update.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/images/update.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/iplugin.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/iplugin.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/iplugin.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,78 @@
++#include <QAction>
++#include <QIcon>
++
++#include "iplugin.h"
++
++// #define tr
++QAction* new_action( QIcon icon, QString name, QObject *obj, QString shortcut, QString status_tip, const char*slot )
++{
++	QAction * a = new QAction( icon, name, obj );
++	a->setShortcut(shortcut);
++	a->setStatusTip(status_tip);
++	a->connect( a, SIGNAL(triggered()), obj, slot );
++
++	return a;
++}
++
++
++IPlugin::IPlugin()
++{
++	alwaysEnabled = false;
++	autoEnabled = false;
++	enabled = false;
++}
++
++
++IPlugin::~IPlugin()
++{
++}
++
++void	IPlugin::showAbout()
++{
++}
++
++QWidget*IPlugin::getConfigDialog()
++{
++	return NULL;
++}
++
++void	IPlugin::getData()
++{
++}
++
++void	IPlugin::setData()
++{
++}
++
++void	IPlugin::loadConfig( QSettings &settings )
++{
++}
++
++void	IPlugin::SaveConfig( QSettings &settings )
++{
++}
++
++bool 	IPlugin::isEnabled()
++{
++	return enabled;
++}
++
++QString	IPlugin::getName()
++{
++	return name;
++}
++
++QString IPlugin::getAuthor()
++{
++	return author;
++}
++
++QString IPlugin::getsVersion()
++{
++	return sVersion;
++}
++
++int	IPlugin::getiVersion()
++{
++	return iVersion;
++}
+
+Added: tools/qmdilib/demos/plugin-demo/iplugin.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/iplugin.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/iplugin.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,47 @@
++#ifndef __IPLUGIN_H__
++#define __IPLUGIN_H__
++
++#include <QObject>
++#include <QString>
++#include "qmdiclient.h"
++
++class QWidget;
++class QSettings;
++class QAction;
++class QIcon;
++
++QAction* new_action( QIcon icon, QString name, QObject *obj, QString shortcut, QString status_tip, const char *slot );
++
++class IPlugin: public QObject, public qmdiClient
++{
++friend class PluginManager;
++
++public:
++	IPlugin();
++	virtual ~IPlugin();
++
++	virtual void showAbout();
++	virtual QWidget* getConfigDialog();
++	virtual void getData();
++	virtual void setData();
++
++	virtual void loadConfig( QSettings &settings );
++	virtual void SaveConfig( QSettings &settings );
++
++	bool 	isEnabled();
++	QString	getName();
++	QString getAuthor();
++	QString getsVersion();
++	int	getiVersion();
++	
++protected:
++	QString name;
++	QString author;
++	QString sVersion;
++	int	iVersion;
++	
++	bool alwaysEnabled;
++	bool autoEnabled;
++	bool enabled;
++};
++#endif // __IPLUGIN_H__
+
+Added: tools/qmdilib/demos/plugin-demo/main3.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/main3.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/main3.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,18 @@
++#include <QApplication>
++#include "mainwindow3.h"
++
++/**
++ * \file main3.c
++ * \brief Entry point of this demo
++ * \author Diego Iastrubni (elcuco at kde.org)
++ * License GPL
++ */
++
++int main( int argc, char *argv[] )
++{
++	QApplication app( argc, argv );
++	MainWindow3 w;
++	w.show();
++	return app.exec();
++}
++
+
+Added: tools/qmdilib/demos/plugin-demo/mainwindow3.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/mainwindow3.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/mainwindow3.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,54 @@
++#include <QTimer>
++#include <QAction>
++#include <QStatusBar>
++#include <QToolButton>
++
++#include "mainwindow3.h"
++#include "pluningmanager.h"
++#include "qmditabwidget.h"
++
++// plugins
++#include "editor.h"
++#include "help.h"
++
++
++MainWindow3::MainWindow3(QWidget *owner):
++	QMainWindow( owner )
++{
++	QTimer::singleShot( 0, this, SLOT(initGUI()));
++}
++
++MainWindow3::~MainWindow3()
++{
++	delete pluginManager;
++}
++
++void MainWindow3::initGUI()
++{
++	tabWidget = new qmdiTabWidget(this);
++	setCentralWidget( tabWidget );
++	
++	QToolButton *tabCloseBtn = new QToolButton(tabWidget);
++	tabCloseBtn->setAutoRaise( true );
++// 	connect( tabCloseBtn, SIGNAL(clicked()), this, SLOT(fileClose()));
++	tabCloseBtn->setIcon(QIcon(":images/closetab.png"));
++
++	actionConfig = new QAction( "config", this );
++
++	menus[tr("&File")];
++	menus[tr("&Edit")];
++	menus[tr("&Search")];
++	menus[tr("&Navigation")];
++	menus[tr("Se&ttings")]->addAction( actionConfig );
++	menus[tr("&Help")];
++
++	toolbars["Settings"]->addAction( actionConfig );
++	
++	pluginManager = new PluginManager( this, dynamic_cast<qmdiServer*>(tabWidget) );
++	pluginManager->addPlugin( new HelpPlugin );
++	pluginManager->addPlugin( new EditorPlugin );
++	updateGUI( this );
++	
++	connect( actionConfig, SIGNAL(triggered()), pluginManager, SLOT(configurePlugins()));
++	statusBar()->showMessage("Welcome - feel free to configure the GUI to your needs",5000);
++}
+
+Added: tools/qmdilib/demos/plugin-demo/mainwindow3.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/mainwindow3.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/mainwindow3.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,28 @@
++#ifndef __MAINWINDOW3_H__
++#define __MAINWINDOW3_H__
++
++#include <QMainWindow>
++#include "qmdihost.h"
++
++class QAction;
++class QTabWidget;
++class PluginManager;
++
++class MainWindow3: public QMainWindow, public qmdiHost
++{
++	Q_OBJECT
++public:
++	MainWindow3( QWidget *owner = NULL);
++	~MainWindow3();
++
++public slots:
++	void initGUI();
++	
++private:
++	QTabWidget	*tabWidget;
++	QAction		*actionConfig;
++
++	PluginManager	*pluginManager;
++};
++
++#endif // __MAINWINDOW3_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugin-demo.pro
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin-demo.pro	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin-demo.pro	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,63 @@
++# File generated by kdevelop's qmake manager. 
++# ------------------------------------------- 
++# Subdir relative project main directory: .
++# Target is an application:  
++
++pluging_list.ui.target = pluging_list.ui 
++pluging_list.ui.commands = $$IDL_COMPILER 
++plugin_list.ui.target = plugin_list.ui 
++plugin_list.ui.commands = $$IDL_COMPILER 
++help_cfg.ui.target = plugins/help/help_cfg.ui 
++help_cfg.ui.commands = $$IDL_COMPILER 
++editor_cfg.ui.target = plugins/editor/editor_cfg.ui 
++editor_cfg.ui.commands = $$IDL_COMPILER 
++DEPENDPATH = . 
++INCLUDEPATH += ../mdi-tab \
++               plugins/editor \
++               plugins/help \
++               ../../src \
++               . 
++
++RESOURCES += ../mdi-tab/mdi-tab.qrc
++
++MOC_DIR = ../../tmp 
++UI_DIR = ../../tmp 
++OBJECTS_DIR = .tmp 
++CONFIG += debug \
++          warn_on 
++TEMPLATE = app 
++FORMS += plugins/editor/editor_cfg.ui \
++         plugins/help/help_cfg.ui \
++         plugin_list.ui 
++IDLS += plugin_list.ui 
++HEADERS += configdialog.h \
++           iplugin.h \
++           mainwindow3.h \
++           ../../src/actiongroup.h \
++           ../../src/actiongrouplist.h \
++           ../../src/qmdiclient.h \
++           ../../src/qmdihost.h \
++           ../../src/qmdiserver.h \
++           ../../src/qmditabwidget.h \
++           pluningmanager.h \
++           pluginmodel.h \
++           plugins/help/help.h \
++           plugins/editor/editor.h \
++           ../mdi-tab/helpbrowse.h \
++           ../mdi-tab/qexeditor.h 
++SOURCES += configdialog.cpp \
++           iplugin.cpp \
++           main3.cpp \
++           mainwindow3.cpp \
++           ../../src/actiongroup.cpp \
++           ../../src/actiongrouplist.cpp \
++           ../../src/qmdiclient.cpp \
++           ../../src/qmdihost.cpp \
++           ../../src/qmdiserver.cpp \
++           ../../src/qmditabwidget.cpp \
++           pluningmanager.cpp \
++           pluginmodel.cpp \
++           plugins/help/help.cpp \
++           plugins/editor/editor.cpp \
++           ../mdi-tab/helpbrowse.cpp \
++           ../mdi-tab/qexeditor.cpp 
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,155 @@
++<?xml version = '1.0'?>
++<kdevelop>
++  <general>
++    <author>Diego Iastrubni</author>
++    <email>elcuco at kde.org</email>
++    <version>$VERSION$</version>
++    <projectmanagement>KDevTrollProject</projectmanagement>
++    <primarylanguage>C++</primarylanguage>
++    <keywords>
++      <keyword>Qt</keyword>
++    </keywords>
++    <projectdirectory>.</projectdirectory>
++    <absoluteprojectpath>false</absoluteprojectpath>
++    <description/>
++    <ignoreparts/>
++    <versioncontrol/>
++  </general>
++  <kdevfileview>
++    <groups>
++      <group pattern="*.cpp;*.cxx;*.h" name="Sources" />
++      <group pattern="*.ui" name="User Interface" />
++      <group pattern="*.png" name="Icons" />
++      <group pattern="*" name="Others" />
++      <hidenonprojectfiles>true</hidenonprojectfiles>
++      <hidenonlocation>false</hidenonlocation>
++    </groups>
++    <tree>
++      <hidepatterns>*.o,*.lo,CVS</hidepatterns>
++      <hidenonprojectfiles>false</hidenonprojectfiles>
++    </tree>
++  </kdevfileview>
++  <kdevdoctreeview>
++    <ignoretocs>
++      <toc>bash</toc>
++      <toc>bash_bugs</toc>
++      <toc>clanlib</toc>
++      <toc>w3c-dom-level2-html</toc>
++      <toc>fortran_bugs_gcc</toc>
++      <toc>gnome1</toc>
++      <toc>gnustep</toc>
++      <toc>gtk</toc>
++      <toc>gtk_bugs</toc>
++      <toc>haskell</toc>
++      <toc>haskell_bugs_ghc</toc>
++      <toc>java_bugs_gcc</toc>
++      <toc>java_bugs_sun</toc>
++      <toc>kde2book</toc>
++      <toc>opengl</toc>
++      <toc>pascal_bugs_fp</toc>
++      <toc>php</toc>
++      <toc>php_bugs</toc>
++      <toc>perl</toc>
++      <toc>perl_bugs</toc>
++      <toc>python</toc>
++      <toc>python_bugs</toc>
++      <toc>qt-kdev3</toc>
++      <toc>ruby</toc>
++      <toc>ruby_bugs</toc>
++      <toc>sdl</toc>
++      <toc>stl</toc>
++      <toc>w3c-svg</toc>
++      <toc>sw</toc>
++      <toc>w3c-uaag10</toc>
++      <toc>wxwidgets_bugs</toc>
++    </ignoretocs>
++    <ignoredoxygen>
++      <toc>KDE Libraries (Doxygen)</toc>
++    </ignoredoxygen>
++  </kdevdoctreeview>
++  <kdevdebugger>
++    <general>
++      <dbgshell/>
++      <programargs/>
++      <gdbpath/>
++      <configGdbScript/>
++      <runShellScript/>
++      <runGdbScript/>
++      <breakonloadinglibs>true</breakonloadinglibs>
++      <separatetty>false</separatetty>
++      <floatingtoolbar>false</floatingtoolbar>
++    </general>
++    <display>
++      <staticmembers>false</staticmembers>
++      <demanglenames>true</demanglenames>
++      <outputradix>10</outputradix>
++    </display>
++  </kdevdebugger>
++  <kdevfilecreate>
++    <useglobaltypes>
++      <type ext="ui" />
++      <type ext="cpp" />
++      <type ext="h" />
++    </useglobaltypes>
++  </kdevfilecreate>
++  <kdevtrollproject>
++    <general>
++      <activedir></activedir>
++    </general>
++    <run>
++      <directoryradio>executable</directoryradio>
++      <customdirectory>/</customdirectory>
++      <mainprogram/>
++      <programargs/>
++      <terminal>false</terminal>
++      <autocompile>true</autocompile>
++      <envvars/>
++    </run>
++    <make>
++      <abortonerror>true</abortonerror>
++      <runmultiplejobs>false</runmultiplejobs>
++      <numberofjobs>1</numberofjobs>
++      <dontact>false</dontact>
++      <makebin/>
++      <prio>0</prio>
++      <envvars/>
++    </make>
++    <subclassing/>
++  </kdevtrollproject>
++  <kdevcppsupport>
++    <references>
++      <pcs>qt4</pcs>
++    </references>
++    <codecompletion>
++      <includeGlobalFunctions>true</includeGlobalFunctions>
++      <includeTypes>true</includeTypes>
++      <includeEnums>true</includeEnums>
++      <includeTypedefs>false</includeTypedefs>
++      <automaticCodeCompletion>true</automaticCodeCompletion>
++      <automaticArgumentsHint>true</automaticArgumentsHint>
++      <automaticHeaderCompletion>true</automaticHeaderCompletion>
++      <codeCompletionDelay>250</codeCompletionDelay>
++      <argumentsHintDelay>400</argumentsHintDelay>
++      <headerCompletionDelay>250</headerCompletionDelay>
++    </codecompletion>
++    <qt>
++      <used>true</used>
++      <version>4</version>
++      <root>/usr/local/Trolltech</root>
++    </qt>
++    <creategettersetter>
++      <prefixGet/>
++      <prefixSet>set</prefixSet>
++      <prefixVariable>m_,_</prefixVariable>
++      <parameterName>theValue</parameterName>
++      <inlineGet>true</inlineGet>
++      <inlineSet>true</inlineSet>
++    </creategettersetter>
++  </kdevcppsupport>
++  <cppsupportpart>
++    <filetemplates>
++      <interfacesuffix>.h</interfacesuffix>
++      <implementationsuffix>.cpp</implementationsuffix>
++    </filetemplates>
++  </cppsupportpart>
++</kdevelop>
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop.pcs
+===================================================================
+(Binary files differ)
+
+
+Property changes on: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevelop.pcs
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin_demo.kdevses	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,35 @@
++<?xml version = '1.0' encoding = 'UTF-8'?>
++<!DOCTYPE KDevPrjSession>
++<KDevPrjSession>
++ <DocsAndViews NumberOfDocuments="5" >
++  <Doc0 NumberOfViews="1" URL="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/iplugin.h" >
++   <View0 line="0" Type="Source" />
++  </Doc0>
++  <Doc1 NumberOfViews="1" URL="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/mainwindow3.h" >
++   <View0 line="0" Type="Source" />
++  </Doc1>
++  <Doc2 NumberOfViews="1" URL="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/mainwindow3.cpp" >
++   <View0 Type="Source" />
++  </Doc2>
++  <Doc3 NumberOfViews="1" URL="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp" >
++   <View0 line="5" Type="Source" />
++  </Doc3>
++  <Doc4 NumberOfViews="1" URL="file:///home/elcuco/src/svn/qmdilib/demos/plugin-demo/plugins/help/help.cpp" >
++   <View0 line="6" Type="Source" />
++  </Doc4>
++ </DocsAndViews>
++ <pluginList>
++  <kdevdebugger>
++   <breakpointList/>
++  </kdevdebugger>
++  <kdevbookmarks>
++   <bookmarks/>
++  </kdevbookmarks>
++  <kdevvalgrind>
++   <executable path="" params="" />
++   <valgrind path="" params="" />
++   <calltree path="" params="" />
++   <kcachegrind path="" />
++  </kdevvalgrind>
++ </pluginList>
++</KDevPrjSession>
+
+Added: tools/qmdilib/demos/plugin-demo/plugin_list.ui
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugin_list.ui	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugin_list.ui	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,120 @@
++<ui version="4.0" >
++ <author>Diego Iastrubni &lt;elcuco at kde.org></author>
++ <comment></comment>
++ <exportmacro></exportmacro>
++ <class>plugin_list</class>
++ <widget class="QWidget" name="plugin_list" >
++  <property name="geometry" >
++   <rect>
++    <x>0</x>
++    <y>0</y>
++    <width>400</width>
++    <height>300</height>
++   </rect>
++  </property>
++  <property name="windowTitle" >
++   <string>Form</string>
++  </property>
++  <layout class="QGridLayout" >
++   <property name="margin" >
++    <number>9</number>
++   </property>
++   <property name="spacing" >
++    <number>6</number>
++   </property>
++   <item row="4" column="2" >
++    <spacer>
++     <property name="orientation" >
++      <enum>Qt::Vertical</enum>
++     </property>
++     <property name="sizeHint" >
++      <size>
++       <width>20</width>
++       <height>40</height>
++      </size>
++     </property>
++    </spacer>
++   </item>
++   <item row="5" column="2" >
++    <widget class="QPushButton" name="btnConfigure" >
++     <property name="text" >
++      <string>&amp;Configure</string>
++     </property>
++    </widget>
++   </item>
++   <item row="5" column="1" >
++    <widget class="QPushButton" name="btnAbout" >
++     <property name="text" >
++      <string>&amp;About</string>
++     </property>
++    </widget>
++   </item>
++   <item row="4" column="1" >
++    <widget class="QCheckBox" name="cbEnabled" >
++     <property name="text" >
++      <string>Enabled</string>
++     </property>
++    </widget>
++   </item>
++   <item row="2" column="1" >
++    <widget class="QLabel" name="label_2" >
++     <property name="text" >
++      <string>Author:</string>
++     </property>
++    </widget>
++   </item>
++   <item row="3" column="1" >
++    <widget class="QLabel" name="label_3" >
++     <property name="text" >
++      <string>Version:</string>
++     </property>
++    </widget>
++   </item>
++   <item row="1" column="1" >
++    <widget class="QLabel" name="label" >
++     <property name="text" >
++      <string>Name:</string>
++     </property>
++    </widget>
++   </item>
++   <item row="0" column="1" colspan="2" >
++    <widget class="QLabel" name="label_4" >
++     <property name="text" >
++      <string>&lt;h2>Plugin Information&lt;/h2></string>
++     </property>
++    </widget>
++   </item>
++   <item rowspan="6" row="0" column="0" >
++    <widget class="QListView" name="listWidget" >
++     <property name="layoutMode" >
++      <enum>QListView::Batched</enum>
++     </property>
++    </widget>
++   </item>
++   <item row="2" column="2" >
++    <widget class="QLineEdit" name="authorName" >
++     <property name="readOnly" >
++      <bool>true</bool>
++     </property>
++    </widget>
++   </item>
++   <item row="3" column="2" >
++    <widget class="QLineEdit" name="versionString" >
++     <property name="readOnly" >
++      <bool>true</bool>
++     </property>
++    </widget>
++   </item>
++   <item row="1" column="2" >
++    <widget class="QLineEdit" name="pluginName" >
++     <property name="readOnly" >
++      <bool>true</bool>
++     </property>
++    </widget>
++   </item>
++  </layout>
++ </widget>
++ <pixmapfunction></pixmapfunction>
++ <resources/>
++ <connections/>
++</ui>
+
+Added: tools/qmdilib/demos/plugin-demo/pluginmodel.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluginmodel.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluginmodel.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,62 @@
++#include <QModelIndex>
++
++#include "iplugin.h"
++#include "pluginmodel.h"
++
++PluginModel::PluginModel( QList<IPlugin*>* p, QObject *parent )
++// 	: QAbstractItemModel( parent )
++	: QStandardItemModel( parent )
++{
++	plugins = p;
++}
++/*
++QModelIndex PluginModel::index ( int row, int column, const QModelIndex &parent ) const
++{
++}
++
++QModelIndex PluginModel::parent ( const QModelIndex &index ) const
++{
++}
++
++int PluginModel::rowCount ( const QModelIndex &parent ) const
++{
++	return plugins.count();
++}
++
++int PluginModel::columnCount ( const QModelIndex &parent ) const
++{
++	return 2;
++}
++*/
++
++
++QVariant PluginModel::data ( const QModelIndex &index, int role ) const
++{
++#if 0	
++	IPlugin *plugin = NULL;
++
++	if (plugins)
++		plugin = (*plugins)[index.row()];
++	else
++		plugin = NULL;
++	
++	
++	if (plugin)
++	{
++		qDebug( "getting data for row: %d, column: %d [%s]", index.row(), index.column(), qPrintable(plugin->getName()) );
++		return QVariant(plugin->getName());
++	}
++	else
++	{
++		qDebug( "getting data for row: %d, column: %d", index.row(), index.column() );
++		return "no name";
++	}
++#else
++	return QStandardItemModel::data(index,role);
++#endif
++}
++
++Qt::ItemFlags PluginModel::flags ( const QModelIndex & index ) const
++{
++	return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
++}
+
+Added: tools/qmdilib/demos/plugin-demo/pluginmodel.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluginmodel.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluginmodel.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,30 @@
++#ifndef __PLUGIN_MODEL_H__
++#define __PLUGIN_MODEL_H__
++
++#include <QAbstractItemModel>
++#include <QStandardItemModel>
++#include <QList>
++
++class IPlugin;
++class QModelIndex;
++
++class PluginModel : public QStandardItemModel
++// 		QAbstractItemModel
++{
++	Q_OBJECT
++public:
++	PluginModel( QList<IPlugin*>* p, QObject *parent=0 );
++	
++/*	QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;	
++	QModelIndex parent ( const QModelIndex & index ) const;
++	int rowCount ( const QModelIndex & parent = QModelIndex() )const;
++	int columnCount ( const QModelIndex & parent = QModelIndex() )const;*/
++	
++ 	QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole )const;
++// 	bool setData( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
++	Qt::ItemFlags flags ( const QModelIndex & index ) const;
++private:
++	QList<IPlugin*>	*plugins;
++};
++
++#endif// __PLUGIN_MODEL_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/editor/editor.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,54 @@
++#include <QAction>
++#include <QMessageBox>
++
++#include "iplugin.h"
++#include "qmdiserver.h"
++#include "editor.h"
++#include "qexeditor.h"
++
++
++EditorPlugin::EditorPlugin()
++{
++	actionNew	= new_action( QIcon(":images/filenew.png"), tr("&New"), this, tr("Ctrl+N"), tr("Create a new file"), SLOT(fileNew()) );
++	actionOpen	= new_action( QIcon(":images/filenew.png"), tr("&Open"), this, tr("Ctrl+O"), tr("Load a file"), SLOT(fileOpen()) );
++
++	name = tr("Text editor plugin");
++	author = tr("Diego Iastrubni <elcuco at kde.org>");
++	iVersion = 0;
++	sVersion = "0.0.1";
++	autoEnabled = true;
++	alwaysEnabled = false;
++
++	menus["&File"]->addAction( actionNew );
++	menus["&File"]->addAction( actionOpen );
++}
++
++EditorPlugin::~EditorPlugin()
++{
++	delete actionNew;
++	delete actionOpen;
++}
++
++void EditorPlugin::showAbout()
++{
++	QMessageBox::about( NULL, tr("Text Editor plugin"), tr("This plugin brings text editing capabilities to the application") );
++}
++
++void EditorPlugin::fileNew()
++{
++	if (!mdiServer)
++	{
++		qDebug("%s - warning no mdiServer defined", __FUNCTION__ );
++		return;
++	}
++
++	QexTextEdit *editor = new QexTextEdit;
++	editor->hide();
++	editor->name = "No name";
++	editor->setObjectName( editor->name );
++	mdiServer->addClient( editor );
++}
++
++void EditorPlugin::fileOpen()
++{
++}
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/editor/editor.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,26 @@
++#ifndef __EDITOR_PLUGIN_H__
++#define __EDITOR_PLUGIN_H__
++
++#include "iplugin.h"
++
++class QAction;
++
++class EditorPlugin: public IPlugin
++{
++	Q_OBJECT
++public:
++	EditorPlugin();
++	~EditorPlugin();
++
++	void showAbout();
++
++public slots:
++	void fileNew();
++	void fileOpen();
++	
++private:
++	QAction *actionNew;
++	QAction *actionOpen;
++};
++
++#endif// __EDITOR_PLUGIN_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/editor/editor_cfg.ui	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,173 @@
++<ui version="4.0" >
++ <author></author>
++ <comment></comment>
++ <exportmacro></exportmacro>
++ <class>EditorCfgUI</class>
++ <widget class="QWidget" name="EditorCfgUI" >
++  <property name="geometry" >
++   <rect>
++    <x>0</x>
++    <y>0</y>
++    <width>287</width>
++    <height>245</height>
++   </rect>
++  </property>
++  <property name="windowTitle" >
++   <string>Form</string>
++  </property>
++  <layout class="QVBoxLayout" >
++   <property name="margin" >
++    <number>9</number>
++   </property>
++   <property name="spacing" >
++    <number>6</number>
++   </property>
++   <item>
++    <widget class="QTabWidget" name="tabWidget" >
++     <property name="currentIndex" >
++      <number>0</number>
++     </property>
++     <widget class="QWidget" name="tab" >
++      <attribute name="title" >
++       <string>General</string>
++      </attribute>
++      <layout class="QVBoxLayout" >
++       <property name="margin" >
++        <number>9</number>
++       </property>
++       <property name="spacing" >
++        <number>6</number>
++       </property>
++       <item>
++        <widget class="QGroupBox" name="groupBox" >
++         <property name="title" >
++          <string>GroupBox</string>
++         </property>
++         <layout class="QVBoxLayout" >
++          <property name="margin" >
++           <number>9</number>
++          </property>
++          <property name="spacing" >
++           <number>6</number>
++          </property>
++          <item>
++           <widget class="QCheckBox" name="checkBox" >
++            <property name="text" >
++             <string>Make backups</string>
++            </property>
++           </widget>
++          </item>
++          <item>
++           <widget class="QCheckBox" name="checkBox_2" >
++            <property name="text" >
++             <string>Show line numbers</string>
++            </property>
++           </widget>
++          </item>
++          <item>
++           <widget class="QCheckBox" name="checkBox_3" >
++            <property name="text" >
++             <string>Mark current line</string>
++            </property>
++           </widget>
++          </item>
++          <item>
++           <widget class="QCheckBox" name="checkBox_4" >
++            <property name="text" >
++             <string>Word wrap</string>
++            </property>
++           </widget>
++          </item>
++         </layout>
++        </widget>
++       </item>
++       <item>
++        <layout class="QHBoxLayout" >
++         <property name="margin" >
++          <number>0</number>
++         </property>
++         <property name="spacing" >
++          <number>6</number>
++         </property>
++         <item>
++          <widget class="QToolButton" name="toolButton" >
++           <property name="text" >
++            <string>...</string>
++           </property>
++          </widget>
++         </item>
++         <item>
++          <widget class="QLabel" name="label" >
++           <property name="text" >
++            <string>Editor font</string>
++           </property>
++          </widget>
++         </item>
++         <item>
++          <widget class="QLineEdit" name="lineEdit" >
++           <property name="enabled" >
++            <bool>false</bool>
++           </property>
++           <property name="readOnly" >
++            <bool>true</bool>
++           </property>
++          </widget>
++         </item>
++        </layout>
++       </item>
++       <item>
++        <layout class="QHBoxLayout" >
++         <property name="margin" >
++          <number>0</number>
++         </property>
++         <property name="spacing" >
++          <number>6</number>
++         </property>
++         <item>
++          <widget class="QLabel" name="label_2" >
++           <property name="text" >
++            <string>End of line</string>
++           </property>
++          </widget>
++         </item>
++         <item>
++          <widget class="QComboBox" name="comboBox" >
++           <item>
++            <property name="text" >
++             <string>Don't modify</string>
++            </property>
++           </item>
++           <item>
++            <property name="text" >
++             <string>Unix (CR)</string>
++            </property>
++           </item>
++           <item>
++            <property name="text" >
++             <string>DOS/Window (CR/LF)</string>
++            </property>
++           </item>
++           <item>
++            <property name="text" >
++             <string>Mac (LF)</string>
++            </property>
++           </item>
++          </widget>
++         </item>
++        </layout>
++       </item>
++      </layout>
++     </widget>
++     <widget class="QWidget" name="tab_2" >
++      <attribute name="title" >
++       <string>Tab 2</string>
++      </attribute>
++     </widget>
++    </widget>
++   </item>
++  </layout>
++ </widget>
++ <pixmapfunction></pixmapfunction>
++ <resources/>
++ <connections/>
++</ui>
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/help/help.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,62 @@
++#include <QAction>
++#include <QApplication>
++#include <QUrl>
++#include <QLibraryInfo>
++#include <QMessageBox>
++
++#include "iplugin.h"
++#include "qmdiserver.h"
++#include "help.h"
++#include "helpbrowse.h"
++
++
++HelpPlugin::HelpPlugin()
++	: IPlugin()
++{
++	actionAbout	= new_action( QIcon(), tr("&About"), this, "", tr("XXXXX"), SLOT(showAboutApp()) );
++	actionAboutQt	= new_action( QIcon(), tr("&About Qt"), this, "", tr("XXXXX"), SLOT(showAboutQt()) );
++ 	actionShowQtHelp= new_action( QIcon(), tr("&Qt help"), this, "", tr("XXXXX"), SLOT(showQtHelp()) );
++
++	name = "Help plugin";
++	author = "Diego Iastrubni <elcuco at kde.org>";
++	iVersion = 0;
++	sVersion = "0.0.1";
++	autoEnabled = true;
++	alwaysEnabled = true;
++
++	menus["&Help"]->addAction( actionShowQtHelp );
++	menus["&Help"]->addSeparator();
++	menus["&Help"]->addAction( actionAbout );
++	menus["&Help"]->addAction( actionAboutQt );
++}
++
++HelpPlugin::~HelpPlugin()
++{
++	delete actionAbout;
++	delete actionAboutQt;
++	delete actionShowQtHelp;
++}
++
++void HelpPlugin::showAbout()
++{
++}
++
++void HelpPlugin::showAboutApp()
++{
++	QMessageBox::about( 0, "qmdilib demo", "A small demo for loading plugins<br>Diego Iastrubni (elcuco at kde.org) - lgpl)" );
++}
++
++void HelpPlugin::showAboutQt()
++{
++	QApplication::aboutQt();
++}
++
++void HelpPlugin::showQtHelp()
++{
++	QString helpFile = QLibraryInfo::location(QLibraryInfo::DocumentationPath) + QLatin1String("/html/index.html");
++	QexHelpBrowser *browser = new QexHelpBrowser( QUrl(helpFile) );
++	browser->hide();
++	browser->name = "Qt help";
++	browser->setObjectName( browser->name );
++	mdiServer->addClient( browser );
++}
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/help/help.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/help/help.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/help/help.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,27 @@
++#ifndef __HELP_PLUGIN_H__
++#define __HELP_PLUGIN_H__
++
++#include "iplugin.h"
++
++class QAction;
++
++class HelpPlugin: public IPlugin
++{
++	Q_OBJECT
++public:
++	HelpPlugin();
++	~HelpPlugin();
++
++public slots:
++	void showAbout();
++	void showAboutApp();
++	void showAboutQt();
++	void showQtHelp();
++	
++private:
++	QAction *actionAbout;
++	QAction *actionAboutQt;
++	QAction *actionShowQtHelp;
++};
++
++#endif// __HELP_PLUGIN_H__
+
+Added: tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/plugins/help/help_cfg.ui	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,173 @@
++<ui version="4.0" >
++ <author></author>
++ <comment></comment>
++ <exportmacro></exportmacro>
++ <class>EditorCfgUI</class>
++ <widget class="QWidget" name="EditorCfgUI" >
++  <property name="geometry" >
++   <rect>
++    <x>0</x>
++    <y>0</y>
++    <width>287</width>
++    <height>245</height>
++   </rect>
++  </property>
++  <property name="windowTitle" >
++   <string>Form</string>
++  </property>
++  <layout class="QVBoxLayout" >
++   <property name="margin" >
++    <number>9</number>
++   </property>
++   <property name="spacing" >
++    <number>6</number>
++   </property>
++   <item>
++    <widget class="QTabWidget" name="tabWidget" >
++     <property name="currentIndex" >
++      <number>0</number>
++     </property>
++     <widget class="QWidget" name="tab" >
++      <attribute name="title" >
++       <string>General</string>
++      </attribute>
++      <layout class="QVBoxLayout" >
++       <property name="margin" >
++        <number>9</number>
++       </property>
++       <property name="spacing" >
++        <number>6</number>
++       </property>
++       <item>
++        <widget class="QGroupBox" name="groupBox" >
++         <property name="title" >
++          <string>GroupBox</string>
++         </property>
++         <layout class="QVBoxLayout" >
++          <property name="margin" >
++           <number>9</number>
++          </property>
++          <property name="spacing" >
++           <number>6</number>
++          </property>
++          <item>
++           <widget class="QCheckBox" name="checkBox" >
++            <property name="text" >
++             <string>Make backups</string>
++            </property>
++           </widget>
++          </item>
++          <item>
++           <widget class="QCheckBox" name="checkBox_2" >
++            <property name="text" >
++             <string>Show line numbers</string>
++            </property>
++           </widget>
++          </item>
++          <item>
++           <widget class="QCheckBox" name="checkBox_3" >
++            <property name="text" >
++             <string>Mark current line</string>
++            </property>
++           </widget>
++          </item>
++          <item>
++           <widget class="QCheckBox" name="checkBox_4" >
++            <property name="text" >
++             <string>Word wrap</string>
++            </property>
++           </widget>
++          </item>
++         </layout>
++        </widget>
++       </item>
++       <item>
++        <layout class="QHBoxLayout" >
++         <property name="margin" >
++          <number>0</number>
++         </property>
++         <property name="spacing" >
++          <number>6</number>
++         </property>
++         <item>
++          <widget class="QToolButton" name="toolButton" >
++           <property name="text" >
++            <string>...</string>
++           </property>
++          </widget>
++         </item>
++         <item>
++          <widget class="QLabel" name="label" >
++           <property name="text" >
++            <string>Editor font</string>
++           </property>
++          </widget>
++         </item>
++         <item>
++          <widget class="QLineEdit" name="lineEdit" >
++           <property name="enabled" >
++            <bool>false</bool>
++           </property>
++           <property name="readOnly" >
++            <bool>true</bool>
++           </property>
++          </widget>
++         </item>
++        </layout>
++       </item>
++       <item>
++        <layout class="QHBoxLayout" >
++         <property name="margin" >
++          <number>0</number>
++         </property>
++         <property name="spacing" >
++          <number>6</number>
++         </property>
++         <item>
++          <widget class="QLabel" name="label_2" >
++           <property name="text" >
++            <string>End of line</string>
++           </property>
++          </widget>
++         </item>
++         <item>
++          <widget class="QComboBox" name="comboBox" >
++           <item>
++            <property name="text" >
++             <string>Don't modify</string>
++            </property>
++           </item>
++           <item>
++            <property name="text" >
++             <string>Unix (CR)</string>
++            </property>
++           </item>
++           <item>
++            <property name="text" >
++             <string>DOS/Window (CR/LF)</string>
++            </property>
++           </item>
++           <item>
++            <property name="text" >
++             <string>Mac (LF)</string>
++            </property>
++           </item>
++          </widget>
++         </item>
++        </layout>
++       </item>
++      </layout>
++     </widget>
++     <widget class="QWidget" name="tab_2" >
++      <attribute name="title" >
++       <string>Tab 2</string>
++      </attribute>
++     </widget>
++    </widget>
++   </item>
++  </layout>
++ </widget>
++ <pixmapfunction></pixmapfunction>
++ <resources/>
++ <connections/>
++</ui>
+
+Added: tools/qmdilib/demos/plugin-demo/pluningmanager.cpp
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluningmanager.cpp	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluningmanager.cpp	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,162 @@
++//
++// C++ Implementation: pluningmanager
++//
++// Description: 
++//
++//
++// Author: Diego Iastrubni <elcuco at kde.org>, (C) 2006
++//
++// Copyright: See COPYING file that comes with this distribution
++//
++//
++#include <QStandardItemModel>
++#include <QMainWindow>
++
++#include "qmdihost.h"
++#include "qmdiserver.h"
++#include "iplugin.h"
++#include "pluningmanager.h"
++#include "pluginmodel.h"
++
++/**
++ * \brief A class which manages a list of plugins and merges their menus and toolbars to the main application
++ * \author Diego Iastrubni <elcuco at kde.org>
++ * 
++ */
++PluginManager::PluginManager( qmdiHost *host, qmdiServer *server )
++{
++	mdiHost = host;
++	mdiServer = server;
++
++	QWidget *w = new QWidget;
++	ui.setupUi( w );
++	w->setObjectName("config");
++	
++	pluginModel = new PluginModel( &plugins );
++	ui.listWidget->setModel( pluginModel );
++	connect( ui.cbEnabled, SIGNAL(toggled(bool)), this, SLOT(on_cbEnabled_togglged(bool)));
++	connect( ui.btnAbout, SIGNAL(clicked()), this, SLOT(on_aboutPlugin_clicked()));
++	
++	connect( ui.listWidget, SIGNAL(activated(QModelIndex)), this, SLOT(on_listWidget_activated(QModelIndex)));
++	connect( ui.listWidget, SIGNAL(entered(QModelIndex)), this, SLOT(on_listWidget_activated(QModelIndex)));
++	connect( ui.listWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(on_listWidget_activated(QModelIndex)));
++
++	dlg.addPage( w, QIcon("images/config.png") );
++}
++
++PluginManager::~PluginManager()
++{
++}
++
++void PluginManager::configurePlugins()
++{
++	if (dlg.isVisible())
++		dlg.hide();
++	else
++		dlg.show();
++}
++
++void PluginManager::addPlugin( IPlugin *newplugin )
++{
++	plugins << newplugin;
++	
++	if (!newplugin)
++		return;
++
++	QModelIndex parent = pluginModel->index(0, 0, parent);
++	int count = pluginModel->columnCount();
++	
++	pluginModel->insertRows(count, 1, parent);
++	pluginModel->insertColumns(count, 1, parent);
++	QModelIndex index = pluginModel->index(count, 0, parent);
++	pluginModel->setData(index, newplugin->getName() );
++
++	newplugin->mdiServer = mdiServer;
++	if (newplugin->alwaysEnabled)
++		newplugin->autoEnabled = true;
++	
++	if (newplugin->autoEnabled)
++	{
++		newplugin->enabled = true;
++		mdiHost->mergeClient( newplugin );
++	}
++
++
++	// ugly work arround to fix the selection of the first item
++	if (plugins.count() == 1)
++	{
++		ui.pluginName->setText( newplugin->getName() );
++		ui.pluginName->setCursorPosition( 0 );
++	
++		ui.authorName->setText( newplugin->getAuthor() );
++		ui.authorName->setCursorPosition( 0 );
++	
++		ui.versionString->setText( newplugin->getsVersion() );
++		ui.versionString->setCursorPosition( 0 );
++
++		ui.cbEnabled->setEnabled( !newplugin->alwaysEnabled );
++// 		TODO why does this crash?
++// 		ui.cbEnabled->setChecked( newplugin->isEnabled() );
++	}
++}
++
++// called when the user seleccts a new plugin
++void PluginManager::on_listWidget_activated(const QModelIndex & index )
++{
++	IPlugin *plugin = plugins[index.row()];
++
++	if (!plugin)
++		return;
++
++	ui.pluginName->setText( plugin->getName() );
++	ui.pluginName->setCursorPosition( 0 );
++	
++	ui.authorName->setText( plugin->getAuthor() );
++	ui.authorName->setCursorPosition( 0 );
++	
++	ui.versionString->setText( plugin->getsVersion() );
++	ui.versionString->setCursorPosition( 0 );
++
++	ui.cbEnabled->setEnabled( !plugin->alwaysEnabled );
++	ui.cbEnabled->setChecked( plugin->isEnabled() );
++}
++
++// called when the user checks on unchecks to enable a plugin
++void PluginManager::on_cbEnabled_togglged( bool checked )
++{
++	QModelIndex index = ui.listWidget->currentIndex();
++	IPlugin *plugin = plugins[index.row()];
++
++	if (!plugin)
++		return;
++
++	plugin->enabled = checked;
++	if (checked)
++	{		
++		// TODO add also the configuration dialog for this plugin
++		mdiHost->mergeClient( plugin );
++	}
++	else
++	{
++		// TODO remove also the configuration dialog for this plugin
++		mdiHost->unmergeClient( plugin );
++	}
++	mdiHost->updateGUI( dynamic_cast<QMainWindow*>(mdiHost) );
++}
++
++void PluginManager::on_aboutPlugin_clicked()
++{
++	QModelIndex index = ui.listWidget->currentIndex();
++	IPlugin *plugin = plugins[index.row()];
++
++	if (!plugin)
++		return;
++
++	dlg.raise();
++	dlg.setFocus();
++	
++	plugin->showAbout();
++
++	dlg.raise();
++	dlg.setFocus();
++}
+
+Added: tools/qmdilib/demos/plugin-demo/pluningmanager.h
+===================================================================
+--- tools/qmdilib/demos/plugin-demo/pluningmanager.h	2006-04-16 19:55:33 UTC (rev 70)
++++ tools/qmdilib/demos/plugin-demo/pluningmanager.h	2006-04-16 20:27:11 UTC (rev 71)
+@@ -0,0 +1,50 @@
++//
++// C++ Interface: pluningmanager
++//
++// Description:
++//
++//
++// Author: Diego Iastrubni <elcuco at kde.org>, (C) 2006
++//
++// Copyright: See COPYING file that comes with this distribution
++//
++//
++#ifndef PLUNINGMANAGER_H
++#define PLUNINGMANAGER_H
++
++#include <QObject>
++#include "configdialog.h"
++#include "ui_plugin_list.h"
++
++class qmdiHost;
++class qmdiServer;
++
++class IPlugin;
++class PluginModel;
++class QStandardItemModel;
++
++class PluginManager: public QObject
++{
++	Q_OBJECT
++	
++public:
++	PluginManager( qmdiHost *host, qmdiServer *server );
++	virtual ~PluginManager();
++
++public slots:
++	void configurePlugins();
++	void addPlugin( IPlugin *newplugin );
++	void on_listWidget_activated(const QModelIndex & index );
++	void on_cbEnabled_togglged( bool checked );
++	void on_aboutPlugin_clicked();
++	
++private:
++	QList<IPlugin*>		plugins;
++	QStandardItemModel	*pluginModel;
++	qmdiHost		*mdiHost;
++	qmdiServer		*mdiServer;
++	ConfigDialog		dlg;
++	Ui::plugin_list ui;
++};
++
++#endif
+
+
+
+From fullmetalcoder at hotmail.fr  Wed Apr 19 13:23:44 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Wed, 19 Apr 2006 13:23:44 +0200
+Subject: [Devqt-devel] r71 - plugin-demo
+Message-ID: <BAY114-F23A3CDEE66F8AD3753B2F4A7C50@phx.gbl>
+
+Hi all,
+
+Looks like my own base is much better :
+
+plugin are loaded at run time, code is not a mess, very clear relationships 
+and dual-link to core dll.
+I'll give you a beta ASAP and maybe some diagrams but what I have right now 
+is a screeshot. It's not very impressive but demonstrates the way I modified 
+qmdilib and that plugins are well implemented. Build-in GUI only provides a 
+main window with a central widget (DevMDI) and a few menus (Files, View, and 
+Help); dock widgets are added by the perspective interface via it's wrapper 
+(DevPerspective) and additioannal menus and toolbars are managed by qmdilib 
+(DevGUI is the host, DevMDI and DevPerspective are servers, MDI-widgets 
+(only editors ATM but plugins can do much more), and possibly dock widgets' 
+children, are clients). The screenshot show the progress of the default 
+plugin rather than the core dll itself but IMO it's quite an achievement...
+
+BTW I redesigned client deletion in qmdilib to get something easier, I 
+removed qmdiTabWidget (as you can see DevMDI combine QWorkspace and QTabBar, 
+which is much better) and added a new baser class for plugin located widgets 
+: qmdiWidget inherits from QWidget and qmdiClient, bonus : it does mdi 
+cleanup on its own. What the point ? Giving plugins the possibility to offer 
+designer widget, UML editor and so on...
+
+TODO :
+
+1) finish plugin-wrapper implementation to allow community to develop 
+complete plugins
+2) adapt editor for use with plugins
+3) start real developpment of default plugin
+BTW default plugin is named "defaut" because default is a C++ keyword and 
+compiler didn't produced a working plugin
+
+>added a pre release of the plugin demo.
+>
+>This demo shows how to code a plugin system. Each plugin is self
+>contained and does not have to know anything about the main window, or
+>the system used for the mdi. All the comunication is done via qmdiServer
+>and qmdiHost.
+>
+>The application has also a configuration dialog, which will be (not
+>implemented yet) with all the plugins from which you can enable/disable
+>the available plugins (unless always enabled is on). The configuration
+>dialog will also contain several pages for each plugin, if that plugin
+>contains a configuration widget (not implemented yet). Each wdget will
+>also have a configuration item prepared from which it will load/save
+>it's
+>state it on load/unload (not implemented yet).
+>
+>the demo currently abuses the code from the mdi-tab demo: it contains 2
+>plugins : for file editing and for help. The plugins display the same
+>widgets at the tab demo. The functionality of this application is not as
+>good as the original demo, but it's on the way.
+>
+>todo:
+>  1) Plugins are hard coded/linked into the application. Need to find a
+>     way to make the plugins loadable at run time. This means that you
+>     can theoratically edit the plugins from the main application and
+>     while it's working just unload/load the plugins to get newer
+>     versions.
+>  2) Need to add new functionalities to mdi-clients: "can you close
+>     yourself?" This will be used for providing a way to query the user
+>     if he wants to save his work before closing the mdi-client.
+>  3) QSA. Programmers should have the ability to write plugins in JS/QSA
+>     scripts.
+>  4) What if the plugins need plugins? for example, used defined plugins
+>     for the editor.
+>  5) Interaction between plugins: how can the help plugin extend the
+>     editor plugin?
+>  6) Dependencies between plugins: a project plugin will need the editor
+>     plugin to be loaded.
+>  7) Clean up the code. It's a mess.
+>  8) Documentation.
+>
+
+_________________________________________________________________
+Retrouvez tout en un clin d'oeil avec la barre d'outil MSN Search ! 
+http://desktop.msn.fr/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: screen.png
+Type: image/x-png
+Size: 17052 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/devqt-devel/attachments/20060419/4675015e/attachment.bin>
+
+From elcuco at berlios.de  Wed Apr 19 18:37:40 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Wed, 19 Apr 2006 18:37:40 +0200
+Subject: [Devqt-devel] r72 - in tools/qmdilib: demos/mdi-tab src
+Message-ID: <200604191637.k3JGbeSG009152@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-19 18:36:38 +0200 (Wed, 19 Apr 2006)
+New Revision: 72
+
+Modified:
+   tools/qmdilib/demos/mdi-tab/mainwindow2.cpp
+   tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+   tools/qmdilib/demos/mdi-tab/qexeditor.h
+   tools/qmdilib/src/qmdiclient.cpp
+   tools/qmdilib/src/qmdiclient.h
+Log:
+new functionality to the mdi clients:
+a new function to ask for the widget to close itself nicefully, and the
+option to abort it. this is usuful for rw clients (text editors and
+stuff). the mdi server can ask the client to close itself, and the cient
+will save the text if needed .
+
+users (programmers) need only to re-implement only one funciton, and
+demostrated in qexeditoh.h.
+
+the code is very compatible with the old one, and older applications
+should work with minimal to no changes.
+
+
+Modified: tools/qmdilib/demos/mdi-tab/mainwindow2.cpp
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/mainwindow2.cpp	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/demos/mdi-tab/mainwindow2.cpp	2006-04-19 16:36:38 UTC (rev 72)
+@@ -114,7 +114,14 @@
+ 
+ void MainWindow2::fileClose()
+ {
+-	delete tabWidget->currentWidget();
++	qmdiClient *c = dynamic_cast<qmdiClient*>(tabWidget->currentWidget());
++
++	if (c == NULL)
++		// if it's not an mdi client, safe to kill it
++		delete tabWidget->currentWidget();
++	else
++		// otherwise, ask politelly for it to close it
++		c->closeClient();
+ }
+ 
+ void MainWindow2::helpQtTopics()
+
+Modified: tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-19 16:36:38 UTC (rev 72)
+@@ -1,5 +1,10 @@
+ #include <QAction>
+ #include <QString>
++#include <QTextCodec>
++#include <QTextStream>
++#include <QFile>
++#include <QMessageBox>
++#include <QFileDialog>
+ 
+ /**
+  * \file qextexteditor.cpp
+@@ -29,7 +34,7 @@
+  * \see qmdiClient
+  */
+  
+-QexTextEdit::QexTextEdit( QWidget *parent ):QTextEdit( parent )
++QexTextEdit::QexTextEdit( QString file, QWidget *parent):QTextEdit( parent )
+ {
+ 	QFont font;
+ 	font.setFamily("Courier New");
+@@ -59,7 +64,7 @@
+         connect( actionCopy, SIGNAL(triggered()), this, SLOT(copy()) );
+         connect( actionCut, SIGNAL(triggered()), this, SLOT(cut()) );
+         connect( actionPaste, SIGNAL(triggered()), this, SLOT(paste()) );
+-	connect( actionClose, SIGNAL(triggered()), this, SLOT(deleteLater()));
++	connect( actionClose, SIGNAL(triggered()), this, SLOT(fileClose()));
+ 
+ 	actionUndo->setEnabled( false );
+ 	actionRedo->setEnabled( false );
+@@ -88,5 +93,106 @@
+ 	toolbars["Edit operations"]->addSeparator();
+ 	toolbars["Edit operations"]->addAction( actionUndo );
+ 	toolbars["Edit operations"]->addAction( actionRedo );
++
++	openFile( file );
+ }
+ 
++
++bool QexTextEdit::canCloseClient()
++{
++	if (!document()->isModified())
++		return true;
++
++	// ask for saving
++	int ret = QMessageBox::warning(this, tr("Application"),
++		tr("The document has been modified.\n"
++		"Do you want to save your changes?"),
++		QMessageBox::Yes | QMessageBox::Default,
++		QMessageBox::No,
++		QMessageBox::Cancel | QMessageBox::Escape);
++
++	if (ret == QMessageBox::Yes)
++		return fileSave();
++	else if (ret == QMessageBox::Cancel)
++		return false;
++
++	// shut up GCC warnings
++	return true;
++}
++
++bool QexTextEdit::openFile( QString newFile, QTextCodec *c )
++{
++	fileName = newFile;	// the full path of the loaded file
++	name = newFile;		// the name of the object for it's mdi server
++	setObjectName( name );	// the QObject name (same as "name" \?)
++
++	if (newFile.isEmpty())
++		return true;
++
++	QFile f( fileName );
++
++	if (!f.open( QIODevice::ReadOnly ) )
++		return false;
++
++	if (c == NULL)
++		c = QTextCodec::codecForLocale();
++
++	QTextStream t(&f);
++	t.setCodec( c );
++	setPlainText( t.readAll() );
++	f.close();
++
++	return true;
++}
++
++bool QexTextEdit::saveFile( QString newFile, QTextCodec *c  )
++{
++	QFile f( newFile );
++
++	if (!f.open( QIODevice::WriteOnly ) )
++		return false;
++	
++	if (c == NULL)
++		c = QTextCodec::codecForLocale();
++	
++	QTextStream t(&f);
++	t.setCodec( c );
++	t << toPlainText();
++	f.close();
++
++	return true;
++}
++
++bool QexTextEdit::fileSave()
++{
++	if (fileName.isEmpty())
++		return fileSaveAs();
++
++	return saveFile( fileName );
++}
++
++bool QexTextEdit::fileSaveAs()
++{
++
++	QString s = QFileDialog::getSaveFileName(
++		NULL,
++		"Choose a filename to save under",
++		"",
++		"Sources (*.c *.cpp *.cxx *.h *.hpp *.hxx *.inc);;"
++				"Headers (*.h *.hpp *.hxx *.inc);;"
++				"Qt project (*.pro *.pri);;"
++				"All files (*.*)"
++	);
++
++	if (s.isEmpty())
++		return false;
++
++	fileName = s;
++	return saveFile( fileName );
++}
++
++
++bool QexTextEdit::fileClose()
++{
++	return closeClient();
++}
+
+Modified: tools/qmdilib/demos/mdi-tab/qexeditor.h
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/qexeditor.h	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/demos/mdi-tab/qexeditor.h	2006-04-19 16:36:38 UTC (rev 72)
+@@ -17,11 +17,21 @@
+ class QTextEdit;
+ class QToolBar;
+ class QAction;
++class QTextCodec;
+ 
+ class QexTextEdit : public QTextEdit, public qmdiClient
+ {
++	Q_OBJECT
+ public:
+-	QexTextEdit( QWidget *parent=0 );
++	QexTextEdit( QString file="", QWidget *parent=0 );
++	bool canCloseClient();
++	bool openFile( QString newFile, QTextCodec *c=NULL  );
++	bool saveFile( QString newFile, QTextCodec *c=NULL  );
++	
++public slots:
++	bool fileSave();
++	bool fileSaveAs();
++	bool fileClose();
+ 
+ private:
+ 	QAction *actionSave;
+@@ -33,6 +43,8 @@
+ 	QAction *actionCut;
+ 	QAction *actionPaste;
+ 	QAction *actionFind;
++
++	QString fileName;
+ };
+ 
+ #endif //__QEX_EDITOR_H__
+
+Modified: tools/qmdilib/src/qmdiclient.cpp
+===================================================================
+--- tools/qmdilib/src/qmdiclient.cpp	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/src/qmdiclient.cpp	2006-04-19 16:36:38 UTC (rev 72)
+@@ -65,3 +65,62 @@
+ 	mdiServer = NULL;
+ 	myself    = NULL;
+ }
++
++/**
++ * \brief close the mdi client
++ * \return true if the widget is closed after this call
++ * 
++ * If you want to delete mdi clients from your mdi server, sometimes
++ * just deleting this client is not the smart move. For example if the
++ * client contains an user editable document, the user should be asked
++ * to save his changes, and maybe even abort.
++ *
++ * By default this function does:
++ *  - calls canCloseClient to find out if it's ok to closeClient()
++ *  - if the function returns true, it will try to cast the mdi client to a
++ *    QObject, calls deleteLater() and returns true and the object 
++ *    will be deleted afterwards.
++ *  - if cast failed or canCloseClient() returned false, a negative value
++ *    is returned, and the object is not destructed.
++ * 
++ * This means that for read only clients you can leave the default. On R/W
++ * clients which derive QObject, you will have to override canCloseClient().
++ * If your derived class does not derive QObject, you will need to overide this
++ * function as well.
++ *
++ * \see canCloseClient()
++ * \see QObject::deleteLater()
++ */
++bool qmdiClient::closeClient()
++{
++	if (canCloseClient())
++	{
++		if (myself != NULL)
++		{
++			myself->deleteLater();
++			return true;
++		}
++		else
++			return false;
++	}
++	else
++		return false;
++}
++
++/**
++ * \brief check if the mdi client is valid for closing
++ * \return true is it is ok to destruct the mdi client
++ *
++ * This function should return true if the mdi client is safe for
++ * removal from the mdi client. Clients are valid for removal usually
++ * if no changes have been made, or the user accepted to save then.
++ *
++ * You can define your own logic by re-implementing this function
++ * in your derived classes.
++ * 
++ * \see closeClient()
++ */
++bool qmdiClient::canCloseClient()
++{
++	return true;
++}
+
+Modified: tools/qmdilib/src/qmdiclient.h
+===================================================================
+--- tools/qmdilib/src/qmdiclient.h	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/src/qmdiclient.h	2006-04-19 16:36:38 UTC (rev 72)
+@@ -20,6 +20,9 @@
+ public:
+ 	qmdiClient();
+ 	virtual ~qmdiClient();
++
++	virtual bool closeClient();
++	virtual bool canCloseClient();
+ 	
+ 	QString name;
+ 	QString fileName;
+
+
+
+From fullmetalcoder at hotmail.fr  Fri Apr 21 16:19:45 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Fri, 21 Apr 2006 16:19:45 +0200
+Subject: [Devqt-devel] r71 - plugin-demo
+In-Reply-To: <BAY114-F9494DDC665E82B087C79EA7BA0@phx.gbl>
+Message-ID: <BAY114-F137BED8DA1F6346400CD32A7BB0@phx.gbl>
+
+Fuck off!!! I sned that mail to the mailing list but it was refused due to 
+the big .zip archive...
+Anyway I luckily kept a copy of it so I can send it back (without the 
+archive that I uploaded to berlios as a "release file")
+
+check out :
+
+https://developer.berlios.de/project/shownotes.php?release_id=9838
+
+or, for a direct download :
+
+http://prdownload.berlios.de/devqt/devqt-branch-3-alpha.zip
+
+P.S : I talked about qmdilib toolbar system in my previous mail but it 
+actually looks like I'll have to mix my architecture with elcuco's one to 
+get something both flexible and able to keep toolbars location ( + I have to 
+make it the less flicky I can)
+
+Still waiting for comments and a decision about the site...
+
+>
+>Hi,
+>
+>Here it is! Not finished yet but it compiles, runs and looks fine.
+>There's still a lot of work to do, especially for the default plugin but 
+>I'd rather fully implement the base and make sure it's bug free before 
+>going further.
+>
+>Have a look, test it and give me feedback. The most important things I want 
+>to know :
+>- does it compiles on your PC ?
+>- does it runs fine on your PC ?
+>- what do you think of the internal architecture ?
+>- are there bugs I didn't find (I'm not talking about things not 
+>implemented yet...) ?
+>
+>@Elcuco : I tested your plugin demo and there are interesting stuff but you 
+>were right : the code is a mess !!!
+>
+>P.S : you may notice that I rewrote lots of things in qmdilib : client - 
+>server connection works better, toolbars update is less flicky and toolbars 
+>are now much more flexible (widgets and toolbar breaks are allowed)
+>
+
+_________________________________________________________________
+MSN Hotmail : cr?ez votre adresse e-mail gratuite & ? vie ! 
+http://www.imagine-msn.com/Messenger/?locale=fr-fr
+
+
+
+From elcuco at kde.org  Fri Apr 21 19:17:38 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Fri, 21 Apr 2006 19:17:38 +0200
+Subject: New beat? (was Re: [Devqt-devel] r71 - plugin-demo)
+In-Reply-To: <BAY114-F137BED8DA1F6346400CD32A7BB0@phx.gbl>
+References: <BAY114-F137BED8DA1F6346400CD32A7BB0@phx.gbl>
+Message-ID: <444913B2.9000004@kde.org>
+
+henry badinter wrote:
+> Fuck off!!! I sned that mail to the mailing list but it was refused 
+> due to the big .zip archive...
+> Anyway I luckily kept a copy of it so I can send it back (without the 
+> archive that I uploaded to berlios as a "release file")
+Please watch your language.
+
+Yes, this mailing list has a policy of 40kb or less attachments. Mailing 
+lists are not for download. Bounces are send to a mail of mine I do not 
+check ofter, that is why I did not notice it. If you want, I can forward 
+the mail to the list.
+
+In future, please don't do releases as posts on forums or mailing lists. 
+There are more traditional ways of doing this kind of things.
+>
+> check out :
+>
+> https://developer.berlios.de/project/shownotes.php?release_id=9838
+I assume you do not want community helping you with this project. 
+Otherwise, you would announce that you are about to release a new beta, 
+and what are your goals for that beta. People would then check your code 
+and help you debug it.
+
+At least upload your source to the SVN, and hopefully  in a same matter, 
+in small increments so we can understand what are you changing in the code.
+>
+> or, for a direct download :
+>
+> http://prdownload.berlios.de/devqt/devqt-branch-3-alpha.zip
+>
+> P.S : I talked about qmdilib toolbar system in my previous mail but it 
+> actually looks like I'll have to mix my architecture with elcuco's one 
+> to get something both flexible and able to keep toolbars location ( + 
+> I have to make it the less flicky I can)
+The toolbars keep location bewteen context changes, at least no my box. 
+The flickers, I konw, I will see how can I take care of it. Not a high 
+priority at the moment.
+
+>>
+>> Hi,
+>>
+>> Here it is! Not finished yet but it compiles, runs and looks fine.
+>> There's still a lot of work to do, especially for the default plugin 
+>> but I'd rather fully implement the base and make sure it's bug free 
+>> before going further.
+>>
+>> Have a look, test it and give me feedback. The most important things 
+>> I want to know :
+>> - does it compiles on your PC ?
+Yes.
+>> - does it runs fine on your PC ?
+Yes. XP QT 4.1.1 MinGW 4.
+
+>>
+>> @Elcuco : I tested your plugin demo and there are interesting stuff 
+>> but you were right : the code is a mess !!!
+Can you comment more briefly what "is a mess"? I understood that you 
+modified the code, but the changes are lost in the complexity of the 
+program. I just don't see them.
+
+The code of the "demos" is still not finished, that is why it might be 
+partly problematic. This is why I did not announce it as public beta. 
+It's still been developed.
+>>
+>> P.S : you may notice that I rewrote lots of things in qmdilib : 
+>> client - server connection works better, toolbars update is less 
+>> flicky and toolbars are now much more flexible (widgets and toolbar 
+>> breaks are allowed)
+Can you describe how much flexible your code is? How is it done?
+I don't want to be picky, but according to GPL (yes, my library is LGPL, 
+but similar rules apply here) you are supposed to describe the changes 
+to each file at the top. It's used to use some VCS to maintain those 
+things. You are not doing any of them.
+
+Quite frankly, I dont care about the license issue. But, if you want to 
+make my life easier in helping you, please document the changes, and ask 
+for new features. in qmdilib. I am thinking about new functionalities I 
+want to add  to the lib, and if you don't talk, you will find your code 
+going in another direction then mine. This is called a fork.
+
+
+
+
+From elcuco at kde.org  Fri Apr 21 19:53:24 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Fri, 21 Apr 2006 19:53:24 +0200
+Subject: New beta? (was Re: [Devqt-devel] r71 - plugin-demo)
+In-Reply-To: <444913B2.9000004@kde.org>
+References: <BAY114-F137BED8DA1F6346400CD32A7BB0@phx.gbl> <444913B2.9000004@kde.org>
+Message-ID: <44491C14.3090902@kde.org>
+
+The subject was supposed to be "beta". Funny how that is also a valid 
+English word :)
+
+Diego Iastrubni wrote:
+...
+
+
+From fullmetalcoder at hotmail.fr  Sun Apr 23 14:50:27 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Sun, 23 Apr 2006 14:50:27 +0200
+Subject: [Devqt-devel] RE : new beta ?
+Message-ID: <BAY114-F365C16492451F11E8D1A5AA7B90@phx.gbl>
+
+Hi
+
+>In future, please don't do releases as posts on forums or mailing lists. 
+>There are more traditional ways of doing this kind of things.
+
+on which forum??? Berlios developpment forum does not support attachement 
+AFAIK and I wouldn't like to use QtCentre to post such an experimental 
+thing.
+
+
+>I assume you do not want community helping you with this project. 
+>Otherwise, you would announce that you are about to release a new beta, and 
+>what are your goals for that beta. People would then check your code and 
+>help you debug it.
+>
+>At least upload your source to the SVN, and hopefully  in a same matter, in 
+>small increments so we can understand what are you changing in the code.
+
+You seem quite bitter elcuco... I apologize if I'm the one who make you feel 
+that way but that's not the point right now. I did announce that I was about 
+to release a new beta (at least it was my understanding of what I said...) 
+and if I post it as a "release file" on Berlios that's only because it was 
+the easiest and fastest way for me to give you the opportunity to check the 
+code...
+Uploading on the SVN would have been a bit longer and I was unsure about 
+where to put it...
+- Tools? I don't think of it as a tool but rather as a new base from which 
+we would be able to write DevQt as a flexible IDE.
+- Source? either it would have been unnoticed either I would have had to 
+lcear the current trunk which I don't want..
+- New folder? what name? and how to create them with SVN (I guess I'd need 
+to read the docs ;-) )
+
+
+>The toolbars keep location bewteen context changes, at least no my box. The 
+>flickers, I konw, I will see how can I take care of it. Not a high priority 
+>at the moment.
+>
+
+Yep! The toolbars keep their posistion with your system and not with mine 
+but the toolbars only allow actions with yours, no toolbarbreaks nor 
+widgets... We've got to merge them to get something nice. I understand that 
+you don't really care about the flicker right now but still, it's something 
+to get rid of before a release candidate
+
+>>>- does it compiles on your PC ?
+>Yes.
+Nice ! As you have always had troubles with older versions I can't help but 
+shouting my happiness to the world! :-)
+
+>>>- does it runs fine on your PC ?
+>Yes. XP QT 4.1.1 MinGW 4.
+
+Anyone tested it under Linux???
+BTW I didn't know mingw 4.x.x had been released... When has that occured???
+
+>>>
+>>>@Elcuco : I tested your plugin demo and there are interesting stuff but 
+>>>you were right : the code is a mess !!!
+>Can you comment more briefly what "is a mess"? I understood that you 
+>modified the code, but the changes are lost in the complexity of the 
+>program. I just don't see them.
+
+I don't take any code from the demos.The plugin configuration dialog seemed 
+interesting but I didn't take the time to adapt it to my need. What is a 
+mess ? Code is not very well commented, names are not self-explanative and 
+lots of code appear to be commented (mostly in headers) without even a word 
+to explain what their purpose were and why they were commented, plugins are 
+hard-coded into the app, the code standars are unstable and sometimes not 
+human-readable (especially for connect() stuff)...
+
+>Can you describe how much flexible your code is? How is it done?
+>I don't want to be picky, but according to GPL (yes, my library is LGPL, 
+>but similar rules apply here) you are supposed to describe the changes to 
+>each file at the top. It's used to use some VCS to maintain those things. 
+>You are not doing any of them.
+>
+>Quite frankly, I dont care about the license issue. But, if you want to 
+>make my life easier in helping you, please document the changes, and ask 
+>for new features. in qmdilib. I am thinking about new functionalities I 
+>want to add  to the lib, and if you don't talk, you will find your code 
+>going in another direction then mine. This is called a fork.
+>
+
+Quite frankly I didn't understood why you started creating a lib (that is 
+not really a lib BTW) as a tool for DevQt and stated that is wasn't part of 
+the project. I see the risk of fork but due to my poor internet connection 
+and lack of time and also because I was only working on a beta, I didn't 
+bothered you with my modifications.
+I can understand that you want to keep qmdilib apart from the project but 
+then you're bringing serious limitations to flexibility... In such a case 
+I'd like you to continue working on it without committing on the SVN until 
+you come to a working release that could be used without uncompatibility and 
+license troubles. In the meantime DevQt would keep the modified verison of 
+qmdilib that is currently used and wait for your work to end.
+
+_________________________________________________________________
+Retrouvez tout en un clin d'oeil avec la barre d'outil MSN Search ! 
+http://desktop.msn.fr/
+
+
+
+From elcuco at kde.org  Sun Apr 23 20:57:31 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Sun, 23 Apr 2006 20:57:31 +0200
+Subject: [Devqt-devel] RE : new beta ?
+In-Reply-To: <BAY114-F365C16492451F11E8D1A5AA7B90@phx.gbl>
+References: <BAY114-F365C16492451F11E8D1A5AA7B90@phx.gbl>
+Message-ID: <444BCE1B.8000601@kde.org>
+
+henry badinter wrote:
+>
+> I don't take any code from the demos.The plugin configuration dialog 
+> seemed interesting but I didn't take the time to adapt it to my need. 
+> What is a mess ? Code is not very well commented, names are not 
+> self-explanative and lots of code appear to be commented (mostly in 
+> headers) without even a word to explain what their purpose were and 
+> why they were commented, plugins are hard-coded into the app, the code 
+> standars are unstable and sometimes not human-readable (especially for 
+> connect() stuff)...
+The demos are not documented, indeed. I will take this to my 
+consideration and start documenting the demos as well. BTW, I never 
+comment headers, but CPP files, as those comments will have to be 
+ignored by the pre-compiler and this can lead to longer compilations.
+
+"the code standars are unstable and sometimes not human-readable 
+(especially for connect() stuff)..."
+
+Can you comment about that? What part did you find that was the weakest 
+on my code?
+
+I noticed your point about widgets on toolbars, and I will address it soon.
+
+>
+> Quite frankly I didn't understood why you started creating a lib (that 
+> is not really a lib BTW) as a tool for DevQt and stated that is wasn't 
+> part of the project. I see the risk of fork but due to my poor 
+> internet connection and lack of time and also because I was only 
+> working on a beta, I didn't bothered you with my modifications.
+And by this you are violating the license of the LGPL:
+
+2.a) The modified work must itself be a software library.
+Feel free to "violate" this. I don't mind, and and give permission to 
+everyone to link this so called library statically to every project you 
+want (as long as you have a valid Qt license for you needs of course).
+
+2.b) You must cause the files modified to carry prominent notices 
+stating that you changed the files and the date of any change.
+This one bothers me. If I want to improve my software, I need your help. 
+You are just not helping me to make a better software.
+
+*5.* A program that contains no derivative of any portion of the 
+Library, but is designed to work with the Library by being compiled or 
+linked with it, is called a "work that uses the Library". Such a work, 
+in isolation, is not a derivative work of the Library, and therefore 
+falls outside the scope of this License.
+Just to make this clear if you do not modify mt library at all, and just 
+link to it (dynamically as I think LGPL states, or statically as I 
+pointed already), you have basically no restrictions. IANAL, but I think 
+I got this part correctly. I hope :)
+
+*10.* Each time you redistribute the Library (or any work based on the 
+Library), the recipient automatically receives a license from the 
+original licensor to copy, distribute, link with or modify the Library 
+subject to these terms and conditions. You may not impose any further 
+restrictions on the recipients' exercise of the rights granted herein. 
+You are not responsible for enforcing compliance by third parties with 
+this License.
+It seems you need to put the copy of the LGPL with the distributed 
+source. Not a big problem, since in these days you can always search for 
+it and find it in a minute on the web.
+
+The deal, is that you cannot choose which rights to use or not, you just 
+need to comply with them or use another library. Again, all I am asking 
+is "what did you change", nothing more.
+> I can understand that you want to keep qmdilib apart from the project 
+> but then you're bringing serious limitations to flexibility... In such 
+> a case I'd like you to continue working on it without committing on 
+> the SVN until you come to a working release that could be used without 
+> uncompatibility and license troubles. In the meantime DevQt would keep 
+> the modified verison of qmdilib that is currently used and wait for 
+> your work to end.
+I will definetly not do such thing. I am comiting my work to the SVN so 
+other people will be able to see what I am doing and help me improve my 
+code. I only hope that my code is helpful to them, and they will use it. 
+Taking the source from developers is the worst thing that a can be done 
+for this kind of project.
+
+
+
+
+From fullmetalcoder at hotmail.fr  Mon Apr 24 21:42:04 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Mon, 24 Apr 2006 21:42:04 +0200
+Subject: [Devqt-devel] RE : new beta ?
+In-Reply-To: <444BCE1B.8000601@kde.org>
+Message-ID: <BAY114-F39F8AA6D30CC54A9D48B0BA7BE0@phx.gbl>
+
+>"the code standars are unstable and sometimes not human-readable 
+>(especially for connect() stuff)..."
+>
+>Can you comment about that? What part did you find that was the weakest on 
+>my code?
+>
+
+If you don't mind I'll not do it right now, I'm rather busy ATM...
+
+>I noticed your point about widgets on toolbars, and I will address it soon.
+>
+No need! I did it today!!! I went back to your version, thought a bit and 
+solved the two most important problems : widgets (hopefully you used a QList 
+of QObject* so it wasn't that hard) and flicker (just use a boolean to store 
+modification state thus avoid to clear and unmodified toolbars. Bonus : 
+toolbars still keep their locations between GUI updates. Bonus hint : to use 
+toolbar breaks just call :
+
+//toolbars stuff
+
+updateGUI(this);
+addToolBarBreak();
+
+//other toolbars stuff
+
+Within the mainwindow it achieve it though the code isn't the nicest ever...
+
+>>
+>>Quite frankly I didn't understood why you started creating a lib (that is 
+>>not really a lib BTW) as a tool for DevQt and stated that is wasn't part 
+>>of the project. I see the risk of fork but due to my poor internet 
+>>connection and lack of time and also because I was only working on a beta, 
+>>I didn't bothered you with my modifications.
+>And by this you are violating the license of the LGPL:
+
+My understanding was that any Qt4-based piece of code written with the open 
+source edition had to be licensed under GPL, other licensing requiring a 
+commercial version of Qt4... What's wrong ?
+
+>
+>2.a) The modified work must itself be a software library.
+>Feel free to "violate" this. I don't mind, and and give permission to 
+>everyone to link this so called library statically to every project you 
+>want (as long as you have a valid Qt license for you needs of course).
+
+Nice to you.
+
+>
+>2.b) You must cause the files modified to carry prominent notices stating 
+>that you changed the files and the date of any change.
+>This one bothers me. If I want to improve my software, I need your help. 
+>You are just not helping me to make a better software.
+>
+
+Lack of time once again... I corrected that already. The next update of the 
+beta (coming within 2 weeks because I'm gonna be on holidays, far away from 
+my PC, for 5 days) will respect that clause.
+
+>*5.* A program that contains no derivative of any portion of the Library, 
+>but is designed to work with the Library by being compiled or linked with 
+>it, is called a "work that uses the Library". Such a work, in isolation, is 
+>not a derivative work of the Library, and therefore falls outside the scope 
+>of this License.
+>Just to make this clear if you do not modify mt library at all, and just 
+>link to it (dynamically as I think LGPL states, or statically as I pointed 
+>already), you have basically no restrictions. IANAL, but I think I got this 
+>part correctly. I hope :)
+>
+Don't see the point since I modified qmdilib...
+
+>*10.* Each time you redistribute the Library (or any work based on the 
+>Library), the recipient automatically receives a license from the original 
+>licensor to copy, distribute, link with or modify the Library subject to 
+>these terms and conditions. You may not impose any further restrictions on 
+>the recipients' exercise of the rights granted herein. You are not 
+>responsible for enforcing compliance by third parties with this License.
+>It seems you need to put the copy of the LGPL with the distributed source. 
+>Not a big problem, since in these days you can always search for it and 
+>find it in a minute on the web.
+
+Can be done I think...
+
+I guess we're done with those licensing stuff so here is my plan :
+- put the LGPL along with the archive I posted, and maybe state 
+modifications in qmdilib if you really wish it
+- rearchive them all
+- create a "base" folder in the svn repository
+- upload the modified archive there
+- track as many bugs as you can (everyone is welcome to do that...) and tell 
+me about them
+- in a few weeks I'll upload an usable version of the new base, after 
+testing it under win 9X/ME, win XP, various Linux distros and Mac OS X we'll 
+bacup the current trunk and set the base as trunk
+- then we'll be able to further the developpment of DevQt, especially the 
+defaut plugin
+
+This is just a short roadmap, please tell me if you agree or disagree.
+
+Offtopic :
+- a while ago you talked about putting on the svn a "sphere" stuff done with 
+thiago, where is it???
+- any news from the other members of the team or are we alone???
+
+_________________________________________________________________
+Windows Live Mail : d?couvrez et testez la version b?ta ! 
+http://www.imagine-msn.com/hotmail/default.aspx?locale=fr-fr
+
+
+
+From elcuco at berlios.de  Mon Apr 24 22:46:21 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Mon, 24 Apr 2006 22:46:21 +0200
+Subject: [Devqt-devel] r73 - in tools/qmdilib: demos/mdi-tab src
+Message-ID: <200604242046.k3OKkLGA022527@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-24 22:46:09 +0200 (Mon, 24 Apr 2006)
+New Revision: 73
+
+Modified:
+   tools/qmdilib/demos/mdi-tab/helpbrowse.cpp
+   tools/qmdilib/demos/mdi-tab/helpbrowse.h
+   tools/qmdilib/src/actiongroup.cpp
+   tools/qmdilib/src/actiongroup.h
+Log:
+initial support for widgets on toolbars.
+now you can add QWidgets into qmdiActionGroup, and when you update a
+QToolBar those widgets will be added or removed from the new toolbar.
+
+Added an (ugly) demo on the help viewer. I need to think about a better
+implementation for such example.
+
+TODO
+Documentation on the new methods
+
+
+
+Modified: tools/qmdilib/demos/mdi-tab/helpbrowse.cpp
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/helpbrowse.cpp	2006-04-19 16:36:38 UTC (rev 72)
++++ tools/qmdilib/demos/mdi-tab/helpbrowse.cpp	2006-04-24 20:46:09 UTC (rev 73)
+@@ -1,5 +1,7 @@
+ #include <QIcon>
+ #include <QAction>
++#include <QComboBox>
++
+ #include "helpbrowse.h"
+ 
+ /**
+@@ -31,6 +33,10 @@
+ QexHelpBrowser::QexHelpBrowser( QUrl home, QWidget *parent )
+ 	:QTextBrowser(parent)
+ {
++	zoomCombo = new QComboBox;
++	zoomCombo->addItem( tr("Smaller text"), -5 );
++	zoomCombo->addItem( tr("Bigger text"), 5 );
++	
+ 	actionBack	= new QAction( QIcon(":images/prev.png"), tr("&Back"), this );
+ 	actionNext	= new QAction( QIcon(":images/next.png"), tr("&Next"), this );
+ 	actionHome	= new QAction( QIcon(":images/home.png"), tr("&Home"), this );
+@@ -46,6 +52,7 @@
+ 	connect( actionHome, SIGNAL(triggered()), this, SLOT(goHome()));
+ 	connect( actionZoomIn, SIGNAL(triggered()), this, SLOT(zoomIn()));
+ 	connect( actionZoomOut, SIGNAL(triggered()), this, SLOT(zoomOut()));
++	connect( zoomCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_zoomCombo_currentIndexChanged(int)));
+ 
+ 	actionCopy->setEnabled(false);
+ 	actionNext->setShortcut( QKeySequence("Alt+Right") );
+@@ -72,6 +79,7 @@
+ 	toolbars["Navigation"]->addSeparator();
+ 	toolbars["Navigation"]->addAction( actionZoomIn );
+ 	toolbars["Navigation"]->addAction( actionZoomOut );
++	toolbars["Navigation"]->addWidget( zoomCombo );
+ 	
+ 	homePage = home;
+ 	setSource( homePage );
+@@ -81,3 +89,9 @@
+ {
+ 	setSource( homePage );
+ }
++
++void QexHelpBrowser::on_zoomCombo_currentIndexChanged( int index )
++{
++	zoomIn( 0 );
++	zoomIn( zoomCombo->itemData(index).toInt() );
++}
+
+Modified: tools/qmdilib/demos/mdi-tab/helpbrowse.h
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/helpbrowse.h	2006-04-19 16:36:38 UTC (rev 72)
++++ tools/qmdilib/demos/mdi-tab/helpbrowse.h	2006-04-24 20:46:09 UTC (rev 73)
+@@ -12,8 +12,9 @@
+ #include <QTextBrowser>
+ #include "qmdiclient.h"
+ 
++class QAction;
+ class QWidget;
+-class QAction;
++class QComboBox;
+ 
+ class QexHelpBrowser: public QTextBrowser, public qmdiClient
+ {
+@@ -23,6 +24,7 @@
+ 
+ public slots:
+ 	void goHome();
++	void on_zoomCombo_currentIndexChanged( int index );
+ 
+ private:
+ 	QAction *actionBack;
+@@ -34,6 +36,7 @@
+ 	QAction *actionCopy;
+ 	QAction *actionFind;
+ 
++	QComboBox *zoomCombo;
+ 	QUrl homePage;
+ };
+ 
+
+Modified: tools/qmdilib/src/actiongroup.cpp
+===================================================================
+--- tools/qmdilib/src/actiongroup.cpp	2006-04-19 16:36:38 UTC (rev 72)
++++ tools/qmdilib/src/actiongroup.cpp	2006-04-24 20:46:09 UTC (rev 73)
+@@ -103,6 +103,11 @@
+ 	actionGroupItems << action;
+ }
+ 
++void qmdiActionGroup::addWidget( QWidget *widget )
++{
++	actionGroupItems << widget;
++}
++
+ /**
+  * \brief adds a separator to the menu or toolbar
+  * 
+@@ -150,7 +155,15 @@
+ 		actionGroupItems.removeAt( i );
+ }
+ 
++void qmdiActionGroup::removeWidget( QWidget *widget )
++{
++	int i =	actionGroupItems.indexOf( widget );
+ 
++	if ( i != -1 )
++		actionGroupItems.removeAt( i );
++}
++
++
+ /**
+  * \brief merges another action group actions into this action group
+  * \param group the new group to be merged
+@@ -171,6 +184,15 @@
+ 		QAction *a = qobject_cast<QAction*> (o);
+ 		if (a)
+ 			addAction( a );
++		else
++		{
++			QWidget *w = qobject_cast<QWidget*> (o);
++			if (w)
++			{
++				addWidget( w );
++				w->setVisible(true);
++			}
++		}
+ 	}	
+ }
+ 
+@@ -194,6 +216,15 @@
+ 		QAction *a = qobject_cast<QAction*> (o);
+ 		if (a)
+ 			removeAction( a );
++		else
++		{
++			QWidget *w = qobject_cast<QWidget*> (o);
++			if (w)
++			{
++				w->setVisible(false);
++				removeWidget( w );
++			}
++		}
+ 	}	
+ }
+ 
+@@ -263,12 +294,24 @@
+ 		toolbar = new QToolBar( name );
+ 
+ 	toolbar->clear();
+-	
++	int i = 0;
++
+ 	foreach( QObject *o, actionGroupItems )
+ 	{
+ 		QAction *a = qobject_cast<QAction*> (o);
+ 		if (a)
+ 			toolbar->addAction( a );
++		else
++		{
++			QWidget *w = qobject_cast<QWidget*> (o);
++			if (w)
++			{
++				toolbar->addWidget( w );
++				w->setVisible(true);
++			}
++		}
++
++		i++;
+ 	}
+ 
+ 	if (actionGroupItems.count() == 0)
+
+Modified: tools/qmdilib/src/actiongroup.h
+===================================================================
+--- tools/qmdilib/src/actiongroup.h	2006-04-19 16:36:38 UTC (rev 72)
++++ tools/qmdilib/src/actiongroup.h	2006-04-24 20:46:09 UTC (rev 73)
+@@ -14,6 +14,7 @@
+ 
+ class QAction;
+ class QObject;
++class QWidget;
+ class QMenu;
+ class QToolBar;
+ 
+@@ -25,20 +26,23 @@
+ 	~qmdiActionGroup();
+ 
+ 	void		setName( QString name );
+-	QString		getName();
++	QString		getName();	
+ 	void		addAction( QAction *action );
++	void		addWidget( QWidget *widget );
+ 	void		addSeparator();
+ 	bool		containsAction( QAction *action );
+ 	void		removeAction( QAction *action );
++	void		removeWidget( QWidget *widget );
+ 
+ 	void		mergeGroup( qmdiActionGroup *group );
+ 	void		unmergeGroup( qmdiActionGroup *group );
+ 
+ 	QMenu*		updateMenu( QMenu *menu=NULL );
+ 	QToolBar*	updateToolBar( QToolBar *toolbar );
+-	
++
+ private:
+ 	QString name;
+ 	QList<QObject*> actionGroupItems;
+ };
++
+ #endif //__ACTION_GROUP__
+
+
+
+From fullmetalcoder at berlios.de  Tue Apr 25 20:57:14 2006
+From: fullmetalcoder at berlios.de (fullmetalcoder at berlios.de)
+Date: Tue, 25 Apr 2006 20:57:14 +0200
+Subject: [Devqt-devel] r74 - /
+Message-ID: <200604251857.k3PIvEsv026096@sheep.berlios.de>
+
+Author: fullmetalcoder
+Date: 2006-04-25 20:54:14 +0200 (Tue, 25 Apr 2006)
+New Revision: 74
+
+Added:
+   devqt-branch-0.3.x-alpha2.rar
+Log:
+new DevQt base
+
+Added: devqt-branch-0.3.x-alpha2.rar
+===================================================================
+(Binary files differ)
+
+
+Property changes on: devqt-branch-0.3.x-alpha2.rar
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+
+
+From fullmetalcoder at berlios.de  Tue Apr 25 20:59:31 2006
+From: fullmetalcoder at berlios.de (fullmetalcoder at berlios.de)
+Date: Tue, 25 Apr 2006 20:59:31 +0200
+Subject: [Devqt-devel] r75 - /
+Message-ID: <200604251859.k3PIxVm2027851@sheep.berlios.de>
+
+Author: fullmetalcoder
+Date: 2006-04-25 20:58:59 +0200 (Tue, 25 Apr 2006)
+New Revision: 75
+
+Added:
+   base/
+Log:
+new folder to put base archive until they're used in trunk
+
+
+
+From fullmetalcoder at berlios.de  Tue Apr 25 21:02:03 2006
+From: fullmetalcoder at berlios.de (fullmetalcoder at berlios.de)
+Date: Tue, 25 Apr 2006 21:02:03 +0200
+Subject: [Devqt-devel] r76 - / base
+Message-ID: <200604251902.k3PJ231f028567@sheep.berlios.de>
+
+Author: fullmetalcoder
+Date: 2006-04-25 21:01:35 +0200 (Tue, 25 Apr 2006)
+New Revision: 76
+
+Added:
+   base/devqt-branch-0.3.x-alpha2.rar
+Removed:
+   devqt-branch-0.3.x-alpha2.rar
+Log:
+simply moved archive to correct folder
+
+Copied: base/devqt-branch-0.3.x-alpha2.rar (from rev 75, devqt-branch-0.3.x-alpha2.rar)
+
+Deleted: devqt-branch-0.3.x-alpha2.rar
+===================================================================
+(Binary files differ)
+
+
+
+From fullmetalcoder at hotmail.fr  Tue Apr 25 21:15:41 2006
+From: fullmetalcoder at hotmail.fr (henry badinter)
+Date: Tue, 25 Apr 2006 21:15:41 +0200
+Subject: [Devqt-devel] New beta : folder and last archive
+Message-ID: <BAY114-F239B5642A6ECAA757AD9D6A7BF0@phx.gbl>
+
+Hi,
+
+Here it is : the state I reached before my week of holidays. Try it and give 
+feedback, especially about compiler or platform specific problems.
+
+As you may have noticed I created a "base" folder to put all the archives 
+with the source of the new beta and placed the last archive in it.
+
+_________________________________________________________________
+MSN Messenger: appels gratuits de PC ? PC ! 
+http://www.msn.fr/msger/default.asp
+
+
+
+From elcuco at kde.org  Tue Apr 25 22:25:16 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Tue, 25 Apr 2006 23:25:16 +0300
+Subject: [Devqt-devel] r74 - /
+In-Reply-To: <200604251857.k3PIvEsv026096@sheep.berlios.de>
+References: <200604251857.k3PIvEsv026096@sheep.berlios.de>
+Message-ID: <200604252325.16425.elcuco@kde.org>
+
+what the hell are you doying boy?
+
+???? ?????, 25 ?????? 2006, 21:57, ???? ?? ??? fullmetalcoder at berlios.de:
+> Author: fullmetalcoder
+> Date: 2006-04-25 20:54:14 +0200 (Tue, 25 Apr 2006)
+> New Revision: 74
+>
+> Added:
+>    devqt-branch-0.3.x-alpha2.rar
+> Log:
+> new DevQt base
+>
+> Added: devqt-branch-0.3.x-alpha2.rar
+> ===================================================================
+> (Binary files differ)
+>
+>
+> Property changes on: devqt-branch-0.3.x-alpha2.rar
+> ___________________________________________________________________
+> Name: svn:mime-type
+>    + application/octet-stream
+>
+> _______________________________________________
+> Devqt-devel mailing list
+> Devqt-devel at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/devqt-devel
+
+
+From elcuco at kde.org  Tue Apr 25 23:40:39 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Wed, 26 Apr 2006 00:40:39 +0300
+Subject: [Devqt-devel] wiki test for devqt
+Message-ID: <200604260040.39467.elcuco@kde.org>
+
+Hi,
+
+I have been trying to install media wiki on berlios without sucess. Meanwhile 
+I am fighting with mysql... for some reason this just does not work.
+
+Meanwhile,
+Just to see if this is enough, I have turned on the "wiki" option on Berlios, 
+which means this project has a wiki. If you have a berlios wiki, you can edit 
+info on the wiki.
+
+Please test the SW and tell me if it's usable enough:
+
+http://openfacts.berlios.de/index-en.phtml?title=DevQt
+
+
+From alex.saal at gmx.de  Fri Apr 28 13:38:10 2006
+From: alex.saal at gmx.de (Alexander Saal)
+Date: Fri, 28 Apr 2006 13:38:10 +0200
+Subject: [Devqt-devel] DevQt Branch 3 Alpha
+Message-ID: <200604281338.10864.alex.saal@gmx.de>
+
+Hi guys :)
+
+i tested it under linux (debian sid).
+It running ok, but i musst edit the *.pro
+files and the plugins can not loaded ...
+why?
+
+Here is a little soultion for running under linux:
+src/lib/lib.pro:
+- CONFIG += release thread warn_on qt dll
+
+src/exec/exec.pro:
+- CONFIG += release thread warn_on qt
+- win32:LIBS += ../libdevqt.a
+- unix:LIBS += -ldevqt -L../
+
+src/default/default.pro
+- CONFIG += release thread warn_on qt plugin
+- win32:LIBS += ../libdevqt.a
+- unix:LIBS += -ldevqt -L../
+
+copy the *.so*, devqt files and plugin folder into a another directory
+like: build
+
+and create a shell file with fowlling lines:
+#!/bin/bash
+clear
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:."
+./devqt
+
+
+but not least, it's greate job boys ...
+I waiting for the final release day .... :)
+
+(and sorry for my bad english) ;)
+
+
+mfg
+ChMaster (aka Alexander S.)
+
+
+From elcuco at kde.org  Sat Apr 29 02:38:54 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Sat, 29 Apr 2006 03:38:54 +0300
+Subject: [Devqt-devel] DevQt Branch 3 Alpha
+In-Reply-To: <200604281338.10864.alex.saal@gmx.de>
+References: <200604281338.10864.alex.saal@gmx.de>
+Message-ID: <200604290338.54732.elcuco@kde.org>
+
+???? ????, 28 ?????? 2006, 14:38, ???? ?? ??? Alexander Saal:
+> and create a shell file with fowlling lines:
+> #!/bin/bash
+> clear
+> export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:."
+> ./devqt
+
+1) don't use ./, it may fail sometimes (not sure when, but it will)
+2) you did not pass parameters to the binary. right now the application just 
+ignores them, but some day command line parameters will be used.
+3) debian has a policy that every shell script should be runnable using 
+"/bin/sh".  
+4) No need to clear the screen.
+5) The devqt binary should be called devqt.bin on unix, and the script 
+"devqt", just to make things clear.
+
+Is it possible to copy files using *.pro? This should fix the ugly compilation 
+script your have for windows. 
+
+Here is my version (untested outside this email):
+
+#! /bin/sh
+DEVQTDIR=`dirname $0`
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$DEVQT_DIR"
+$DEVQTDIR/devqt.bin !@
+
+
+From alex.saal at gmx.de  Fri Apr 28 16:25:30 2006
+From: alex.saal at gmx.de (Alexander Saal)
+Date: Fri, 28 Apr 2006 16:25:30 +0200
+Subject: [Devqt-devel] DevQt Branch 3 Alpha
+In-Reply-To: <200604290338.54732.elcuco@kde.org>
+References: <200604281338.10864.alex.saal@gmx.de> <200604290338.54732.elcuco@kde.org>
+Message-ID: <200604281625.30414.alex.saal@gmx.de>
+
+> ???? ????, 28 ?????? 2006, 14:38, 
+thx :)
+> 1) don't use ./, it may fail sometimes (not sure when, but it will)
+ok ... thx
+
+> 2) you did not pass parameters to the binary. right now the application
+> just ignores them, but some day command line parameters will be used.
+> 3) debian has a policy that every shell script should be runnable using
+> "/bin/sh".
+ok, but i use bash ;)
+
+> 4) No need to clear the screen.
+ok
+
+> 5) The devqt binary should be called devqt.bin on unix, and the script
+> "devqt", just to make things clear.
+i used this, but under linux is the executabel devqt and not
+devqt.bin ..
+
+> Is it possible to copy files using *.pro?
+no, but you can change, if you use the win32 or mac or unix macro like this:
+unix{
+  TARGET = ../../build/devqt
+  #you can add version of your lib
+  VERSION = 0.3.0
+  #if you add version you must right enter the foowlling:
+  #remove all debug symbols
+  QMAKE_POST_LINK = strip -s ../../build/libdevqt.so.0.3.0
+  RCC_DIR = .unix/rcc
+  MOC_DIR += .unix/moc
+  OBJECTS_DIR += .unix/obj
+  UI_DIR += .unix/ui
+}
+
+win32 {
+  ....
+  # but without strip -s ;)
+  ....
+}
+
+> This should fix the ugly 
+> compilation script your have for windows.
+>
+> Here is my version (untested outside this email):
+>
+> #! /bin/sh
+> DEVQTDIR=`dirname $0`
+> export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$DEVQT_DIR"
+> $DEVQTDIR/devqt.bin !@
+thx ....
+
+mfg
+ChMaster (aka Alexander S.)
+
+
+From elcuco at kde.org  Sat Apr 29 07:14:22 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Sat, 29 Apr 2006 08:14:22 +0300
+Subject: [Devqt-devel] DevQt Branch 3 Alpha
+In-Reply-To: <200604281625.30414.alex.saal@gmx.de>
+References: <200604281338.10864.alex.saal@gmx.de> <200604290338.54732.elcuco@kde.org> <200604281625.30414.alex.saal@gmx.de>
+Message-ID: <200604290814.23046.elcuco@kde.org>
+
+???? ????, 28 ?????? 2006, 17:25, ???? ?? ??? Alexander Saal:
+
+> > 5) The devqt binary should be called devqt.bin on unix, and the script
+> > "devqt", just to make things clear.
+> i used this, but under linux is the executabel devqt and not
+> devqt.bin ..
+This was my point, on unix the binary should be named *.bin, and users should 
+run the script instead.
+
+> > Is it possible to copy files using *.pro?
+>
+> no, but you can change, if you use the win32 or mac or unix macro like
+> this: unix{
+>   TARGET = ../../build/devqt
+>   #you can add version of your lib
+>   VERSION = 0.3.0
+>   #if you add version you must right enter the foowlling:
+>   #remove all debug symbols
+>   QMAKE_POST_LINK = strip -s ../../build/libdevqt.so.0.3.0
+>   RCC_DIR = .unix/rcc
+>   MOC_DIR += .unix/moc
+>   OBJECTS_DIR += .unix/obj
+>   UI_DIR += .unix/ui
+> }
+>
+> win32 {
+>   ....
+>   # but without strip -s ;)
+>   ....
+> }
+You mean building the library directly on root project dir? This can be done 
+on both archs, and no need for copy. The clean target should also clean the 
+libraries. nice.
+
+FMC, are you reading this?
+
+
+From alex.saal at gmx.de  Fri Apr 28 19:48:02 2006
+From: alex.saal at gmx.de (Alexander Saal)
+Date: Fri, 28 Apr 2006 19:48:02 +0200
+Subject: [Devqt-devel] DevQt Branch 3 Alpha
+In-Reply-To: <200604290814.23046.elcuco@kde.org>
+References: <200604281338.10864.alex.saal@gmx.de> <200604281625.30414.alex.saal@gmx.de> <200604290814.23046.elcuco@kde.org>
+Message-ID: <200604281948.03046.alex.saal@gmx.de>
+
+> > 5) The devqt binary should be called devqt.bin on unix, and the script
+> > "devqt", just to make things clear.
+> i used this, but under linux is the executabel devqt and not
+> devqt.bin ..
+>
+> This was my point, on unix the binary should be named *.bin, and users
+> should  run the script instead.
+ah, sorry, then i understood you wrongly
+
+> You mean building the library directly on root project dir? 
+yes, i use this for my application
+
+> FMC, are you reading this?
+what is FMC? i know only RTFM .... :)
+
+
+mfg
+ChMaster (aka Alexander S.)
+
+
+
+From elcuco at kde.org  Sat Apr 29 07:50:30 2006
+From: elcuco at kde.org (Diego Iastrubni)
+Date: Sat, 29 Apr 2006 08:50:30 +0300
+Subject: [Devqt-devel] DevQt Branch 3 Alpha
+In-Reply-To: <200604281948.03046.alex.saal@gmx.de>
+References: <200604281338.10864.alex.saal@gmx.de> <200604290814.23046.elcuco@kde.org> <200604281948.03046.alex.saal@gmx.de>
+Message-ID: <200604290850.30291.elcuco@kde.org>
+
+???? ????, 28 ?????? 2006, 20:48, ???? ?? ??? Alexander Saal:
+> > FMC, are you reading this?
+>
+> what is FMC? i know only RTFM .... :)
+"henry badinter" <fullmetalcoder at hotmail.fr>
+
+> mfg
+> ChMaster (aka Alexander S.)
+
+
+From elcuco at berlios.de  Fri Apr 28 22:15:15 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Fri, 28 Apr 2006 22:15:15 +0200
+Subject: [Devqt-devel] r77 - tools/qmdilib/src
+Message-ID: <200604282015.k3SKFFw1005426@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-28 22:15:07 +0200 (Fri, 28 Apr 2006)
+New Revision: 77
+
+Modified:
+   tools/qmdilib/src/actiongroup.cpp
+   tools/qmdilib/src/actiongroup.h
+   tools/qmdilib/src/actiongrouplist.cpp
+Log:
+
+it's possible to insert qwidgets into actions lists. those widgets will
+be inserted into toolbars. when generating menus those widets are
+ignored.
+
+another new feature is that you can specify to have a break after a
+toolbar. 
+
+optimizations:
+some widgets are parented on constructors. this shuold avoid slow start
+ups as described on this thread:
+
+http://qtcentre.org/forum/showthread.php?s=babebd231035aa16bc438cb801663f01&t=1257
+
+
+
+
+
+Modified: tools/qmdilib/src/actiongroup.cpp
+===================================================================
+--- tools/qmdilib/src/actiongroup.cpp	2006-04-25 19:01:35 UTC (rev 76)
++++ tools/qmdilib/src/actiongroup.cpp	2006-04-28 20:15:07 UTC (rev 77)
+@@ -37,6 +37,9 @@
+ qmdiActionGroup::qmdiActionGroup( QString name )
+ {
+ 	this->name = name;
++
++	breakAfter = false;
++	breakCount = -1;
+ }
+ 
+ 
+@@ -103,6 +106,22 @@
+ 	actionGroupItems << action;
+ }
+ 
++/**
++ * \brief add a new widget to the action group
++ * \param widget item to be added to the action group
++ *
++ * When calling this function, you are adding a new
++ * widget to the toolbar or menu represented by the action
++ * group.
++ *
++ * Widget are added to the end of the list. There is no way
++ * to reorder the actions once they are in the group. If you
++ * are are generating a menu, this wiget is ignored.
++ *
++ * \see removeWidget
++ * \see updateMenu
++ * \see updateToolBar
++ */
+ void qmdiActionGroup::addWidget( QWidget *widget )
+ {
+ 	actionGroupItems << widget;
+@@ -155,6 +174,20 @@
+ 		actionGroupItems.removeAt( i );
+ }
+ 
++
++/**
++ * \brief remove an action from the action group
++ * \param action QAction item to be removed
++ *
++ * Use this function for removing widgets from the menu or
++ * toolbar reporesented by this action group.
++ *
++ * \see addAction
++ * \see removeAction
++ * \see addWidget
++ * \see updateMenu
++ * \see updateToolBar
++ */
+ void qmdiActionGroup::removeWidget( QWidget *widget )
+ {
+ 	int i =	actionGroupItems.indexOf( widget );
+@@ -178,7 +211,10 @@
+ {
+ 	if (!group)
+ 		return;
+-		
++
++	if ( (group->breakAfter) )
++		breakCount = breakCount == -1 ? 1 : breakCount+1;
++	
+ 	foreach( QObject *o, group->actionGroupItems )
+ 	{
+ 		QAction *a = qobject_cast<QAction*> (o);
+@@ -193,7 +229,10 @@
+ 				w->setVisible(true);
+ 			}
+ 		}
+-	}	
++	}
++
++	if (breakCount>0)
++		breakAfter = true;
+ }
+ 
+ 
+@@ -211,6 +250,9 @@
+ 	if (!group)
+ 		return;
+ 		
++	if ( (group->breakAfter) )
++		breakCount = breakCount >1  ? -1 : breakCount-1;
++	
+ 	foreach( QObject *o, group->actionGroupItems )
+ 	{
+ 		QAction *a = qobject_cast<QAction*> (o);
+@@ -225,7 +267,10 @@
+ 				removeWidget( w );
+ 			}
+ 		}
+-	}	
++	}
++
++	if (breakCount>0)
++		breakAfter = true;
+ }
+ 
+ /**
+
+Modified: tools/qmdilib/src/actiongroup.h
+===================================================================
+--- tools/qmdilib/src/actiongroup.h	2006-04-25 19:01:35 UTC (rev 76)
++++ tools/qmdilib/src/actiongroup.h	2006-04-28 20:15:07 UTC (rev 77)
+@@ -40,9 +40,12 @@
+ 	QMenu*		updateMenu( QMenu *menu=NULL );
+ 	QToolBar*	updateToolBar( QToolBar *toolbar );
+ 
++	bool		breakAfter;
+ private:
+ 	QString name;
+ 	QList<QObject*> actionGroupItems;
++
++	int breakCount;
+ };
+ 
+ #endif //__ACTION_GROUP__
+
+Modified: tools/qmdilib/src/actiongrouplist.cpp
+===================================================================
+--- tools/qmdilib/src/actiongrouplist.cpp	2006-04-25 19:01:35 UTC (rev 76)
++++ tools/qmdilib/src/actiongrouplist.cpp	2006-04-28 20:15:07 UTC (rev 77)
+@@ -83,6 +83,7 @@
+ 	return item;
+ }
+ 
++
+ /**
+  * \brief merge another action group list
+  * \param group the new group to merge into this one
+@@ -154,7 +155,7 @@
+ 	if (menubar)
+ 		menubar->clear();
+ 	else
+-		menubar = new QMenuBar();
++		menubar = new QMenuBar( menubar );
+ 
+ 	foreach( qmdiActionGroup* i, actionGroups )
+ 	{
+@@ -205,10 +206,12 @@
+ 		// if none found, create one
+ 		if (tb == NULL)
+ 		{
+-			tb = new QToolBar( actionName );
++			tb = new QToolBar( actionName, window );
+ 			tb->setObjectName( actionName );
+ 			*toolbars << tb;
+ 			window->addToolBar( tb );
++			if (i->breakAfter)
++				window->addToolBarBreak();
+ 		}
+ 		
+ 		// merge it with the corresponding group list
+
+
+
+From elcuco at berlios.de  Sat Apr 29 00:58:02 2006
+From: elcuco at berlios.de (elcuco at berlios.de)
+Date: Sat, 29 Apr 2006 00:58:02 +0200
+Subject: [Devqt-devel] r78 - in tools/qmdilib: demos/adv-menus demos/mdi-tab src
+Message-ID: <200604282258.k3SMw2Uo010370@sheep.berlios.de>
+
+Author: elcuco
+Date: 2006-04-29 00:57:55 +0200 (Sat, 29 Apr 2006)
+New Revision: 78
+
+Modified:
+   tools/qmdilib/demos/adv-menus/mainwindow.cpp
+   tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+   tools/qmdilib/src/qmditabwidget.cpp
+   tools/qmdilib/src/qmditabwidget.h
+Log:
+avd-menus: start of documentation for this demo
+exeditor: usage of the new breack api, 
+exeditor: tab names is only the file name
+
+qmditabwidget: fixed a bug which accoured when you have 2 tabs and you
+close the first one (menus for the 2nd one was not displayed)
+
+
+
+Modified: tools/qmdilib/demos/adv-menus/mainwindow.cpp
+===================================================================
+--- tools/qmdilib/demos/adv-menus/mainwindow.cpp	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/demos/adv-menus/mainwindow.cpp	2006-04-28 22:57:55 UTC (rev 78)
+@@ -16,6 +16,37 @@
+  * \see MainWindow
+  */
+ 
++/**
++ * \class MainWindow
++ * \brief The main window of demo 1 - modify main menus on the fly
++ *
++ * This demostration shows how can you had and remove menus
++ * and toolbars on an application, on response to application
++ * events.
++ *
++ * This is done by adding a new mdi client and then merging and
++ * unmerging this on demand. After a merge new toolbars and menus
++ * will be seen on screen. When the event is called again, the new
++ * mdi client is unmerged, and the original menus are seen.
++ *
++ * The basic concept of this application, is:
++ *   - a main window derived from QMainWindow and qmdiHost
++ *   - on the main window, the menus and toolbars are defined
++ *     using the APIs defined in qmdiClient
++ *   - a new qmdiClient class is defined
++ *   - new menus and toolbars are defined using the APIs
++ *     defined in qmdiClient
++ *   - when the user chooses the "Advanced menus" the 
++ *     new qmdiClient is merged into the main window,
++ *     and the gui is updated.
++ *
++ * On this application there are also defined also some NULL
++ * QAction defined, just to fill up the menus and toolbars. They
++ * could easily be connected to real slots.
++ *
++ * There is more documentation available at the adv-menus.html
++ * file, which is displayed when the application starts.
++ */
+ 
+ MainWindow::MainWindow( QWidget *owner ):QMainWindow(owner)
+ {
+
+Modified: tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-28 22:57:55 UTC (rev 78)
+@@ -85,8 +85,11 @@
+ 	menus["&Search"]	->addAction( actionFind );
+ 
+ 	// define the toolbars for this widget
+-	toolbars["File"]	->addAction( actionSave );
+-	toolbars["File"]	->addAction( actionClose );
++	toolbars["File"]->breakAfter = true;
++	toolbars["File"]->addAction( actionSave );
++	toolbars["File"]->addAction( actionClose );
++
++	
+ 	toolbars["Edit operations"]->addAction( actionCopy );
+ 	toolbars["Edit operations"]->addAction( actionCut );
+ 	toolbars["Edit operations"]->addAction( actionPaste );
+@@ -122,10 +125,27 @@
+ 
+ bool QexTextEdit::openFile( QString newFile, QTextCodec *c )
+ {
+-	fileName = newFile;	// the full path of the loaded file
+-	name = newFile;		// the name of the object for it's mdi server
+-	setObjectName( name );	// the QObject name (same as "name" \?)
++	fileName = newFile;		// the full path of the loaded file
++	setObjectName( newFile );	// set the object name to the file name,
++	
+ 
++	// the name of the object for it's mdi server
++	// is the file name alone, without the directory
++	int i = newFile.lastIndexOf( '/' );
++	QString s;
++	if ( i != -1 )
++		s = newFile.mid( i+1 );
++	else
++	{
++		i = newFile.lastIndexOf( '\\' );
++		if ( i != -1 )
++			s = newFile.mid( i+1 );
++		else
++			s = newFile;
++	}
++	name = s;
++	
++
+ 	if (newFile.isEmpty())
+ 		return true;
+ 
+
+Modified: tools/qmdilib/src/qmditabwidget.cpp
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.cpp	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/src/qmditabwidget.cpp	2006-04-28 22:57:55 UTC (rev 78)
+@@ -1,4 +1,5 @@
+ #include <QMainWindow>
++#include <QAction>
+ 
+ #include "qmditabwidget.h"
+ #include "qmdihost.h"
+@@ -197,6 +198,11 @@
+ 
+ 	// this is done to shut up gcc warnings
+ 	index = 0;
++	
++//	if it's the only widget available, show it's number
++//	BUG is this supposed to be done by Qt?
++	if (count() == 1)
++		tabChanged( 0 );
+ }
+ 
+ /**
+
+Modified: tools/qmdilib/src/qmditabwidget.h
+===================================================================
+--- tools/qmdilib/src/qmditabwidget.h	2006-04-28 20:15:07 UTC (rev 77)
++++ tools/qmdilib/src/qmditabwidget.h	2006-04-28 22:57:55 UTC (rev 78)
+@@ -32,8 +32,8 @@
+ 	void addClient( qmdiClient *client );
+ 	
+ private:
+-	QWidget *activeWidget;
+-	qmdiHost *mdiHost;
++	QWidget		*activeWidget;
++	qmdiHost	*mdiHost;
+ };
+ 
+ #endif // __QMDI_TAB_WIDGET_H__
+
+
+

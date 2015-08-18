@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Devqt-devel] r72 - in tools/qmdilib: demos/mdi-tab src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/devqt-devel/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r72%20-%20in%20tools/qmdilib%3A%20demos/mdi-tab%20src&In-Reply-To=%3C200604191637.k3JGbeSG009152%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000040.html">
+   <LINK REL="Next"  HREF="000042.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Devqt-devel] r72 - in tools/qmdilib: demos/mdi-tab src</H1>
+    <B>elcuco at berlios.de</B> 
+    <A HREF="mailto:devqt-devel%40lists.berlios.de?Subject=Re%3A%20%5BDevqt-devel%5D%20r72%20-%20in%20tools/qmdilib%3A%20demos/mdi-tab%20src&In-Reply-To=%3C200604191637.k3JGbeSG009152%40sheep.berlios.de%3E"
+       TITLE="[Devqt-devel] r72 - in tools/qmdilib: demos/mdi-tab src">elcuco at berlios.de
+       </A><BR>
+    <I>Wed Apr 19 18:37:40 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000040.html">[Devqt-devel] r71 - plugin-demo
+</A></li>
+        <LI>Next message: <A HREF="000042.html">[Devqt-devel] r71 - plugin-demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: elcuco
+Date: 2006-04-19 18:36:38 +0200 (Wed, 19 Apr 2006)
+New Revision: 72
+
+Modified:
+   tools/qmdilib/demos/mdi-tab/mainwindow2.cpp
+   tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+   tools/qmdilib/demos/mdi-tab/qexeditor.h
+   tools/qmdilib/src/qmdiclient.cpp
+   tools/qmdilib/src/qmdiclient.h
+Log:
+new functionality to the mdi clients:
+a new function to ask for the widget to close itself nicefully, and the
+option to abort it. this is usuful for rw clients (text editors and
+stuff). the mdi server can ask the client to close itself, and the cient
+will save the text if needed .
+
+users (programmers) need only to re-implement only one funciton, and
+demostrated in qexeditoh.h.
+
+the code is very compatible with the old one, and older applications
+should work with minimal to no changes.
+
+
+Modified: tools/qmdilib/demos/mdi-tab/mainwindow2.cpp
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/mainwindow2.cpp	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/demos/mdi-tab/mainwindow2.cpp	2006-04-19 16:36:38 UTC (rev 72)
+@@ -114,7 +114,14 @@
+ 
+ void MainWindow2::fileClose()
+ {
+-	delete tabWidget-&gt;currentWidget();
++	qmdiClient *c = dynamic_cast&lt;qmdiClient*&gt;(tabWidget-&gt;currentWidget());
++
++	if (c == NULL)
++		// if it's not an mdi client, safe to kill it
++		delete tabWidget-&gt;currentWidget();
++	else
++		// otherwise, ask politelly for it to close it
++		c-&gt;closeClient();
+ }
+ 
+ void MainWindow2::helpQtTopics()
+
+Modified: tools/qmdilib/demos/mdi-tab/qexeditor.cpp
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/demos/mdi-tab/qexeditor.cpp	2006-04-19 16:36:38 UTC (rev 72)
+@@ -1,5 +1,10 @@
+ #include &lt;QAction&gt;
+ #include &lt;QString&gt;
++#include &lt;QTextCodec&gt;
++#include &lt;QTextStream&gt;
++#include &lt;QFile&gt;
++#include &lt;QMessageBox&gt;
++#include &lt;QFileDialog&gt;
+ 
+ /**
+  * \file qextexteditor.cpp
+@@ -29,7 +34,7 @@
+  * \see qmdiClient
+  */
+  
+-QexTextEdit::QexTextEdit( QWidget *parent ):QTextEdit( parent )
++QexTextEdit::QexTextEdit( QString file, QWidget *parent):QTextEdit( parent )
+ {
+ 	QFont font;
+ 	font.setFamily(&quot;Courier New&quot;);
+@@ -59,7 +64,7 @@
+         connect( actionCopy, SIGNAL(triggered()), this, SLOT(copy()) );
+         connect( actionCut, SIGNAL(triggered()), this, SLOT(cut()) );
+         connect( actionPaste, SIGNAL(triggered()), this, SLOT(paste()) );
+-	connect( actionClose, SIGNAL(triggered()), this, SLOT(deleteLater()));
++	connect( actionClose, SIGNAL(triggered()), this, SLOT(fileClose()));
+ 
+ 	actionUndo-&gt;setEnabled( false );
+ 	actionRedo-&gt;setEnabled( false );
+@@ -88,5 +93,106 @@
+ 	toolbars[&quot;Edit operations&quot;]-&gt;addSeparator();
+ 	toolbars[&quot;Edit operations&quot;]-&gt;addAction( actionUndo );
+ 	toolbars[&quot;Edit operations&quot;]-&gt;addAction( actionRedo );
++
++	openFile( file );
+ }
+ 
++
++bool QexTextEdit::canCloseClient()
++{
++	if (!document()-&gt;isModified())
++		return true;
++
++	// ask for saving
++	int ret = QMessageBox::warning(this, tr(&quot;Application&quot;),
++		tr(&quot;The document has been modified.\n&quot;
++		&quot;Do you want to save your changes?&quot;),
++		QMessageBox::Yes | QMessageBox::Default,
++		QMessageBox::No,
++		QMessageBox::Cancel | QMessageBox::Escape);
++
++	if (ret == QMessageBox::Yes)
++		return fileSave();
++	else if (ret == QMessageBox::Cancel)
++		return false;
++
++	// shut up GCC warnings
++	return true;
++}
++
++bool QexTextEdit::openFile( QString newFile, QTextCodec *c )
++{
++	fileName = newFile;	// the full path of the loaded file
++	name = newFile;		// the name of the object for it's mdi server
++	setObjectName( name );	// the QObject name (same as &quot;name&quot; \?)
++
++	if (newFile.isEmpty())
++		return true;
++
++	QFile f( fileName );
++
++	if (!f.open( QIODevice::ReadOnly ) )
++		return false;
++
++	if (c == NULL)
++		c = QTextCodec::codecForLocale();
++
++	QTextStream t(&amp;f);
++	t.setCodec( c );
++	setPlainText( t.readAll() );
++	f.close();
++
++	return true;
++}
++
++bool QexTextEdit::saveFile( QString newFile, QTextCodec *c  )
++{
++	QFile f( newFile );
++
++	if (!f.open( QIODevice::WriteOnly ) )
++		return false;
++	
++	if (c == NULL)
++		c = QTextCodec::codecForLocale();
++	
++	QTextStream t(&amp;f);
++	t.setCodec( c );
++	t &lt;&lt; toPlainText();
++	f.close();
++
++	return true;
++}
++
++bool QexTextEdit::fileSave()
++{
++	if (fileName.isEmpty())
++		return fileSaveAs();
++
++	return saveFile( fileName );
++}
++
++bool QexTextEdit::fileSaveAs()
++{
++
++	QString s = QFileDialog::getSaveFileName(
++		NULL,
++		&quot;Choose a filename to save under&quot;,
++		&quot;&quot;,
++		&quot;Sources (*.c *.cpp *.cxx *.h *.hpp *.hxx *.inc);;&quot;
++				&quot;Headers (*.h *.hpp *.hxx *.inc);;&quot;
++				&quot;Qt project (*.pro *.pri);;&quot;
++				&quot;All files (*.*)&quot;
++	);
++
++	if (s.isEmpty())
++		return false;
++
++	fileName = s;
++	return saveFile( fileName );
++}
++
++
++bool QexTextEdit::fileClose()
++{
++	return closeClient();
++}
+
+Modified: tools/qmdilib/demos/mdi-tab/qexeditor.h
+===================================================================
+--- tools/qmdilib/demos/mdi-tab/qexeditor.h	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/demos/mdi-tab/qexeditor.h	2006-04-19 16:36:38 UTC (rev 72)
+@@ -17,11 +17,21 @@
+ class QTextEdit;
+ class QToolBar;
+ class QAction;
++class QTextCodec;
+ 
+ class QexTextEdit : public QTextEdit, public qmdiClient
+ {
++	Q_OBJECT
+ public:
+-	QexTextEdit( QWidget *parent=0 );
++	QexTextEdit( QString file=&quot;&quot;, QWidget *parent=0 );
++	bool canCloseClient();
++	bool openFile( QString newFile, QTextCodec *c=NULL  );
++	bool saveFile( QString newFile, QTextCodec *c=NULL  );
++	
++public slots:
++	bool fileSave();
++	bool fileSaveAs();
++	bool fileClose();
+ 
+ private:
+ 	QAction *actionSave;
+@@ -33,6 +43,8 @@
+ 	QAction *actionCut;
+ 	QAction *actionPaste;
+ 	QAction *actionFind;
++
++	QString fileName;
+ };
+ 
+ #endif //__QEX_EDITOR_H__
+
+Modified: tools/qmdilib/src/qmdiclient.cpp
+===================================================================
+--- tools/qmdilib/src/qmdiclient.cpp	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/src/qmdiclient.cpp	2006-04-19 16:36:38 UTC (rev 72)
+@@ -65,3 +65,62 @@
+ 	mdiServer = NULL;
+ 	myself    = NULL;
+ }
++
++/**
++ * \brief close the mdi client
++ * \return true if the widget is closed after this call
++ * 
++ * If you want to delete mdi clients from your mdi server, sometimes
++ * just deleting this client is not the smart move. For example if the
++ * client contains an user editable document, the user should be asked
++ * to save his changes, and maybe even abort.
++ *
++ * By default this function does:
++ *  - calls canCloseClient to find out if it's ok to closeClient()
++ *  - if the function returns true, it will try to cast the mdi client to a
++ *    QObject, calls deleteLater() and returns true and the object 
++ *    will be deleted afterwards.
++ *  - if cast failed or canCloseClient() returned false, a negative value
++ *    is returned, and the object is not destructed.
++ * 
++ * This means that for read only clients you can leave the default. On R/W
++ * clients which derive QObject, you will have to override canCloseClient().
++ * If your derived class does not derive QObject, you will need to overide this
++ * function as well.
++ *
++ * \see canCloseClient()
++ * \see QObject::deleteLater()
++ */
++bool qmdiClient::closeClient()
++{
++	if (canCloseClient())
++	{
++		if (myself != NULL)
++		{
++			myself-&gt;deleteLater();
++			return true;
++		}
++		else
++			return false;
++	}
++	else
++		return false;
++}
++
++/**
++ * \brief check if the mdi client is valid for closing
++ * \return true is it is ok to destruct the mdi client
++ *
++ * This function should return true if the mdi client is safe for
++ * removal from the mdi client. Clients are valid for removal usually
++ * if no changes have been made, or the user accepted to save then.
++ *
++ * You can define your own logic by re-implementing this function
++ * in your derived classes.
++ * 
++ * \see closeClient()
++ */
++bool qmdiClient::canCloseClient()
++{
++	return true;
++}
+
+Modified: tools/qmdilib/src/qmdiclient.h
+===================================================================
+--- tools/qmdilib/src/qmdiclient.h	2006-04-16 20:27:11 UTC (rev 71)
++++ tools/qmdilib/src/qmdiclient.h	2006-04-19 16:36:38 UTC (rev 72)
+@@ -20,6 +20,9 @@
+ public:
+ 	qmdiClient();
+ 	virtual ~qmdiClient();
++
++	virtual bool closeClient();
++	virtual bool canCloseClient();
+ 	
+ 	QString name;
+ 	QString fileName;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000040.html">[Devqt-devel] r71 - plugin-demo
+</A></li>
+	<LI>Next message: <A HREF="000042.html">[Devqt-devel] r71 - plugin-demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/devqt-devel">More information about the Devqt-devel
+mailing list</a><br>
+</body></html>
